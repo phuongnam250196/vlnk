@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->string('post_name', 255)->nullable();
             $table->string('post_slug', 255)->nullable();
             $table->string('post_img', 255)->nullable();
-            $table->string('post_content', 255)->nullable();
+            $table->longtext('post_content')->nullable();
             $table->integer('post_status')->nullable();
 
             $table->integer('cate_id')->unsigned()->nullable();

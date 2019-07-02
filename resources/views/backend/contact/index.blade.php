@@ -6,20 +6,20 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Contact Messages</h1>
+                        <h1 class="main-title float-left">Liên hệ</h1>
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active">Contact Messages</li>
+                            <li class="breadcrumb-item">Trang chủ</li>
+                            <li class="breadcrumb-item active">Liên hệ</li>
                         </ol>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
             <!-- end row -->
-            <div class="alert alert-danger" role="alert">
+            {{-- <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">Important!</h4>
                 <p>This section is available in Pike Admin PRO version.</p>
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card mb-3">
@@ -37,14 +37,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($data as $key=>$dat)
                                     <tr>
                                         <td>
                                             <span style="color:red"><b>[Unread]</b></span> <a href="pro-contact-messages-details.html"><b>I want your help please</b></a>
-                                            <p>Lorem ipsum dolor sit amet, probo omnis fugit vis in. Tale summo quaeque vim eu, pro sumo omnium at. Ad illud facilisi vix, nostrud dolores expetenda id vim. Et affert constituto percipitur qui. Ad purto choro has. "fdfs"fsds&#39;dfasdfsd!!! Consul erroribus pri ut. Has no veniam consul molestie...</p>
+                                            <p>{{$dat->message}}</p>
                                         </td>
                                         <td>
-                                            John Doe<br />
-                                            office@mxscripts.com<br />
+                                            {{$dat->name}}<br />
+                                            {{$dat->email}}<br />
                                             IP: 79.112.97.75 </td>
                                         <td>
                                             <a href="pro-contact-messages-details.html" class="btn btn-primary btn-sm" data-placement="top" data-toggle="tooltip" data-title="Read message"><i class="fa fa-search" aria-hidden="true"></i></a>
@@ -59,6 +60,7 @@
                                             </script>
                                         </td>
                                     </tr>
+                                    @endforeach
                                     <tr>
                                         <td>
                                             <a href="pro-contact-messages-details.html"><b>Test message subject</b></a>
@@ -83,6 +85,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            {{$data->links()}}
                         </div>
                         <!-- end card-body -->
                     </div>

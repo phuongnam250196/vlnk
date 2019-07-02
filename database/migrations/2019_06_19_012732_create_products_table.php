@@ -22,8 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('prod_price', 255)->nullable();
             $table->string('prod_guarantee', 255)->nullable();
             $table->string('prod_sale', 255)->nullable();
-            $table->string('prod_short_description', 255)->nullable();
-            $table->string('prod_content', 255)->nullable();
+            $table->longtext('prod_short_description')->nullable();
+            $table->longtext('prod_content')->nullable();
             $table->string('prod_amount', 255)->nullable();
             $table->string('prod_view', 255)->nullable();
             $table->integer('cate_id')->unsigned()->nullable();

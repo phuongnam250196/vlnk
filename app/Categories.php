@@ -15,4 +15,12 @@ class Categories extends Model
     public function products() {
     	return $this->hasMany('App\Products', 'cate_id');
     }
+
+    public function posts() {
+    	return $this->hasMany('App\Posts', 'cate_id');
+    }
+
+    public function videos() {
+    	return $this->hasMany('App\Videos', 'cate_id');
+    }
 }

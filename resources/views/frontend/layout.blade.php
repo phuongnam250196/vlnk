@@ -107,11 +107,18 @@
                         </li>
                         <li id="menu-item-29" class="menu-item @if(Request::is('news') || Request::is('news/*')) current_page_ancestor @endif"><a href="{{url('/news')}}">Tin tức</a>
                             <ul class="sub-menu">
-                                <li id="menu-item-181" class="menu-item"><a href="#">Camera Thông Minh</a></li>
-                                <li id="menu-item-180" class="menu-item"><a href="#">Android Box</a></li>
+                                @foreach(listCatePost() as $key=>$cate)
+                                    <li class="menu-item"><a href="{{url('/news/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a></li>
+                                @endforeach
                             </ul>
                         </li>
-                        <li id="menu-item-183" class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif"><a href="{{url('/videos')}}">Videos</a></li>
+                        <li id="menu-item-183" class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif"><a href="{{url('/videos')}}">Videos</a>
+                            <ul class="sub-menu">
+                                @foreach(listCateVideo() as $key=>$cate)
+                                    <li class="menu-item"><a href="{{url('/videos/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
                         <li id="menu-item-28" class="menu-item @if(Request::is('support') || Request::is('support/*')) current_page_ancestor @endif"><a href="{{url('/support')}}">Hỗ trợ khách hàng</a></li>
                         <li id="menu-item-232" class="menu-item @if(Request::is('agency') || Request::is('agency/*')) current_page_ancestor @endif"><a href="{{url('/agency')}}">Hệ thống đại lý</a></li>
                         <li id="menu-item-27" class="menu-item @if(Request::is('contact') || Request::is('contact/*')) current_page_ancestor @endif"><a href="{{url('/contact')}}">Liên hệ</a></li>
@@ -194,12 +201,9 @@
                 <div id="woocommerce_product_tag_cloud-2" class="widget-footer woocommerce widget_product_tag_cloud">
                     <h3 class="title-sidebar-footer">Từ khóa thông dụng</h3>
                     <div class="tagcloud">
-                    	<a href="#" class="tag-cloud-link" style="font-size: 22pt;">android TV Box</a>
-                        <a href="#" class="tag-cloud-link" style="font-size: 22pt;" aria-label="Camera thể thao (2 sản phẩm)">Camera thể thao</a>
-                        <a href="#" class="tag-cloud-link" style="font-size: 8pt;" aria-label="hdmi (1 sản phẩm)">hdmi</a>
-                        <a href="#" class="tag-cloud-link" style="font-size: 22pt;" aria-label="Kiwibox (2 sản phẩm)">Kiwibox</a>
-                        <a href="#" class="tag-cloud-link" style="font-size: 8pt;" aria-label="máy chiếu (1 sản phẩm)">máy chiếu</a>
-                        <a href="#" class="tag-cloud-link" style="font-size: 8pt;" aria-label="ổ cắm (1 sản phẩm)">ổ cắm</a>
+                        @foreach(listCate() as $key=>$cate)
+                    	   <a href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                        @endforeach
                     </div>
                 </div>
             </div>

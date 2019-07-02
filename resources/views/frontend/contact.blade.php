@@ -19,37 +19,50 @@
 								</div>
 							</div>
 							<div class="col-sm-6 col-xs-12">
+								@if(session('message'))
+									<p class="alert alert-success">{{session('message')}}</p>
+								@endif
 								<div class="lienhe_form">
 									<div role="form" class="wpcf7" id="wpcf7-f243-p25-o1" lang="vi" dir="ltr">
 										<div class="screen-reader-response"></div>
 										<form method="POST" class="wpcf7-form" novalidate="novalidate">
-											<div style="display: none;">
-												<input type="hidden" name="_wpcf7" value="243" />
-												<input type="hidden" name="_wpcf7_version" value="5.0.4" />
-												<input type="hidden" name="_wpcf7_locale" value="vi" />
-												<input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f243-p25-o1" />
-												<input type="hidden" name="_wpcf7_container_post" value="25" />
-											</div>
 											<div class="cf7_wrap">
-												<div class="cf7_col1"><span class="wpcf7-form-control-wrap your-name">
-													<input type="text" name="name" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" placeholder="Họ và tên" />
-												</span>
+												<div class="cf7_col1">
+													<span class="wpcf7-form-control-wrap your-name">
+														<input type="text" name="name" value="{{old('name')}}" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" placeholder="Họ và tên" />
+														@if($errors->has('name'))
+															<p class="help text-danger">{{ $errors->first('name') }}</p>
+														@endif 
+													</span>
 												</div>
-												<div class="cf7_col2"><span class="wpcf7-form-control-wrap your-tel">
-													<input type="tel" name="phone" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" aria-required="true" aria-invalid="false" placeholder="Số điện thoại" /></span>
+												<div class="cf7_col2">
+													<span class="wpcf7-form-control-wrap your-tel">
+														<input type="number" name="phone" value="{{old('phone')}}" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" aria-required="true" aria-invalid="false" placeholder="Số điện thoại" />
+														@if($errors->has('phone'))
+															<p class="help text-danger">{{ $errors->first('phone') }}</p>
+														@endif 
+													</span>
 												</div>
 											</div>
 											<div class="cf7_wrap">
 												<div class="cf7_row">
 													<span class="wpcf7-form-control-wrap your-email">
-													<input type="email" name="email" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" aria-required="true" aria-invalid="false" placeholder="Email" />
-												</span>
+														<input type="email" name="email" value="{{old('email')}}" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" aria-required="true" aria-invalid="false" placeholder="Email" />
+														@if($errors->has('email'))
+															<p class="help text-danger">{{ $errors->first('email') }}</p>
+														@endif 
+													</span>
 												</div>
 											</div>
 											<div class="cf7_wrap">
 												<div class="cf7_row">
 													<span class="wpcf7-form-control-wrap your-message">
-													<textarea name="message" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false" placeholder="Tin nhắn"></textarea></span></div>
+														<textarea name="message" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false" placeholder="Tin nhắn">{{old('message')}}</textarea>
+														@if($errors->has('message'))
+															<p class="help text-danger">{{ $errors->first('message') }}</p>
+														@endif 
+													</span>
+												</div>
 											</div>
 											<div class="cf7_submit">
 												<input type="submit" value="Gửi" class="wpcf7-form-control wpcf7-submit" />

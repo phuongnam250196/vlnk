@@ -21,12 +21,17 @@
 Route::group(['namespace'=>'Frontend'], function() {
 	Route::get('/', 'FrontendsController@getHome');
 	Route::get('/contact', 'FrontendsController@getContact');
+	Route::post('/contact', 'FrontendsController@postContact');
 	Route::group(['prefix'=>'videos'], function() {
 		Route::get('/', 'FrontendsController@getVideos');
+		Route::get('/search/', 'FrontendsController@getVideosSearch');
+		Route::get('/category/{slug}', 'FrontendsController@getVideosCategorySlug');
 		Route::get('/{slug}', 'FrontendsController@getVideosDetailSlug');
 	});
 	Route::group(['prefix'=>'news'], function() {
 		Route::get('/', 'FrontendsController@getNews');
+		Route::get('/search/', 'FrontendsController@getNewsSearch');
+		Route::get('/category/{slug}', 'FrontendsController@getNewsDetailCategorySlug');
 		Route::get('/{slug}', 'FrontendsController@getNewsDetailSlug');
 	});
 	Route::get('/category/{slug}', 'FrontendsController@getCategorySlug');

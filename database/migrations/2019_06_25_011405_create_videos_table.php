@@ -20,7 +20,7 @@ class CreateVideosTable extends Migration
             $table->string('video_slug', 255)->nullable();
             $table->string('video_img', 255)->nullable();
             $table->string('video_url', 255)->nullable();
-            $table->string('video_content', 255)->nullable();
+            $table->longtext('video_content')->nullable();
             $table->integer('video_status')->nullable();
 
             $table->integer('cate_id')->unsigned()->nullable();

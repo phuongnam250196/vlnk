@@ -7,9 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Products;
 use App\Posts;
 use App\Videos;
+use App\contacts;
 use App\Categories;
 use App\User;
 use Validator;
+use Illuminate\Support\Facades\Mail;
 
 class FrontendsController extends Controller
 {
@@ -21,6 +23,36 @@ class FrontendsController extends Controller
 
     public function getContact() {
    		return view('frontend.contact');
+    }
+    public function postContact(Request $request) {
+        $rules = [
+            'email' => 'required |email | max:255',
+            'name' => 'required | max:255',
+            'phone' => 'required | max:255',
+            'message' => 'required',
+        ];
+        $messages = [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'name.max' => 'Không được vượt quá 255 ký tự',
+            'email.max' => 'Không được vượt quá 255 ký tự',
+            'phone.max' => 'Không được vượt quá 255 ký tự',
+            'name.required' => 'Họ tên không được để trống',
+            'phone.required' => 'Số điện thoại không được để trống',
+            'message.required' => 'Nội dung không được để trống',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            $data = new contacts;
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->phone = $request->phone;
+            $data->message = $request->message;
+            $data->save();
+            return back()->with('message', 'Bạn đã gửi tin yêu cầu thành công');
+        }
     }
 
     public function getNews() {
@@ -35,6 +67,19 @@ class FrontendsController extends Controller
         return view('frontend.news_detail', compact('post', 'post_others'));
     }
 
+    public function getNewsDetailCategorySlug($slug) {
+        $cate = Categories::where('cate_slug', $slug)->first();
+        $posts = Posts::whereHas('categories', function($b) use($slug) {
+            $b->where('cate_slug', $slug);
+        })->orderBy('created_at', 'desc')->paginate(10);
+        return view('frontend.news', compact('posts', 'cate'));
+    }
+
+    public function getNewsSearch(Request $request) {
+        $posts = Posts::where('post_name', 'like', '%'.$request->word.'%')->orderBy('created_at', 'desc')->paginate(10);
+        return view('frontend.news', compact('posts'));
+    }
+
     public function getVideos() {
         $videos = Videos::orderBy('created_at', 'desc')->get();
         return view('frontend.videos', compact('videos'));
@@ -42,7 +87,21 @@ class FrontendsController extends Controller
 
     public function getVideosDetailSlug($slug) {
          $video = Videos::where('video_slug', $slug)->first();
-        return view('frontend.videos_detail', compact('video'));
+         $post_others = Posts::orderBy('created_at', 'desc')->limit(6)->get();
+        return view('frontend.videos_detail', compact('video', 'post_others'));
+    }
+
+    public function getVideosCategorySlug($slug) {
+        $cate = Categories::where('cate_slug', $slug)->first();
+        $videos = Videos::whereHas('categories', function($b) use($slug) {
+            $b->where('cate_slug', $slug);
+        })->orderBy('created_at', 'desc')->paginate(10);
+        return view('frontend.videos', compact('videos', 'cate'));
+    }
+
+    public function getVideosSearch(Request $request) {
+        $videos = Videos::where('video_name', 'like', '%'.$request->word.'%')->orderBy('created_at', 'desc')->get();
+        return view('frontend.videos', compact('videos'));
     }
 
     public function getCategorySlug($slug) {

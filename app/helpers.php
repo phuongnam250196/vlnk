@@ -64,3 +64,17 @@ function getYoutubeEmbedUrl($url){
     }
     return 'https://www.youtube.com/embed/'.$youtube_id ;
 }
+
+function listCatePost() {
+    $data = Categories::whereHas('posts', function($b) {
+        $b->whereNotNull('id');
+    })->get();
+    return $data;
+}
+
+function listCateVideo() {
+    $data = Categories::whereHas('videos', function($b) {
+        $b->whereNotNull('id');
+    })->get();
+    return $data;
+}
