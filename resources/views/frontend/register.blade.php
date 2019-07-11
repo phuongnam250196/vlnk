@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Đăng ký tài khoản')
+@section('description', 'Đăng ký tài khoản để có thể mua hàng một cách nhanh chóng và tiện lợi hơn')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('/register'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'Đăng ký, đăng nhập, lấy lại mật khẩu')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
         <div class="container">
@@ -11,10 +17,10 @@
                         <div class="tinymce">
                             <div class="woocommerce">
                                 <div class="u-columns col2-set" id="customer_login">
-                                    @if(session('message'))
-                                        <p class="alert alert-success">{{session('message')}}</p>
-                                    @endif
                                     <div class="u-column1 col-1">
+                                        @if(session('message'))
+                                            <p class="alert alert-success">{{session('message')}}</p>
+                                        @endif
                                         <h2>Đăng ký</h2>
                                         <form class="woocommerce-form woocommerce-form-login login" method="POST">
                                             <p class="form-row">

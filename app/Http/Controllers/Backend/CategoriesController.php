@@ -47,6 +47,14 @@ class CategoriesController extends Controller
                     $data2->cate_slug = str_slug($request->cate_name);
                     $data2->cate_content = $request->cate_content;
                     $data2->cate_parent = $request->cate_parent;
+                    if(!empty($request->cate_img) && $request->cate_img != "undefined"){
+                        $file =  $request->cate_img;
+                        $path = 'uploads/categories/';
+                        $modifiedFileName = time().'-'.$file->getClientOriginalName();
+                        if($file->move($path,$modifiedFileName)){
+                            $data2->cate_img = $path.$modifiedFileName;
+                        }
+                    }
                     if($data2->save()) {
                         $data = Categories::where('id', $data2->id)->with('nameCateParent')->first();
                     }
@@ -64,6 +72,14 @@ class CategoriesController extends Controller
                     $data2->cate_slug = str_slug($request->cate_name);
                     $data2->cate_content = $request->cate_content;
                     $data2->cate_parent = $request->cate_parent;
+                    if(!empty($request->cate_img) && $request->cate_img != "undefined"){
+                        $file =  $request->cate_img;
+                        $path = 'uploads/categories/';
+                        $modifiedFileName = time().'-'.$file->getClientOriginalName();
+                        if($file->move($path,$modifiedFileName)){
+                            $data2->cate_img = $path.$modifiedFileName;
+                        }
+                    }
                     if($data2->save()) {
                         $data = Categories::where('id', $request->id)->with('nameCateParent')->first();
                     }

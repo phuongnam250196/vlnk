@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Hệ thống đại lý')
+@section('description', 'Quản lý cũng như cho biết các đại lý đang liên kết với cơ sở')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('/agency'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'Liên hệ, đại lý, hệ thống đại lý, cửa hàng, sản phẩm')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
         <div class="container">

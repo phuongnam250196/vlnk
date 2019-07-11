@@ -19,7 +19,7 @@
             <!-- end row -->
            
             <div class="row">
-                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 col-xl-8">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7 col-xl-8">
                     <div class="card mb-3">
                         <div class="card-header">
                             <h3><i class="fa fa-sitemap"></i> Nhập thông tin sản phẩm</h3>
@@ -51,18 +51,36 @@
 										  	<div class="product_d_flex_title  align-self-center">Tiêu đề</div>
 										  	<div class="product_d_flex_input">
 												<input type="text" name="video_name" value="{{$data->video_name}}" class="form-control" placeholder="VD: Bán hàng online">
+												@if($errors->has('video_name'))
+                                                    <p class="help text-danger">{{ $errors->first('video_name') }}</p>
+                                                @endif
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Ảnh thumnail</div>
 										  	<div class="product_d_flex_input">
-												<input type="file" name="video_img" value="{{$data->video_img}}" class="form-control">
+												<input id="img" type="file" name="video_img" class="form-control" style="display: none" onchange="changeImg(this)" value="{{$data->video_img}}">
+		                                        <img id="avatar" class="thumbnail" src="{{url('/'.$data->video_img)}}" width="150">@if($errors->has('video_img'))
+                                                    <p class="help text-danger">{{ $errors->first('video_img') }}</p>
+                                                @endif
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Link video</div>
 										  	<div class="product_d_flex_input">
 												<input type="text" name="video_url" value="{{$data->video_url}}" class="form-control">
+												@if($errors->has('video_url'))
+                                                    <p class="help text-danger">{{ $errors->first('video_url') }}</p>
+                                                @endif
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Mô tả ngắn</div>
+										  	<div class="product_d_flex_input">
+												<textarea name="video_description" class="form-control" cols="30" rows="5">{{$data->video_description}}</textarea>
+												@if($errors->has('video_description'))
+                                                    <p class="help text-danger">{{ $errors->first('video_description') }}</p>
+                                                @endif
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
@@ -82,7 +100,7 @@
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center"></div>
 										  	<div class="product_d_flex_input">
-												<button class="btn btn-primary">Thêm mới</button>
+												<button class="btn btn-primary">Cập nhật</button>
 												<a href="{{url('admin/video')}}" class="btn btn-secondary">Hủy bỏ</a>
 										  	</div>
 										</div>
@@ -90,39 +108,54 @@
 							  		</form>
 							  	</div>
 							  	<div class="tab-pane container fade" id="product_tab_3">
-							  		<div class="d-flex product_d_flex">
-									  	<div class="product_d_flex_title  align-self-center">Title</div>
-									  	<div class="product_d_flex_input">
-											<input type="text" class="form-control">
-									  	</div>
-									</div>
-									<div class="d-flex product_d_flex">
-									  	<div class="product_d_flex_title  align-self-center">Description</div>
-									  	<div class="product_d_flex_input">
-											<input type="text" class="form-control">
-									  	</div>
-									</div>
-									<div class="d-flex product_d_flex">
-									  	<div class="product_d_flex_title  align-self-center">Image</div>
-									  	<div class="product_d_flex_input">
-											<input type="text" class="form-control">
-									  	</div>
-									</div>
-									<div class="d-flex product_d_flex">
-									  	<div class="product_d_flex_title  align-self-center">Url</div>
-									  	<div class="product_d_flex_input">
-											<input type="text" class="form-control">
-									  	</div>
-									</div>
-									<br>
-									<br>
-									
+							  		<form action="">
+							  			<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Tiêu đề</div>
+										  	<div class="product_d_flex_input">
+												<input type="text" class="form-control" value="{{!empty($seo->title)?$seo->title:''}}" name="title">
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Tác giả</div>
+										  	<div class="product_d_flex_input">
+												<input type="text" class="form-control" value="{{!empty($seo->author)?$seo->author:''}}" name="author">
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Từ khóa liên quan</div>
+										  	<div class="product_d_flex_input">
+												<input type="text" class="form-control" value="{{!empty($seo->keyword)?$seo->keyword:''}}" name="keywords">
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+											  	<div class="product_d_flex_title  align-self-center">Mô tả ngắn</div>
+											  	<div class="product_d_flex_input">
+													<textarea name="description" class="form-control" cols="30" rows="5">{{!empty($seo->description)?$seo->description:''}}</textarea>
+											  	</div>
+											</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Ảnh thump</div>
+										  	<div class="product_d_flex_input">
+												 <img class="thumbnail" src="@if(!empty($seo->image)) {{url('/'.$seo->image)}} @else # @endif" width="150">
+										  	</div>
+										</div>
+										<br>
+										<br>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center"></div>
+										  	<div class="product_d_flex_input">
+												<button class="btn btn-primary">Cập nhật</button>
+												<a href="{{url('admin/video')}}" class="btn btn-secondary">Hủy bỏ</a>
+										  	</div>
+										</div>
+										{{csrf_field()}}
+							  		</form>
 							  	</div>
 							</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 col-xl-4">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-4">
                     <div class="card mb-3">
                         <div class="card-header">
                             <h3><i class="fa fa-sitemap"></i> Chọn ảnh sản phẩm</h3>

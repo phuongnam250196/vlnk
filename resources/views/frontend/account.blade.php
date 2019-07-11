@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Đăng nhập')
+@section('description', 'Giúp người dùng có thể đăng nhập vào hệ thống')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('/account'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'Đăng ký, đăng nhập, lấy lại mật khẩu')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
         <div class="container">
@@ -13,16 +19,23 @@
                                 <div class="u-columns col2-set" id="customer_login">
                                     <div class="u-column1 col-1">
                                         <h2>Đăng nhập</h2>
-                                        <form class=" login" method="post">
+                                        <form class="login" method="post">
                                             <p class="form-row">
-                                                <label for="username">Tên tài khoản hoặc địa chỉ email&nbsp;<span class="required">*</span></label>
-                                                <input type="text" class="input-text" name="username" id="username" autocomplete="username" value="" /> </p>
+                                                <label>Tên tài khoản hoặc địa chỉ email&nbsp;<span class="required">*</span></label>
+                                                <input type="email" class="input-text" name="email" id="email" autocomplete="email" value="" /> 
+                                                @if($errors->has('email'))
+                                                    <p class="help text-danger">{{ $errors->first('email') }}</p>
+                                                @endif
+                                            </p>
                                             <p class="form-row">
                                                 <label for="password">Mật khẩu&nbsp;<span class="required">*</span></label>
                                                 <input class="input-text" type="password" name="password" id="password" autocomplete="current-password" />
+                                                @if($errors->has('password'))
+                                                    <p class="help text-danger">{{ $errors->first('password') }}</p>
+                                                @endif
                                             </p>
                                             <p class="form-row">
-                                                <input name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><strong>Ghi nhớ</strong></span>
+                                                <input name="remember" type="checkbox" id="remember" value="nho" /> <span><strong>Ghi nhớ</strong></span>
                                             </p>
                                             <p class="form-row">
                                                 <button type="submit" class="woocommerce-Button button" name="login" value="Đăng nhập">Đăng nhập</button>
@@ -31,6 +44,7 @@
                                                     <a href="{{url('/forgot')}}">Quên mật khẩu?</a>
                                                 </span>
                                             </p>
+                                            {{csrf_field()}}
                                         </form>
                                     </div>
                                 </div>

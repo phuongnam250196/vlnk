@@ -58,6 +58,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{$data->links()}}
                         </div>
                         <!-- end card-body -->
                     </div>

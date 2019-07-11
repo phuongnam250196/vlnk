@@ -40,7 +40,7 @@
                                     @foreach($data as $key=>$dat)
                                     <tr>
                                         <td>
-                                            <span style="color:red"><b>[Unread]</b></span> <a href="pro-contact-messages-details.html"><b>I want your help please</b></a>
+                                            <a href="pro-contact-messages-details.html"><b>Nội dung</b></a>
                                             <p>{{$dat->message}}</p>
                                         </td>
                                         <td>

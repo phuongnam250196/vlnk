@@ -1863,6 +1863,23 @@ jQuery(document).ready(function($) {
 //     });
 // });
 
+
+jQuery(document).ready(function($) {
+    function addView(id, type) {
+        $.ajax({
+            url: "http://localhost:8888/vlnk/public/view",
+            type: 'POST',
+            data: {
+                id:id,
+                'type':type
+            },
+            success: function(data) {
+                console.log('thanh cong')
+            }
+        });
+    }
+});
+
 (function($) {
     function new_map($el) {
         var $markers = $el.find('.marker');

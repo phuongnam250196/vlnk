@@ -9,16 +9,23 @@ use App\Posts;
 use App\Videos;
 use App\contacts;
 use App\Categories;
+use App\comments;
+use App\seos;
+use App\sliders;
 use App\User;
+use App\views;
 use Validator;
 use Illuminate\Support\Facades\Mail;
+use Auth;
+use Exception;
 
 class FrontendsController extends Controller
 {
     public function getHome() {
         $products = Products::orderBy('created_at', 'desc')->get();
         $posts = Posts::orderBy('created_at', 'desc')->get();
-    	return view('frontend.index', compact('products', 'posts'));
+        $sliders = sliders::where('status', 1)->orderBy('created_at', 'desc')->limit(5)->get();
+    	return view('frontend.index', compact('products', 'posts', 'sliders'));
     }
 
     public function getContact() {
@@ -50,71 +57,191 @@ class FrontendsController extends Controller
             $data->email = $request->email;
             $data->phone = $request->phone;
             $data->message = $request->message;
-            $data->save();
-            return back()->with('message', 'Bạn đã gửi tin yêu cầu thành công');
+            $data->ip = get_client_ip();
+            if($data->save()) {
+                try {
+                    Mail::send('emails.contact',['data'=> $data], function($m) use ($data) {
+                        $m->to($data->email)->subject(((!empty($data->name))?$data->name:$data->name).' đã gửi yêu cầu thành công');
+                    });
+                }catch(Exception $e){
+                    return back()->with('message', 'Gửi yêu cầu thất bại! Kiểm tra lại mang!');
+                }
+            }
         }
     }
 
     public function getNews() {
-        $posts = Posts::orderBy('created_at', 'desc')->paginate(10);
+        $posts = Posts::orderBy('created_at', 'desc')->paginate(9);
    		return view('frontend.news', compact('posts'));
     }
 
     public function getNewsDetailSlug($slug) {
         $post = Posts::where('post_slug', $slug)->first();
         $post_others = Posts::where('id', '!=', $post->id)->orderBy('created_at', 'desc')->limit(6)->get();
+        $comments = comments::where('news_id', $post->id)->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
         // dd($post_others);
-        return view('frontend.news_detail', compact('post', 'post_others'));
+        $seopost = seos::where('type', 'post')->where('p_id', $post->id)->first();
+        return view('frontend.news_detail', compact('post', 'post_others', 'comments', 'seopost'));
     }
 
     public function getNewsDetailCategorySlug($slug) {
         $cate = Categories::where('cate_slug', $slug)->first();
         $posts = Posts::whereHas('categories', function($b) use($slug) {
             $b->where('cate_slug', $slug);
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('created_at', 'desc')->paginate(9);
         return view('frontend.news', compact('posts', 'cate'));
     }
 
     public function getNewsSearch(Request $request) {
-        $posts = Posts::where('post_name', 'like', '%'.$request->word.'%')->orderBy('created_at', 'desc')->paginate(10);
+        $posts = Posts::where('post_name', 'like', '%'.$request->word.'%')->orderBy('created_at', 'desc')->paginate(9);
         return view('frontend.news', compact('posts'));
     }
 
+    public function newsReviews(Request $request) {
+        $rules = [
+            'email' => 'required | email | max:255',
+            'name' => 'required | max:255',
+            'content' => 'required',
+            'star' => 'required',
+        ];
+        $messages = [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'name.max' => 'Không được vượt quá 255 ký tự',
+            'email.max' => 'Không được vượt quá 255 ký tự',
+            'name.required' => 'Họ tên không được để trống',
+            'content.required' => 'Nội dung không được để trống',
+            'star.required' => 'Bạn chưa cho đánh giá',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            // dd($validator->errors());
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+        // dd($request->all());
+            $data = new comments;
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->star = $request->star;
+            $data->content = $request->content;
+            $data->news_id = $request->news_id;
+            $data->status = 1;
+            $data->save();
+            return back()->with('message', 'Bạn đã đánh giá tin tức thành công!');
+        }
+    }
+
     public function getVideos() {
-        $videos = Videos::orderBy('created_at', 'desc')->get();
+        $videos = Videos::orderBy('created_at', 'desc')->paginate(18);
         return view('frontend.videos', compact('videos'));
     }
 
     public function getVideosDetailSlug($slug) {
-         $video = Videos::where('video_slug', $slug)->first();
-         $post_others = Posts::orderBy('created_at', 'desc')->limit(6)->get();
-        return view('frontend.videos_detail', compact('video', 'post_others'));
+        $video = Videos::where('video_slug', $slug)->first();
+        $post_others = Posts::orderBy('created_at', 'desc')->limit(6)->get();
+        $comments = comments::where('videos_id', $video->id)->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
+        $seopost = seos::where('type', 'video')->where('p_id', $video->id)->first();
+        $view = views::where('other_id', $video->id)->where('type', 'videos')->first();
+        return view('frontend.videos_detail', compact('video', 'post_others', 'comments', 'seopost', 'view'));
     }
 
     public function getVideosCategorySlug($slug) {
         $cate = Categories::where('cate_slug', $slug)->first();
         $videos = Videos::whereHas('categories', function($b) use($slug) {
             $b->where('cate_slug', $slug);
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('created_at', 'desc')->paginate(18);
         return view('frontend.videos', compact('videos', 'cate'));
     }
 
     public function getVideosSearch(Request $request) {
-        $videos = Videos::where('video_name', 'like', '%'.$request->word.'%')->orderBy('created_at', 'desc')->get();
+        $videos = Videos::where('video_name', 'like', '%'.$request->word.'%')->orderBy('created_at', 'desc')->paginate(18);
         return view('frontend.videos', compact('videos'));
     }
 
+    public function videosReviews(Request $request) {
+        $rules = [
+            'email' => 'required | email | max:255',
+            'name' => 'required | max:255',
+            'content' => 'required',
+            'star' => 'required',
+        ];
+        $messages = [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'name.max' => 'Không được vượt quá 255 ký tự',
+            'email.max' => 'Không được vượt quá 255 ký tự',
+            'name.required' => 'Họ tên không được để trống',
+            'content.required' => 'Nội dung không được để trống',
+            'star.required' => 'Bạn chưa cho đánh giá',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            // dd($validator->errors());
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+        // dd($request->all());
+            $data = new comments;
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->star = $request->star;
+            $data->content = $request->content;
+            $data->videos_id = $request->videos_id;
+            $data->status = 1;
+            $data->save();
+            return back()->with('message', 'Bạn đã đánh giá video thành công!');
+        }
+    }
+
     public function getCategorySlug($slug) {
-        $data = Categories::where('cate_slug', $slug)->first()->products;
+        $cate = Categories::where('cate_slug', $slug)->first();
+        $data = Products::whereHas('categories', function($b) use($slug) {
+            $b->where('cate_slug', $slug);
+        })->orderBy('created_at', 'desc')->paginate(24);
         // dd($data);
-        return view('frontend.category', compact('data'));
+        return view('frontend.category', compact('data', 'cate'));
     }
 
     public function getProductDetail($slug) {
         $product = Products::where('prod_slug', $slug)->first();
-   		return view('frontend.product_detail', compact('product'));
+        $comments = comments::where('prod_id', $product->id)->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
+        $seopost = seos::where('type', 'product')->where('p_id', $product->id)->first();
+        // dd($comments);
+   		return view('frontend.product_detail', compact('product', 'comments', 'seopost'));
     }
 
+    public function productReviews(Request $request) {
+        $rules = [
+            'email' => 'required | email | max:255',
+            'name' => 'required | max:255',
+            'content' => 'required',
+            'star' => 'required',
+        ];
+        $messages = [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'name.max' => 'Không được vượt quá 255 ký tự',
+            'email.max' => 'Không được vượt quá 255 ký tự',
+            'name.required' => 'Họ tên không được để trống',
+            'content.required' => 'Nội dung không được để trống',
+            'star.required' => 'Bạn chưa cho đánh giá',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            // dd($validator->errors());
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+        // dd($request->all());
+            $data = new comments;
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->star = $request->star;
+            $data->content = $request->content;
+            $data->prod_id = $request->prod_id;
+            $data->status = 1;
+            $data->save();
+            return back()->with('message', 'Bạn đã đánh giá sản phẩm thành công!');
+        }
+    }
 
     public function getAgency() {
     	return view('frontend.agency');
@@ -131,6 +258,43 @@ class FrontendsController extends Controller
 
     public function getAccount() {
     	return view('frontend.account');
+    }
+    public function postAccount(Request $request) {
+        $rules = [
+            'email'=>'required|email|:6|max:255',
+            'password'=>'required|min:6|max:255'
+        ];
+        $messages = [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'email.max' => 'Không được vượt quá 255 ký tự',
+            'email.min' => 'Không được nhỏ quá 5 ký tự',
+            'password.required' => 'Mật khẩu không được để trống',
+            'password.max' => 'Mật khẩu không được vượt quá 255 ký tự',
+            'password.min' => 'Mật khẩu không được nhỏ hơn 5 ký tự',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->passes()) {
+            $arr = [
+                'email'=>$request->email, 
+                'password'=>$request->password, 
+                'level'=>0,
+            ];
+            if($request->remember = 'nho') {
+                $remember = true;
+            } else {
+                $remember = false;
+            }
+            if(Auth::attempt($arr, $remember)) {
+                // return redirect()->intended('admin');
+                return back();
+            } else {
+                return back()->withInput()->with('error', 'Tài khoản hoặc mật khẩu không hợp lệ!!!!');
+            }
+        } else {
+            return view('frontend.account', ['errors'=>$validator->errors()->all()]);
+        }
+        
     }
 
     /* Đăng ký */
@@ -157,6 +321,7 @@ class FrontendsController extends Controller
             $data = new User;
             $data->email = $request->email;
             $data->password = bcrypt($request->password);
+            $data->level = 0;
             $data->save();
         }
         return back()->with('message', 'Tạo tài khoản thành công!');
@@ -169,5 +334,34 @@ class FrontendsController extends Controller
 
     public function getCarts() {
         return view('frontend.shopcart');
+    }
+
+    public function postView(Request $request) {
+        // return $request->all();
+        $rules = [
+            'other_id' => 'required',
+            'type' => 'required',
+        ];
+        $messages = [
+            'other_id.required' => 'Id không được để trống',
+            'type.required' => 'Loại không được để trống',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            $data = views::where('other_id', $request->other_id)->where('type', $request->type)->first();
+            if(!empty($data)) {
+                $data->count +=1;
+                $data->save();
+            } else {
+                $data = new views;
+                $data->other_id = $request->other_id;
+                $data->type = $request->type;
+                $data->count = 1;
+                $data->save();
+            }
+            return response()->json(compact('data'));
+        }
     }
 }

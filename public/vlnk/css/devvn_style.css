@@ -1398,14 +1398,14 @@ li.rcp_svl_has_thumb .rcp_svl_content {
     background: 0 0;
     font-weight: 700;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
 }
 .woocommerce ul.products li.product .price del {
     opacity: 1;
     display: inline-block;
     color: #898989;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 13px;
 }
 .shop_loop_box {
     position: relative;

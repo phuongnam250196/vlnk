@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Liên hệ')
+@section('description', 'Giúp khách hàng có thể gửi yêu cầu, cũng như cần hỗ trợ từ admin')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('/contact'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'Liên hệ, hỗ trợ')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
 		<div class="container">
@@ -74,11 +80,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="maps_full">
+						{{-- <div class="maps_full">
 							<div class="acf-map">
 								<div class="marker" data-lat="21.010654" data-lng="105.82247440000003"></div>
 							</div>
-						</div>
+						</div> --}}
 					</div>
 				</div>
 			</div>

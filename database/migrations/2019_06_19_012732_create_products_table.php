@@ -29,6 +29,8 @@ class CreateProductsTable extends Migration
             $table->integer('cate_id')->unsigned()->nullable();
             $table->integer('rate_id')->unsigned()->nullable();
             $table->integer('tag_id')->unsigned()->nullable();
+            $table->integer('hot')->unsigned()->nullable();
+            $table->integer('installment')->unsigned()->nullable();
             $table->timestamps();
         });
     }

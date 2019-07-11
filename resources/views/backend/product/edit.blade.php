@@ -78,7 +78,7 @@
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Giảm giá</div>
 										  	<div class="product_d_flex_input">
-												<input type="text" class="form-control" name="prod_sale" value="{{old('prod_sale')}}" placeholder="VD: Giảm 12%">
+												<input type="number" class="form-control" name="prod_sale" value="{{old('prod_sale')}}" placeholder="VD: 12 - Giảm 12%">
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
@@ -104,6 +104,19 @@
 												<input type="checkbox" name="prod_view" value="1">
 										  	</div>
 										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Hot</div>
+										  	<div class="product_d_flex_input">
+												<input type="checkbox" name="hot" value="1">
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Trả góp</div>
+										  	<div class="product_d_flex_input">
+												<input type="checkbox" name="	installment" value="1">
+										  	</div>
+										</div>
+										
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Loại sản phẩm</div>
 										  	<div class="product_d_flex_input">

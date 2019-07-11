@@ -1,10 +1,28 @@
 @extends('frontend.layout')
 @if(Request::is('videos/category') || Request::is('videos/category/*'))
     @section('title', 'Videos theo mục: '.$cate->cate_name)
+    @section('description', 'Bạn đang xem danh sách sản phẩm theo danh mục: '.$cate->cate_name)
+    @section('image', url('/'.infoOther()->logo))
+    @section('url', url('/videos/category/'.$cate->cate_name))
+    @section('sitename', $_SERVER['REQUEST_URI'])
+    @section('keywords', $cate->cate_name)
+    @section('author', $_SERVER['HTTP_HOST'])
 @elseif(Request::is('videos/search') || Request::is('videos/search/*'))
     @section('title', 'Videos tìm kiếm: '.$_GET['word'])
+    @section('description', 'Bạn đang xem danh sách video theo danh mục tìm kiếm: '.$_GET['word'])
+    @section('image', url('/'.infoOther()->logo))
+    @section('url', url('videos/search?word='.$_GET['word']))
+    @section('sitename', $_SERVER['REQUEST_URI'])
+    @section('keywords', $_GET['word'])
+    @section('author', $_SERVER['HTTP_HOST'])
 @else
     @section('title', 'Videos')
+    @section('description', 'Bạn đang xem danh sách videos')
+    @section('image', url('/'.infoOther()->logo))
+    @section('url', url('videos'))
+    @section('sitename', $_SERVER['REQUEST_URI'])
+    @section('keywords', 'videos')
+    @section('author', $_SERVER['HTTP_HOST'])
 @endif
 @section('main')
 	<div class="main_body">
@@ -32,7 +50,7 @@
                             <section id="latest-posts" class="row row-padding-15 clearfix">
                                 @foreach($videos as $key=>$video)
                                     <article class="videos-box col-sm-4 col-xs-6 has_thumbnail">
-                                        <a href="{{url('/videos/'.$video->video_slug)}}" title="{{$video->video_name}}">
+                                        <a class="videos_id" data-id="{{$video->id}}" href="{{url('/videos/'.$video->video_slug)}}" title="{{$video->video_name}}">
                                             <div class="video-thumb" style="background: url({{url('/'.$video->video_img)}}) no-repeat center center;">
                                                 <img width="300" height="274" src="{{url(''.$video->video_img)}}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="sjcam sj4000 air">
                                             </div>
@@ -44,11 +62,7 @@
                                     </article>
                                 @endforeach
                             </section>
-                            <div class="paginate_links"><span aria-current="page" class="page-numbers current">1</span>
-                                <a class="page-numbers" href="https://tech360.vn/videos/page/2">2</a>
-                                <a class="page-numbers" href="https://tech360.vn/videos/page/3">3</a>
-                                <a class="page-numbers" href="https://tech360.vn/videos/page/4">4</a>
-                                <a class="next page-numbers" href="https://tech360.vn/videos/page/2">Tiếp</a></div>
+                            {{$videos->links('vendor.pagination.simple-news')}}
                         </div>
                     </main>
                 </div>

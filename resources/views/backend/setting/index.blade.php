@@ -8,7 +8,7 @@
                     <div class="breadcrumb-holder">
                         <h1 class="main-title float-left">Cài đặt</h1>
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item"><a href="{{url('admin')}}">Trang chủ</a></li>
                             <li class="breadcrumb-item active">Cài đặt</li>
                         </ol>
                         <div class="clearfix"></div>
@@ -16,114 +16,82 @@
                 </div>
             </div>
             <!-- end row -->
-            <div class="alert alert-primary" role="alert">
-                <h4 class="alert-heading">Important!</h4>
-                <p>This section is available in Pike Admin PRO version.</p>
+            @if(session('message'))
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Important!</h4>
+                    <p>{{session('message')}}</p>
+                </div>
+            @endif
+             <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <a href="{{url('admin/setting/other')}}" class="btn btn-primary">Cấu hình khác</a>
+                    <a href="{{url('admin/setting/slider')}}" class="btn btn-primary">Slider</a>
+                </div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card mb-3">
-                        <form action="#" metthod="post" enctype="multipart/form-data">
+                        <form action="{{url('admin/setting/seo_index')}}" method="POST" enctype="multipart/form-data">
                             <div class="card-header">
-                                <h3><i class="fa fa-file-text-o"></i> General settings</h3>
+                                <h3><i class="fa fa-file-text-o"></i> Cấu hình SEO thông tin website</h3>
                             </div>
                             <!-- end card-header -->
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Site Title</label>
-                                    <input class="form-control" name="cfg_site_title" type="text" value="Pike PHP">
+                                    <input class="form-control" name="site_title" type="text" placeholder="VD: Vật liệu nha khoa" @if(!empty($seo)) value="{{$seo->site_title}}" @else value="{{old('site_title')}}" @endif>
+                                </div>
+                                <div class="form-group">
+                                    <label>SEO meta image</label>
+                                    <div class="clearfix"></div>
+                                    <input id="img" type="file" name="image" class="form-control" style="display: none" onchange="changeImg(this)" @if(!empty($seo)) value="{{$seo->image}}" @else value="{{old('image')}}" @endif>
+                                    @if(!empty($seo->image))
+                                        <img id="avatar" class="thumbnail" src="{{url('/'.$seo->image)}}" width="150">
+                                    @else
+                                        <img id="avatar" class="thumbnail" src="{{url('/images/new_seo-10-512.png')}}" width="150">
+                                    @endif
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label>SEO meta title</label>
-                                        <input type="text" class="form-control" name="cfg_site_meta_title" value="Pike PHP - Web Development">
+                                        <input type="text" class="form-control" name="title" placeholder="VD: Vật liệu nha khoa - Giá rẻ" @if(!empty($seo)) value="{{$seo->title}}" @else value="{{old('title')}}" @endif>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>SEO meta description</label>
-                                        <input type="text" class="form-control" name="cfg_site_meta_description" value="Pike Admin - Free Bootstrap 4 Admin Theme">
+                                        <label>SEO meta site name</label>
+                                        <input type="text" class="form-control" name="site_name" placeholder="VD: vatlieunhakhoa" @if(!empty($seo)) value="{{$seo->site_name}}" @else value="{{old('site_name')}}" @endif>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label>SEO meta keywords</label>
-                                        <input type="text" class="form-control" name="cfg_site_meta_keywords" value="pike admin, bootstrap 4, free theme, free template">
+                                        <input type="text" class="form-control" name="keyword" placeholder="VD: vật liệu, nha khoa, thiết bị,..." @if(!empty($seo)) value="{{$seo->keyword}}" @else value="{{old('keyword')}}" @endif>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>SEO meta author</label>
-                                        <input type="text" class="form-control" name="cfg_site_meta_author" value="Pike Web Development">
+                                        <input type="text" class="form-control" name="author" placeholder="VD: TPN" @if(!empty($seo)) value="{{$seo->author}}" @else value="{{old('author')}}" @endif>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Homepage content</label>
-                                    <textarea rows="3" class="form-control editor" name="cfg_homepage_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget placerat purus, et luctus velit. Donec eget risus et nunc fringilla sagittis non vel justo. Curabitur aliquet rhoncus magna, id pretium mi faucibus in. Phasellus venenatis erat quam, vitae tincidunt libero facilisis ac.</textarea>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>SEO meta url</label>
+                                        <input type="text" class="form-control" name="url" placeholder="VD: https://vlnk.com.vn" @if(!empty($seo)) value="{{$seo->url}}" @else value="{{old('url')}}" @endif>
+                                    </div>
+
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-primary">Change settings</button>
+                                    <label>SEO meta description</label>
+                                    <textarea rows="3" class="form-control editor" name="description" placeholder="VD: Đem lại những sản phẩm chất lượng cũng như tốt nhất cho đến cho bạn và khách hàng">@if(!empty($seo)) {{$seo->description}} @else {{old('description')}} @endif</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                    <a href="{{url('admin')}}" class="btn btn-secondary">Huỷ bỏ</a>
                                 </div>
                             </div>
-                            <!-- end card-body -->
+                            {{csrf_field()}}
                         </form>
                     </div>
-                    <!-- end card -->
-
-                    <div class="card mb-3">
-                            <form action="#" metthod="post" enctype="multipart/form-data">
-                                <div class="card-header">
-                                    <h3><i class="fa fa-file-text-o"></i> General settings</h3>
-                                </div>
-                                <!-- end card-header -->
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label>Footer HTML content</label>
-                                        <textarea rows="3" class="form-control editor" name="cfg_footer_content">(c) Copyright 2017 Pike Web Development</textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Analytics code</label>
-                                        <textarea rows="4" class="form-control" name="cfg_analytics_code"></textarea>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-2">
-                                            <label>Facebook page</label>
-                                            <input type="text" class="form-control" name="cfg_facebook_page" value="https://www.facebook.com/pikeweb">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label>Twitter page</label>
-                                            <input type="text" class="form-control" name="cfg_twitter_page" value="">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label>Google Maps API KEY</label>
-                                            <input type="password" class="form-control" name="cfg_google_maps_api_key" value="xxxxxxxxxxxxxx>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Change logo image</label><br />
-                                        <input type="file" name="image">
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary">Change settings</button>
-                                    </div>
-                                </div>
-                                <!-- end card-body -->
-                            </form>
-                        </div>
-                        <!-- end card -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h3><i class="fa fa-envelope-o"></i> Test email settings</h3>
-                            Send a test email using your settings
-                        </div>
-                        <!-- end card-header -->
-                        <div class="card-body">
-                            <form action="#" method="post">
-                                <div class="form-group form-inline">
-                                    <input type="text" class="form-control" name="test_email" placeholder="Input email">
-                                    <button type="button" class="btn btn-primary">Send test email</button>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- end card-body -->
-                    </div>
-                    <!-- end card -->
+                    <!-- end card -->                   
                 </div>
                 <!-- end col -->
             </div>

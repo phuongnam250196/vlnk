@@ -48,7 +48,7 @@
                                         <td>{{++$key}}</td>
                                         <td><img src="{{url('/'.$dat->video_img)}}" width="60" alt=""></td>
                                         <td>{{$dat->video_name}}</td>
-                                        <td><div class="post_content_x">{!! strip_tags(preg_replace("/<img[^>]+\>/i", "(image) ", $dat->video_content)) !!}</div></td>
+                                        <td><div class="post_content_x">{!! $dat->video_description !!}</div></td>
                                         <td>
                                             <a href="{{url('admin/video/update/'.$dat->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                             
@@ -61,6 +61,7 @@
                         </div>
                         <!-- end card-body -->
                     </div>
+                    {{$data->links()}}
                     <!-- end card -->
                 </div>
                 <!-- end col -->

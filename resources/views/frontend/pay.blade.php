@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Thanh toán')
+@section('description', 'Thực hiện và hoàn thành theo các bước để đặt hàng.')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('/pay'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'pay')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
         <div class="container">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Products;
 use App\Categories;
+use App\seos;
 use Validator;
 
 class ProductsController extends Controller
@@ -37,12 +38,14 @@ class ProductsController extends Controller
             $data->prod_guarantee = $request->prod_guarantee;
             $data->prod_sale = $request->prod_sale;
             $data->prod_short_description = $request->prod_short_description;
+            $data->prod_description = $request->prod_description;
             $data->prod_content = $request->prod_content;
             $data->prod_amount = $request->prod_amount;
             $data->prod_view = $request->prod_view;
             $data->cate_id = $request->cate_id;
             $data->rate_id = $request->rate_id;
-            $data->prod_gallery = $request->prod_gallery;
+            $data->hot = $request->hot;
+            $data->installment = $request->installment;
             if($data->save()) {
                 $data->prod_name = $request->prod_name;
                 $check = Products::where('prod_name', $request->prod_name)->first();
@@ -59,7 +62,32 @@ class ProductsController extends Controller
                         $data->prod_img = $path.$modifiedFileName;
                     }
                 }
+                // dd($request->prod_gallery);
+                if($files=$request->file('prod_gallery')){
+                    foreach($files as $file){
+                        $path = 'uploads/products/gallery/'.$data->id.'/';
+                        $name=time().'_'.$file->getClientOriginalName();
+                        if($file->move($path,$name)) {
+                            $name = $path.$name;
+                            $prod_gallery[]=$name;                    
+                        }
+
+                    }
+                }
+                $data->prod_gallery = implode("|",$prod_gallery);
                 $data->save();
+                $seo = new seos;
+                $seo->title = $data->prod_name;
+                $seo->description = cutString($request->prod_description, 255);
+                $seo->author = $_SERVER['HTTP_HOST'];
+                $seo->keyword = $data->prod_name;
+                $seo->url = url('/products/'.$data->prod_slug);
+                $seo->image = $data->prod_img;
+                // $seo->site_name = $_SERVER['REQUEST_URI'];
+                $seo->type = 'product';
+                $seo->p_id = $data->id;
+                $seo->status = 0;
+                $seo->save();
             }
             // dd($data);
             return redirect()->intended('admin/product')->with('message', 'Thêm mới sản phẩm thành công!');
@@ -69,7 +97,8 @@ class ProductsController extends Controller
     public function getUpdateProduct($id) {
         $data = Products::find($id);
         $category = Categories::orderBy('created_at', 'desc')->get();
-        return view('backend.product.update', compact('data', 'category'));
+        $seo = seos::where('type', 'product')->where('p_id', $id)->first();
+        return view('backend.product.update', compact('data', 'category', 'seo'));
     }
 
     public function postUpdateProduct(Request $request, $id) {
@@ -90,12 +119,14 @@ class ProductsController extends Controller
             $data->prod_guarantee = $request->prod_guarantee;
             $data->prod_sale = $request->prod_sale;
             $data->prod_short_description = $request->prod_short_description;
+            $data->prod_description = $request->prod_description;
             $data->prod_content = $request->prod_content;
             $data->prod_amount = $request->prod_amount;
             $data->prod_view = $request->prod_view;
             $data->cate_id = $request->cate_id;
             $data->rate_id = $request->rate_id;
-            $data->prod_gallery = $request->prod_gallery;
+            $data->hot = $request->hot;
+            $data->installment = $request->installment;
             $check = Products::where('prod_name', $request->prod_name)->first();
             if(!empty($check)) {
                 $data->prod_slug = str_slug($request->prod_name.'-'.$data->id);
@@ -111,7 +142,44 @@ class ProductsController extends Controller
                         $data->prod_img = $path.$modifiedFileName;
                     }
                 }
+                if($files=$request->file('prod_gallery')){
+                    foreach($files as $file){
+                        $path = 'uploads/products/gallery/'.$data->id.'/';
+                        $name=time().'_'.$file->getClientOriginalName();
+                        if($file->move($path,$name)) {
+                            $name = $path.$name;
+                            $prod_gallery[]=$name;                    
+                        }
+
+                    }
+                }
+                $data->prod_gallery = implode("|",$prod_gallery);
                 $data->save();
+                
+                $seo = seos::where('type', 'product')->where('p_id', $data->id)->where('status', 0)->first();
+                if(!empty($seo)) {
+                    $seo->title = $data->prod_name;
+                    $seo->description = cutString($request->prod_description, 255);
+                    $seo->author = $_SERVER['HTTP_HOST'];
+                    $seo->keyword = $data->prod_name;
+                    $seo->url = url('/products/'.$data->prod_slug);
+                    $seo->image = $data->prod_img;
+                    $seo->site_name = $_SERVER['REQUEST_URI'];
+                    $seo->save();
+                } else {
+                    $seo = new seos;
+                    $seo->title = $data->prod_name;
+                    $seo->description = cutString($request->prod_description, 255);
+                    $seo->author = $_SERVER['HTTP_HOST'];
+                    $seo->keyword = $data->prod_name;
+                    $seo->url = url('/products/'.$data->prod_slug);
+                    $seo->image = $data->prod_img;
+                    // $seo->site_name = $_SERVER['REQUEST_URI'];
+                    $seo->type = 'product';
+                    $seo->p_id = $data->id;
+                    $seo->status = 0;
+                    $seo->save();
+                }
             }
             // dd($data);
             return redirect()->intended('admin/product')->with('message', 'Cập nhật sản phẩm thành công!');
@@ -143,7 +211,14 @@ class ProductsController extends Controller
     }
 
     public function postDeleteProducts(Request $request) {
-        $data = Products::find($request->id)->delete();
+        $data = Products::find($request->id);
+        if(!empty($data)){
+            $file = $data->prod_img;
+            if(file_exists($file)){
+                unlink($file);
+            }
+            $data = $data->delete();
+        }
         return response()->json($data);
     }
 }

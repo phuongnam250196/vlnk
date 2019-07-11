@@ -1,33 +1,35 @@
 @extends('frontend.layout')
-@section('title', $video->video_name)
+@section('title', $seopost->title)
+@section('description', $seopost->description)
+@section('image', url('/'.$seopost->image))
+@section('url', $seopost->url)
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', $seopost->keywords)
+@section('author', $seopost->author)
 @section('main')
 	<div class="main_body">
         <div class="container">
             <div class="row row-padding-15">
                 <div class="main_container col-md-9 col-sm-9 col-xs-12">
                     <main id="main" class="site-main" role="main">
-                        <div class="breadcrumb"><span><span><a href="{{url('/')}}">Trang chủ</a> / <span><a href="https://tech360.vn/tin-tuc">Video</a> / <span class="breadcrumb_last" aria-current="page">{{$video->video_name}}</span></span></span></span></div>
+                        <div class="breadcrumb"><span><span><a href="{{url('/')}}">Trang chủ</a> / <span><a href="{{url('videos')}}">Video</a> / <span class="breadcrumb_last" aria-current="page">{{$video->video_name}}</span></span></span></span></div>
                         <div class="page_content">
                             <header>
                                 <h1 class="title-page">{{$video->video_name}}</h1>
                                 <div class="post-info">
                                     <span class="thetime updated"><i class="fa fa-clock-o"></i> <span>{{date_format($video->created_at, 'd/m/Y')}}</span></span>
                                     <span class="post_count"><i class="fa fa-eye"></i> <span>
-                                            <p class="bawpvc-ajax-counter" data-id="9087">8 lượt xem</p>
+                                            <p class="bawpvc-ajax-counter" data-id="9087">{{$view->count}} lượt xem</p>
                                         </span></span>
                                 </div>
                             </header>
                             <div class="tinymce">
                                 {!! $video->video_content !!}
-                                <iframe width="701" height="394" src="{{getYoutubeEmbedUrl($video->video_url)}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <iframe width="100%" height="394" src="{{getYoutubeEmbedUrl($video->video_url)}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
                             <ul class="social_list">
                                 <li class="facebook_like">
-                                    <div class="fb-like fb_iframe_widget" data-href="https://tech360.vn/may-chieu-lcd-va-may-chieu-led-co-gi-khac-khac-biet" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=&amp;container_width=0&amp;href=https%3A%2F%2Ftech360.vn%2Fmay-chieu-lcd-va-may-chieu-led-co-gi-khac-khac-biet&amp;layout=button_count&amp;locale=vi_VN&amp;sdk=joey&amp;share=true&amp;show_faces=false&amp;size=small"><span style="vertical-align: bottom; width: 122px; height: 20px;"><iframe name="f2d14f7eb47219" width="1000px" height="1000px" title="fb:like Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="https://www.facebook.com/v2.8/plugins/like.php?action=like&amp;app_id=&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D44%23cb%3Df1f620fa57b68a4%26domain%3Dtech360.vn%26origin%3Dhttps%253A%252F%252Ftech360.vn%252Ff26c748432543e4%26relation%3Dparent.parent&amp;container_width=0&amp;href=https%3A%2F%2Ftech360.vn%2Fmay-chieu-lcd-va-may-chieu-led-co-gi-khac-khac-biet&amp;layout=button_count&amp;locale=vi_VN&amp;sdk=joey&amp;share=true&amp;show_faces=false&amp;size=small" style="border: none; visibility: visible; width: 122px; height: 20px;" class=""></iframe></span></div>
-                                </li>
-                                <li class="google_shared">
-                                    <div id="___plusone_0" style="position: absolute; width: 450px; left: -10000px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position:absolute;top:-10000px;width:450px;margin:0px;border-style:none" tabindex="0" vspace="0" width="100%" id="I0_1561368372574" name="I0_1561368372574" src="https://apis.google.com/u/0/se/0/_/+1/fastbutton?usegapi=1&amp;size=medium&amp;origin=https%3A%2F%2Ftech360.vn&amp;url=https%3A%2F%2Ftech360.vn%2Fmay-chieu-lcd-va-may-chieu-led-co-gi-khac-khac-biet&amp;gsrc=3p&amp;ic=1&amp;jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en.svts2UWTv5s.O%2Fam%3DwQE%2Fd%3D1%2Frs%3DAGLTcCMPISf2gMkNjEKeqAt9c7-fMEjAIg%2Fm%3D__features__#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled%2Cdrefresh%2Cerefresh%2Conload&amp;id=I0_1561368372574&amp;_gfid=I0_1561368372574&amp;parent=https%3A%2F%2Ftech360.vn&amp;pfname=&amp;rpctoken=62004344" data-gapiattached="true"></iframe></div>
-                                    <div class="g-plusone" data-size="medium" data-gapiscan="true" data-onload="true" data-gapistub="true"></div>
+                                   <div class="fb-like" data-href="{{url('video/'.$video->video_slug)}}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
                                 </li>
                             </ul>
                             <div class="post_navigation">
@@ -46,7 +48,7 @@
                                 <div class="row row-padding-15">
                                     @foreach($post_others as $key=>$post)
                                         <div class="col-sm-6 col-xs-12 margin-b-15">
-                                            <a href="{{url('/news/'.$post->post_slug)}}" title="{{$post->post_name}}">
+                                            <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}" title="{{$post->post_name}}">
                                                 <img width="300" height="300" src="{{url('/'.$post->post_img)}}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="{{$post->post_name}}"> {{$post->post_name}} </a>
                                             <div class="post-info">
                                                 <span class="thetime updated"><i class="fa fa-clock-o"></i> <span>{{date_format($post->created_at, 'd/m/Y')}}</span></span>
@@ -55,46 +57,139 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="comment_face">
-                                <div class="section_cvp_title margin-b-15">
-                                    <h2>Bình luận</h2>
-                                </div>
-                                <div id="comments" class="comments-area">
-                                    <span class="title_comment">Bình luận của bạn</span>
-                                    <div class="kk-star-ratings  top-left lft" data-id="9087">
-                                        <div class="kksr-stars kksr-star gray">
-                                            <div class="kksr-fuel kksr-star yellow" style="width:0%;"></div>
-                                            <!-- kksr-fuel --><a href="#1"></a><a href="#2"></a><a href="#3"></a><a href="#4"></a><a href="#5"></a>
-                                        </div>
-                                        <!-- kksr-stars -->
-                                        <div class="kksr-legend">Đánh giá</div>
-                                        <!-- kksr-legend -->
+                            <br>
+                            <div class="row row-padding-15">
+                                <div class="col-xs-12 product-review-left">
+                                    <div class="section_cvp_title margin-b-15">
+                                        <h2>Đánh giá video</h2>
                                     </div>
-                                    <!-- kk-star-ratings -->
-                                    <br clear="both">
-                                    <div id="formcmmaxweb">
-                                        <div class="cancel-comment-reply">
-                                            <small><a rel="nofollow" id="cancel-comment-reply-link" href="/may-chieu-lcd-va-may-chieu-led-co-gi-khac-khac-biet#respond" style="display:none;">Nhấp chuột vào đây để hủy trả lời.</a></small>
+                                    <div id="reviews" class="woocommerce-Reviews">
+                                        <div id="comments">
+                                            @if(!empty($comments))
+                                            <h2 class="woocommerce-Reviews-title">
+                                                {{count($comments)}} đánh giá cho <span>{{$video->video_name}}</span> </h2>
+                                            <ol class="commentlist">
+                                                @foreach($comments as $key=>$comment)
+                                                <li class="review even thread-even">
+                                                    <div class="comment_container">
+                                                        <img alt="" src="{{url('vlnk/images/review_user.png')}}" class="avatar avatar-60 photo" height="60" width="60">
+                                                        <div class="comment-text">
+                                                            <div class="star-rating">
+                                                                @for($i=0;$i<5;$i++)
+                                                                    @if($i < $comment->star)
+                                                                        <i class="fa fa-star" style="color:#FF912C;"></i>
+                                                                    @else
+                                                                        <i class="fa fa-star"></i>
+                                                                    @endif
+                                                                @endfor
+                                                            </div>
+                                                            <p class="meta">
+                                                                <strong class="woocommerce-review__author">{{$comment->name}} </strong>
+                                                                <span class="woocommerce-review__dash">–</span> <time class="woocommerce-review__published-date" datetime="{{$comment->created_at}}">{{date_format($comment->created_at, 'd/m/Y')}}</time>
+                                                            </p>
+                                                            <div class="description">
+                                                                <p>{{$comment->content}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                @endforeach
+                                            </ol>
+                                            @endif
                                         </div>
-                                        <form action="https://tech360.vn/wp-comments-post.php" method="post" id="commentform" novalidate="novalidate">
-                                            <p>
-                                                <textarea name="comment" id="comment" cols="50" rows="4" tabindex="4" placeholder="Bình luận"></textarea>
-                                            </p>
-                                            <div class="name-email">
-                                                <p>
-                                                    <input placeholder="Họ và tên" type="text" name="author" id="author" value="" tabindex="1" aria-required="true">
-                                                </p>
-                                                <p>
-                                                    <input placeholder="Email" type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required="true">
-                                                </p>
+                                        
+                                        <div id="review_form_wrapper">
+                                            <div id="review_form">
+                                                <div id="respond" class="comment-respond">
+                                                    <span id="reply-title" class="comment-reply-title">Thêm đánh giá</span>
+                                                    <form action="{{url('/review/videos')}}" method="post" id="commentform" class="comment-form">
+                                                        <p class="comment-notes"><span id="email-notes">Email của bạn sẽ không được hiển thị công khai.</span> Các trường bắt buộc được đánh dấu <span class="required" aria-required="true">*</span></p>
+                                                        <div class="comment-form-rating"><label for="rating">Đánh giá của bạn</label>
+                                                            <div class='rating-stars'>
+                                                                <ul id='stars'>
+                                                                    <li class='star' title='Rất tệ' data-value='1'>
+                                                                        <i class='fa fa-star fa-fw'></i>
+                                                                    </li>
+                                                                    <li class='star' title='Không tệ' data-value='2'>
+                                                                        <i class='fa fa-star fa-fw'></i>
+                                                                    </li>
+                                                                    <li class='star' title='Trung bình' data-value='3'>
+                                                                        <i class='fa fa-star fa-fw'></i>
+                                                                    </li>
+                                                                    <li class='star' title='Tốt' data-value='4'>
+                                                                        <i class='fa fa-star fa-fw'></i>
+                                                                    </li>
+                                                                    <li class='star' title='Rất tốt' data-value='5'>
+                                                                        <i class='fa fa-star fa-fw'></i>
+                                                                    </li>
+                                                                </ul>
+                                                                @if($errors->has('star'))
+                                                                    <p class="help text-danger">{{ $errors->first('star') }}</p>
+                                                                @endif
+                                                            </div>
+                                                            <style>
+                                                                .rating-stars ul {
+                                                                    list-style-type:none;
+                                                                    padding:0;
+                                                                    -moz-user-select:none;
+                                                                    -webkit-user-select:none;
+                                                                }
+                                                                .rating-stars ul > li.star {
+                                                                    display:inline-block;
+                                                                }
+                                                                .rating-stars ul > li.star > i.fa {
+                                                                    font-size:20px;
+                                                                    color:#ccc;
+                                                                }
+                                                                .rating-stars ul > li.star.hover > i.fa {
+                                                                  color:#FFCC36;
+                                                                }
+                                                                .rating-stars ul > li.star.selected > i.fa {
+                                                                  color:#FF912C;
+                                                                }
+                                                            </style>
+                                                            <select name="star" id="rating" style="display: none;">
+                                                                <option value="">Xếp hạng…</option>
+                                                                <option value="5">Rất tốt</option>
+                                                                <option value="4">Tốt</option>
+                                                                <option value="3">Trung bình</option>
+                                                                <option value="2">Không tệ</option>
+                                                                <option value="1">Rất tệ</option>
+                                                            </select>
+                                                        </div>
+                                                        <p class="comment-form-comment">
+                                                            <label for="comment">Nhận xét của bạn&nbsp;<span class="required" aria-required="true">*</span></label>
+                                                            <textarea id="comment" name="content" cols="45" rows="8" required="" aria-required="true">{{old('content')}}</textarea>
+                                                            @if($errors->has('content'))
+                                                                <p class="help text-danger">{{ $errors->first('content') }}</p>
+                                                            @endif
+                                                        </p>
+                                                        <p class="comment-form-author">
+                                                            <label for="author">Tên&nbsp;<span class="required" aria-required="true">*</span></label> 
+                                                            <input id="author" name="name" type="text" value="{{old('name')}}" size="30" required="" aria-required="true">
+                                                            @if($errors->has('name'))
+                                                                <p class="help text-danger">{{ $errors->first('name') }}</p>
+                                                            @endif
+                                                        </p>
+                                                        <p class="comment-form-email">
+                                                            <label for="email">Email&nbsp;<span class="required" aria-required="true">*</span></label> 
+                                                            <input id="email" name="email" type="email" value="{{old('email')}}" size="30" required="" aria-required="true">
+                                                            @if($errors->has('email'))
+                                                                <p class="help text-danger">{{ $errors->first('email') }}</p>
+                                                            @endif
+                                                        </p>
+                                                        <p class="form-submit">
+                                                            <input type="submit" class="submit" id="submit" value="Gửi đi">
+                                                            <input type="hidden" name="videos_id" value="{{$video->id}}">
+                                                        </p>
+                                                        {{csrf_field()}}
+                                                    </form>
+                                                </div><!-- #respond -->
                                             </div>
-                                            <p><input name="submit" type="submit" id="submit" tabindex="5" value="Gửi">
-                                                <input type="hidden" name="comment_post_ID" value="9087" id="comment_post_ID">
-                                                <input type="hidden" name="comment_parent" id="comment_parent" value="0">
-                                            </p>
-                                        </form>
+                                        </div>
+                                        <div class="clear"></div>
                                     </div>
-                                </div><!-- #comments .comments-area -->
+                                </div>
                             </div>
                         </div>
                     </main>

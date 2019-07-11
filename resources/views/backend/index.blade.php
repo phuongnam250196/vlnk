@@ -151,7 +151,7 @@
                             <div class="widget-messages nicescroll" style="height: 400px;">
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar2.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar2.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">John Doe</p>
                                         <p class="message-item-msg">Hello. I want to buy your product</p>
                                         <p class="message-item-date">11:50 PM</p>
@@ -159,7 +159,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar5.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar5.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Ashton Cox</p>
                                         <p class="message-item-msg">Great job for this task</p>
                                         <p class="message-item-date">14:25 PM</p>
@@ -167,7 +167,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar6.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar6.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Colleen Hurst</p>
                                         <p class="message-item-msg">I have a new project for you</p>
                                         <p class="message-item-date">13:20 PM</p>
@@ -175,7 +175,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar10.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar10.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Fiona Green</p>
                                         <p class="message-item-msg">Nice to meet you</p>
                                         <p class="message-item-date">15:45 PM</p>
@@ -183,7 +183,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar2.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar2.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Donna Snider</p>
                                         <p class="message-item-msg">I have a new project for you</p>
                                         <p class="message-item-date">15:45 AM</p>
@@ -191,7 +191,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar5.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar5.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Garrett Winters</p>
                                         <p class="message-item-msg">I have a new project for you</p>
                                         <p class="message-item-date">15:45 AM</p>
@@ -199,7 +199,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar6.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar6.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Herrod Chandler</p>
                                         <p class="message-item-msg">Hello! I'm available for this job</p>
                                         <p class="message-item-date">15:45 AM</p>
@@ -207,7 +207,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar10.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar10.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Jena Gaines</p>
                                         <p class="message-item-msg">I have a new project for you</p>
                                         <p class="message-item-date">15:45 AM</p>
@@ -215,7 +215,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar2.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar2.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Airi Satou</p>
                                         <p class="message-item-msg">I have a new project for you</p>
                                         <p class="message-item-date">15:45 AM</p>
@@ -223,7 +223,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="message-item">
-                                        <div class="message-user-img"><img src="assets/images/avatars/avatar10.png" class="avatar-circle" alt=""></div>
+                                        <div class="message-user-img"><img src="{{url('/pike')}}/assets/images/avatars/avatar10.png" class="avatar-circle" alt=""></div>
                                         <p class="message-item-user">Brielle Williamson</p>
                                         <p class="message-item-msg">I have a new project for you</p>
                                         <p class="message-item-date">15:45 AM</p>

@@ -18,7 +18,7 @@
             </div>
             <!-- end row -->
         	<div class="row">
-                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 col-xl-8">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7 col-xl-8">
                 	<form method="POST" enctype="multipart/form-data">
 	                    <div class="card mb-3">
 	                        <div class="card-header">
@@ -49,7 +49,14 @@
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Ảnh sản phẩm</div>
 										  	<div class="product_d_flex_input">
-												<input type="file" class="form-control" name="prod_img" value="{{$data->prod_img}}" placeholder="VD: Iphone 6 plus">
+												<input id="img" type="file" name="video_img" class="form-control" style="display: none" onchange="changeImg(this)" value="{{$data->prod_img}}">
+		                                        <img id="avatar" class="thumbnail" src="{{url('/'.$data->prod_img)}}" width="150">
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Thư viện ảnh</div>
+										  	<div class="product_d_flex_input">
+												<input type="file" class="form-control" name="prod_gallery[]" value="{{$data->prod_gallery}}" multiple>
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
@@ -109,7 +116,19 @@
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Đáng xem</div>
 										  	<div class="product_d_flex_input">
-												<input type="checkbox" name="prod_view" value="1">
+												<input type="checkbox" name="prod_view" value="1" @if(!empty($data->prod_view)) checked @endif>
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Hot</div>
+										  	<div class="product_d_flex_input">
+												<input type="checkbox" name="hot" value="1" @if(!empty($data->hot)) checked @endif>
+										  	</div>
+										</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Trả góp</div>
+										  	<div class="product_d_flex_input">
+												<input type="checkbox" name="installment" value="1" @if(!empty($data->installment)) checked @endif>
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
@@ -118,15 +137,20 @@
 												<div class="form-group">
 												  <select class="form-control" name="cate_id" id="sel1">
 												    <option>Chọn loại sản phẩm</option>
-												    @foreach($category as $key=>$cate)
-												    	<option value="{{$cate->id}}">{{$cate->cate_name}}</option>
-												    @endforeach
+												    {{showCategories($category, $data->cate_id)}}
 												  </select>
 												</div>
 										  	</div>
 										</div>
 								  	</div>
 								  	<div class="tab-pane container fade" id="product_tab_2">
+								  		<div class="form-group product_group">
+										  	<label for="usr">Mô tả ngắn (seo)</label>
+										  	<textarea name="prod_description" class="form-control" cols="30" rows="5">{!! $data->prod_description !!}</textarea>
+												@if($errors->has('prod_description'))
+                                                    <p class="help text-danger">{{ $errors->first('prod_description') }}</p>
+                                                @endif
+										</div>
 								  		<div class="form-group product_group">
 										  	<label for="usr">Mô tả ngắn</label>
 										  	<textarea name="prod_short_description" class="form-control" id="editor72" cols="30" rows="2">{!! $data->prod_short_description !!}</textarea>
@@ -138,40 +162,56 @@
 										</div>
 								  	</div>
 								  	<div class="tab-pane container fade" id="product_tab_3">
-								  		<div class="d-flex product_d_flex">
-										  	<div class="product_d_flex_title  align-self-center">Title</div>
+								  		{{-- <form action=""> --}}
+							  			<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Tiêu đề</div>
 										  	<div class="product_d_flex_input">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" value="{{!empty($seo->title)?$seo->title:''}}" name="title">
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
-										  	<div class="product_d_flex_title  align-self-center">Description</div>
+										  	<div class="product_d_flex_title  align-self-center">Tác giả</div>
 										  	<div class="product_d_flex_input">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" value="{{!empty($seo->author)?$seo->author:''}}" name="author">
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
-										  	<div class="product_d_flex_title  align-self-center">Image</div>
+										  	<div class="product_d_flex_title  align-self-center">Từ khóa liên quan</div>
 										  	<div class="product_d_flex_input">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" value="{{!empty($seo->keyword)?$seo->keyword:''}}" name="keywords">
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
-										  	<div class="product_d_flex_title  align-self-center">Url</div>
+											  	<div class="product_d_flex_title  align-self-center">Mô tả ngắn</div>
+											  	<div class="product_d_flex_input">
+													<textarea name="description" class="form-control" cols="30" rows="5">{{!empty($seo->description)?$seo->description:''}}</textarea>
+											  	</div>
+											</div>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center">Ảnh thump</div>
 										  	<div class="product_d_flex_input">
-												<input type="text" class="form-control">
+												 <img class="thumbnail" src="@if(!empty($seo->image)) {{url('/'.$seo->image)}} @else # @endif" width="150">
 										  	</div>
 										</div>
 										<br>
 										<br>
+										<div class="d-flex product_d_flex">
+										  	<div class="product_d_flex_title  align-self-center"></div>
+										  	<div class="product_d_flex_input">
+												<button class="btn btn-primary">Cập nhật</button>
+												<a href="{{url('admin/video')}}" class="btn btn-secondary">Hủy bỏ</a>
+										  	</div>
+										</div>
+										{{-- {{csrf_field()}}
+							  		</form> --}}
 										
 								  	</div>
 								</div>
 	                        </div>
 	                    </div>
 	                    <div class="btn_up">
-			            	<button type="submit" class="btn btn-primary">Thêm mới</button>
-			            	<a href="#" class="btn btn-secondary">Hủy bỏ</a>
+			            	<button type="submit" class="btn btn-primary">Cập nhật</button>
+			            	<a href="{{url('admin/product')}}" class="btn btn-secondary">Hủy bỏ</a>
 			            </div>
 			            <style>
 			            	.btn_up {
@@ -183,7 +223,7 @@
 			            {{csrf_field()}}
 		            </form>
                 </div>
-                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 col-xl-4">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-4">
                     <div class="card mb-3">
                         <div class="card-header">
                             <h3><i class="fa fa-sitemap"></i> Chọn ảnh sản phẩm</h3>

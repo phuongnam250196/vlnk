@@ -34,21 +34,36 @@ Route::group(['namespace'=>'Frontend'], function() {
 		Route::get('/category/{slug}', 'FrontendsController@getNewsDetailCategorySlug');
 		Route::get('/{slug}', 'FrontendsController@getNewsDetailSlug');
 	});
+	Route::group(['prefix'=>'review'], function() {
+		Route::post('/product', 'FrontendsController@productReviews');
+		Route::post('/cate', 'FrontendsController@cateReviews');
+		Route::post('/news', 'FrontendsController@newsReviews');
+		Route::post('/videos', 'FrontendsController@videosReviews');
+	});
 	Route::get('/category/{slug}', 'FrontendsController@getCategorySlug');
 	Route::get('/product/{slug}', 'FrontendsController@getProductDetail');
 	Route::get('/agency', 'FrontendsController@getAgency');
 	Route::get('/support', 'FrontendsController@getSupport');
 	Route::get('/search', 'FrontendsController@getSearch');
 	Route::get('/account', 'FrontendsController@getAccount');
+	Route::post('/account', 'FrontendsController@postAccount');
 	Route::get('/register', 'FrontendsController@getRegister');
 	Route::post('/register', 'FrontendsController@postRegister');
 	Route::get('/pay', 'FrontendsController@getPays');
 	Route::get('/cart', 'FrontendsController@getCarts');
 
+	Route::post('/view', 'FrontendsController@postView');
+
 });
 
-Route::group(['namespace'=>'Backend'], function() {
-	Route::group(['prefix'=>'admin'], function() {
+Route::group(['namespace'=>'Backend', ], function() {
+	Route::group(['middleware'=>'checklogin'], function() {
+		Route::get('/login', 'HomesController@getLogin');
+		Route::post('/login', 'HomesController@postLogin');
+	});
+
+	Route::group(['prefix'=>'admin', 'middleware'=>['checkadmin', 'checklogoutadmin']], function() {
+		Route::get('/logout', 'HomesController@getLogout');
 		Route::get('/', 'HomesController@getAdminHome');
 		Route::get('/profile', 'HomesController@getProfile');
 		Route::post('/profile', 'HomesController@postProfile');
@@ -98,6 +113,15 @@ Route::group(['namespace'=>'Backend'], function() {
 
 		Route::group(['prefix'=>'setting'], function() {
 			Route::get('/', 'SettingsController@getSetting');
+			Route::get('/other', 'SettingsController@getOtherSetting');
+			Route::post('/other', 'SettingsController@postOtherSetting');
+			Route::post('/seo_index', 'SettingsController@postSeoIndexSetting');
+			Route::get('/slider', 'SettingsController@getSlider');
+			Route::get('/slider/add', 'SettingsController@getAddSlider');
+			Route::post('/slider/add', 'SettingsController@postAddSlider');
+			Route::get('/slider/update/{id}', 'SettingsController@getUpdateSlider');
+			Route::post('/slider/update/{id}', 'SettingsController@postUpdateSlider');
+			Route::post('/slider/del', 'SettingsController@postDeleteSliders');
 		});
 	});
 });

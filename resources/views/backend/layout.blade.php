@@ -226,32 +226,32 @@
     					<a class="active" href="{{url('admin')}}"><i class="fa fa-fw fa-bars"></i><span> Trang chủ </span> </a>
                     </li>
     				<li class="submenu">
-                        <a class="@if(Request::is('admin/account') || Request::is('admin/account/*')) pro @endif" href="{{url('admin/account')}}"><i class="fa fa-fw fa-area-chart"></i><span> Tài khoản </span> </a>
+                        <a class="@if(Request::is('admin/account') || Request::is('admin/account/*')) pro @endif" href="{{url('admin/account')}}"><i class="fa fa-address-card bigfonts bigfonts"></i><span> Tài khoản </span> </a>
                     </li>
                     <li class="submenu">
-                        <a class="@if(Request::is('admin/category') || Request::is('admin/category/*')) pro @endif" href="{{url('/admin/category')}}"><i class="fa fa-fw fa-area-chart"></i><span> Danh mục </span> </a>
+                        <a class="@if(Request::is('admin/category') || Request::is('admin/category/*')) pro @endif" href="{{url('/admin/category')}}"><i class="fa fa-th-list bigfonts"></i><span> Danh mục </span> </a>
                     </li>
                     <li class="submenu">
-                        <a class="@if(Request::is('admin/product') || Request::is('admin/product/*')) pro @endif" href="{{url('/admin/product')}}"><i class="fa fa-fw fa-area-chart"></i><span> Sản phẩm </span> </a>
+                        <a class="@if(Request::is('admin/product') || Request::is('admin/product/*')) pro @endif" href="{{url('/admin/product')}}"><i class="fa fa-product-hunt bigfonts"></i><span> Sản phẩm </span> </a>
                     </li>
                     <li class="submenu">
-                        <a class="@if(Request::is('admin/post') || Request::is('admin/post/*')) pro @endif" href="{{url('admin/post')}}"><i class="fa fa-fw fa-area-chart"></i><span> Tin tức</span> </a>
+                        <a class="@if(Request::is('admin/post') || Request::is('admin/post/*')) pro @endif" href="{{url('admin/post')}}"><i class="fa fa-podcast bigfonts"></i><span> Tin tức</span> </a>
                     </li>
                     <li class="submenu">
-                        <a class="@if(Request::is('admin/video') || Request::is('admin/video/*')) pro @endif" href="{{url('admin/video')}}"><i class="fa fa-fw fa-area-chart"></i><span> Videos</span> </a>
+                        <a class="@if(Request::is('admin/video') || Request::is('admin/video/*')) pro @endif" href="{{url('admin/video')}}"><i class="fa fa-play-circle bigfonts"></i><span> Videos</span> </a>
                     </li>
     				<li class="submenu">
-                        <a href="#"><i class="fa fa-fw fa-table"></i> <span> Đại lý </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="fa fa-fort-awesome bigfonts"></i> <span> Đại lý </span> <span class="menu-arrow"></span></a>
     						<ul class="list-unstyled">
     							<li><a href="tables-basic.html">Basic Tables</a></li>
     							<li><a href="tables-datatable.html">Data Tables</a></li>
     						</ul>
                     </li>
                     <li class="submenu">
-                        <a class="@if(Request::is('admin/contact') || Request::is('admin/contact/*')) pro @endif" href="{{url('admin/contact')}}"><i class="fa fa-fw fa-area-chart"></i><span> Liên hệ </span> </a>
+                        <a class="@if(Request::is('admin/contact') || Request::is('admin/contact/*')) pro @endif" href="{{url('admin/contact')}}"><i class="fa fa-volume-control-phone bigfonts"></i><span> Liên hệ </span> </a>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fa fa-fw fa-area-chart"></i><span> Đặt hàng </span> </a>
+                        <a href="#"><i class="fa fa-cart-plus bigfonts"></i><span> Đặt hàng </span> </a>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -321,12 +321,32 @@
 		} );		
 	</script>
     <script>                                
-            $(document).ready(function() {
-                $('.select2').select2({
-                    maximumSelectionLength: 3
-                });
+        $(document).ready(function() {
+            $('.select2').select2({
+                maximumSelectionLength: 3
             });
-        </script>
+        });
+    </script>
+    <script>
+        // js chon anh
+        function changeImg(input){
+            //Nếu như tồn thuộc tính file, đồng nghĩa người dùng đã chọn file mới
+            if(input.files && input.files[0]){
+                var reader = new FileReader();
+                //Sự kiện file đã được load vào website
+                reader.onload = function(e){
+                    //Thay đổi đường dẫn ảnh
+                    $('#avatar').attr('src',e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(document).ready(function() {
+            $('#avatar').click(function(){
+                $('#img').click();
+            });
+        });
+    </script>
 
 </body>
 </html>

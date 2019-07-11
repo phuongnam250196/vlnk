@@ -1,5 +1,9 @@
 @extends('frontend.layout')
 @section('title', 'Trang chủ')
+@section('description', 'Đem khách hàng cho cho bạn')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('/'))
+@section('sitename', 'vlnk')
 @section('main')
 	<div class="main_body">
         <div class="container">
@@ -7,15 +11,16 @@
                 <div class="main_container col-md-9 col-sm-9 col-xs-12 col-sm-push-3">
                     <div class="slider_section">
                         <ul class="bxslider">
-                            <li class="">
-                                <a href="#" title="" target="_self"> <img width="855" height="260" src="{{url('/vlnk')}}/images/slider-t95u-pro.png" class="attachment-full size-full" alt="" /> </a> </li>
-                            <li class="hiddenFirst">
-                                <img width="855" height="260" src="{{url('/vlnk')}}/images/slider-t95x.png" class="attachment-full size-full" alt="" /> </li>
+                            @foreach($sliders as $key=>$slider)
+                                <li @if($key !=0) class="hiddenFirst" @endif>
+                                    <a href="{{$slider->link}}" title="{{$slider->title}}" target="_self"> <img width="855" height="260" src="{{url('/'.$slider->image)}}" class="attachment-full size-full" alt="{{$slider->title}}" /> </a> 
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="section_custom_view_products ">
                         <div class="section_cvp_title">
-                            <h3><span>Sản phẩm khuyến mại</span></h3>
+                            <h3><span id="jj">Sản phẩm khuyến mại</span></h3>
                         </div>
                         <div class="section_cvp_content">
                             <div class="woocommerce columns-4 ">
@@ -24,17 +29,38 @@
                                     @if($key<8)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                    <span class="onsale">Giảm giá!</span>
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">
+                                                    @if(!empty($prod->prod_sale))
+                                                        <span class="onsale">Giảm giá!</span>
+                                                    @endif
                                                     <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
+                                                <a rel="nofollow" href="#" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
                                             </div>
-                                            <a href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                            <a class="product_id" data-id="{{$prod->id}}"  href="{{url('/product/'.$prod->prod_slug)}}">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
-                                            <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                            <div class="devvn_is_tragop"><img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> <a href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a></div>
+                                            <span class="price">
+                                                @if(!empty($prod->prod_sale))
+                                                    <del>
+                                                        <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                    </del>
+                                                @endif 
+                                                <ins>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price-($prod->prod_price*$prod->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </ins>
+                                            </span>
+                                            @if(!empty($prod->hot))
+                                                <div class="devvn_is_featured">
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                </div>
+                                            @endif
+                                            @if(!empty($prod->installment))
+                                                <div class="devvn_is_tragop">
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                </div>
+                                            @endif
                                         </li>
                                     @endif
                                     @endforeach
@@ -42,6 +68,7 @@
                             </div>
                         </div>
                     </div>
+                   
                     <div class="section_oneimage">
                         <a href="#" title="" target="_blank"> <img width="912" height="75" src="{{url('/vlnk')}}/images/home_07.png" class="attachment-full size-full" alt="" /> </a>
                     </div>
@@ -54,20 +81,38 @@
                                 <ul class="products columns-4">
                                     @foreach($products as $key=>$prod)
                                     @if($key<4)
-                                        <li class="product type-product">
+                                        <li class="product">
                                             <div class="shop_loop_box">
-                                                <a href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                    <img src="{{url(''.$prod->prod_img)}}" alt="" />
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    @if(!empty($prod->prod_sale))
+                                                        <span class="onsale">Giảm giá!</span>
+                                                    @endif
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=108" data-quantity="1" data-product_id="108" data-product_sku="BT001" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_108">Thêm vào giỏ</a> 
+                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
                                             </div>
-                                            <a href="{{url('/product/'.$prod->prod_slug)}}">
+                                            <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
                                             <span class="price">
-                                                <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                <del>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </del> 
+                                                <ins>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price-($prod->prod_price*$prod->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </ins>
                                             </span>
-                                            <div class="devvn_is_featured"><img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                            @if(!empty($prod->hot))
+                                                <div class="devvn_is_featured">
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                </div>
+                                            @endif
+                                            @if(!empty($prod->installment))
+                                                <div class="devvn_is_tragop">
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                </div>
+                                            @endif
                                         </li>
                                     @endif
                                     @endforeach
@@ -85,20 +130,38 @@
                                 <ul class="products columns-4">
                                     @foreach($products as $key=>$prod)
                                     @if($key<4)
-                                        <li class="product type-product">
+                                        <li class="product">
                                             <div class="shop_loop_box">
-                                                <a href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                    <img src="{{url(''.$prod->prod_img)}}" alt="" />
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    @if(!empty($prod->prod_sale))
+                                                        <span class="onsale">Giảm giá!</span>
+                                                    @endif
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=108" data-quantity="1" data-product_id="108" data-product_sku="BT001" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_108">Thêm vào giỏ</a> 
+                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
                                             </div>
-                                            <a href="{{url('/product/'.$prod->prod_slug)}}">
+                                            <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
                                             <span class="price">
-                                                <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                <del>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </del> 
+                                                <ins>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price-($prod->prod_price*$prod->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </ins>
                                             </span>
-                                            <div class="devvn_is_featured"><img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                            @if(!empty($prod->hot))
+                                                <div class="devvn_is_featured">
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                </div>
+                                            @endif
+                                            @if(!empty($prod->installment))
+                                                <div class="devvn_is_tragop">
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                </div>
+                                            @endif
                                         </li>
                                     @endif
                                     @endforeach
@@ -116,20 +179,38 @@
                                 <ul class="products columns-4">
                                     @foreach($products as $key=>$prod)
                                     @if($key<4)
-                                        <li class="product type-product">
+                                        <li class="product">
                                             <div class="shop_loop_box">
-                                                <a href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                    <img src="{{url(''.$prod->prod_img)}}" alt="" />
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    @if(!empty($prod->prod_sale))
+                                                        <span class="onsale">Giảm giá!</span>
+                                                    @endif
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=108" data-quantity="1" data-product_id="108" data-product_sku="BT001" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_108">Thêm vào giỏ</a> 
+                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
                                             </div>
-                                            <a href="{{url('/product/'.$prod->prod_slug)}}">
+                                            <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
                                             <span class="price">
-                                                <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                <del>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </del> 
+                                                <ins>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price-($prod->prod_price*$prod->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </ins>
                                             </span>
-                                            <div class="devvn_is_featured"><img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                            @if(!empty($prod->hot))
+                                                <div class="devvn_is_featured">
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                </div>
+                                            @endif
+                                            @if(!empty($prod->installment))
+                                                <div class="devvn_is_tragop">
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                </div>
+                                            @endif
                                         </li>
                                     @endif
                                     @endforeach
@@ -138,7 +219,7 @@
                         </div>
                     </div>
                     <div class="section_html tinymce">
-                        <p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#8217;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p><strong>TPN</strong> Xin chào mừng các bạn đến với website của chúng tôi, chúng tôi chuyên cung cấp những sản phẩm tốt nhất liên quan đến thiết bị, dụng cụ nha khoa. Ngoài cung cấp, chúng tôi cũng có các dịch vụ về sửa chữa, cũng như chính sách bảo hành, giao hàng an toàn trên toàn quốc... Đặc biệt, là khi vực Vĩnh Phúc, sẽ được ưu tiên khi dùng các mặt hàng của chúng tôi.</p>
                     </div>
                 </div>
                 <aside id="sidebar" class="sidebar col-md-3 col-sm-3 col-xs-12 col-sm-pull-9">

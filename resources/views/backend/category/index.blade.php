@@ -45,6 +45,14 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
+                                                            <label>Ảnh</label>
+                                                            <input class="form-control" id="cate_img" name="cate_img" type="file" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
                                                             <label>Mô tả ngắn</label>
                                                             <textarea class="form-control" id="cate_content" name="description" rows="5"></textarea>
                                                         </div>

@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Hỗ trợ khách hàng')
+@section('description', 'Hỗ trợ và giải đáp những thắc mắc của khách hàng trong quá trình mua hàng cũng như liên hệ')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('support'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'Hỗ trợ, khách hàng, hỗ trợ khách hàng, liên hệ, mua hàng, đặt hàng, thanh toán, gọi điện')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
         <div class="container">
@@ -18,83 +24,44 @@
                     </div>
                 </div>
                 <aside id="sidebar" class="sidebar col-md-3 col-sm-3 col-xs-12 col-sm-pull-9" role="complementary" itemscope itemtype="http://schema.org/WPSideBar">
-                    <div id="recent-posts_svl-2" class="widget widget_recent_entries_svl">
+                    <div id="newsnoibat_widget-2" class="widget newsnoibat_widget">
                         <h3 class="title-sidebar">Tin tức mới</h3>
+                        <div class="tintuc_lienquan">
+                            <ul class="news_list">
+                                @foreach(listPosts() as $key=>$post)
+                                @if($key<5)
+                                    <li class="has-thumbnail">
+                                        <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}">
+                                            <img width="150" height="150" src="{{url('/'.$post->post_img)}}" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
+                                            <h3>{{$post->post_name}}</h3>
+                                        </a>
+                                    </li>
+                                @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="devvn_widget_most_viewed_entries-2" class="widget devvn_widget_most_viewed_entries">
+                        <h3 class="title-sidebar">Xem nhiều nhất</h3>
                         <ul>
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/anh-dep-girl-xinh-02-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Quay video 360 độ, trải nghiệm VR với action camera SJCAM SJ360 </a>
-                                    <span class="date">12/05/2017</span>
-                                </div>
-                            </li>
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/anh-dep-meo-con3__76574_zoom-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Kinh nghiệm sử dụng camera hành động cho phượt thủ </a>
-                                    <span class="date">12/05/2017</span>
-                                </div>
-                            </li>
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/maxresdefault-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Sau camera thể thao SJ6 Legend của SJCAM thị trường sắp đón nhận sản phẩm cao cấp mới mang tên SJ7 Star </a>
-                                    <span class="date">13/11/2016</span>
-                                </div>
-                            </li>
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/ipcam-qf004-10-20160517042804-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Có gì mới trên hai phiên bản SJCAM SJ6 Legend và SJ7 Star </a>
-                                    <span class="date">12/11/2016</span>
-                                </div>
-                            </li>
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/kiwibox-s3-49-1-150x150.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Video review camera thể thao SJCAM SJ6 Legend cùng một số hình ảnh về nó </a>
-                                    <span class="date">12/11/2016</span>
-                                </div>
-                            </li>
+                            @foreach(listPosts() as $key=>$post)
+                                @if($key<5)
+                                <li>
+                                    <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}">
+                                    <img width="150" height="150" src="{{url('/'.$post->post_img)}}" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> {{$post->post_name}} </a>
+                                </li>
+                            @endif
+                            @endforeach
                         </ul>
                     </div>
-                    <div id="recent-videos-svl-2" class="widget widget_recent_entries_svl">
-                        <h3 class="title-sidebar">Videos</h3>
-                        <ul class="recent-video-ul">
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/video2-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Android Tivi Box thiết bị giải trí đa năng trong gia đình bạn </a>
-                                    <span class="date">13/11/2016</span>
-                                </div>
-                            </li>
-                            <li class="rcp_svl_has_thumb">
-                                <a href="#" class="link_recent_thumb">
-                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/maxresdefault-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt=""/> </a>
-                                <div class="rcp_svl_content">
-                                    <a href="#">
-                                        Android Tivi Box Minix NEO U1 &#8211; Unbox </a>
-                                    <span class="date">13/11/2016</span>
-                                </div>
-                            </li>
-                        </ul>
+                    <div id="tag_cloud-3" class="widget widget_tag_cloud">
+                        <h3 class="title-sidebar">Từ khóa</h3>
+                        <div class="tagcloud">
+                            @foreach(listCate() as $key=>$cate)
+                                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                            @endforeach
                     </div>
-                    <div id="media_image-2" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>
-                    <div id="media_image-3" class="widget widget_media_image">
-                        <h3 class="title-sidebar">Giấy chứng nhận</h3><img width="274" height="387" src="{{url('/vlnk')}}/images/CNSJCAM.png" class="image wp-image-263  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" />
-                    </div>
+                    <div id="media_image-5" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>
                 </aside>
             </div>
         </div>

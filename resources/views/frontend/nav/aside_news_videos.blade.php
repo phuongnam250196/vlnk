@@ -22,7 +22,7 @@
             @foreach(listCate() as $key=>$cate)
             @if($key < 7)
                 <li class="cat-item">
-                    <a href="{{url('/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a> ({{count($cate->products)}})
+                    <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a> ({{count($cate->products)}})
                 </li>
             @endif
             @endforeach
@@ -35,7 +35,7 @@
                 @foreach(listPosts() as $key=>$post)
                 @if($key<5)
                     <li class="has-thumbnail">
-                        <a href="{{url('/news/'.$post->post_slug)}}">
+                        <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}">
                             <img width="150" height="150" src="{{url('/'.$post->post_img)}}" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
                             <h3>{{$post->post_name}}</h3>
                         </a>
@@ -51,7 +51,7 @@
             @foreach(listPosts() as $key=>$post)
                 @if($key<5)
                 <li>
-                    <a href="{{url('/news/'.$post->post_slug)}}">
+                    <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}">
                     <img width="150" height="150" src="{{url('/'.$post->post_img)}}" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> {{$post->post_name}} </a>
                 </li>
             @endif
@@ -62,7 +62,7 @@
         <h3 class="title-sidebar">Từ khóa</h3>
         <div class="tagcloud">
             @foreach(listCate() as $key=>$cate)
-                <a href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
             @endforeach
     </div>
     <div id="media_image-5" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>

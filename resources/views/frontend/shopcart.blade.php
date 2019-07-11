@@ -1,5 +1,11 @@
 @extends('frontend.layout')
 @section('title', 'Giỏ hàng')
+@section('description', 'Hiển thị những sản phẩm mà khách hàng thêm vào cũng như định mua')
+@section('image', url('/'.infoOther()->logo))
+@section('url', url('cart'))
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', 'Giỏ hàng, thanh toán')
+@section('author', $_SERVER['HTTP_HOST'])
 @section('main')
 	<div class="main_body">
         <div class="container">

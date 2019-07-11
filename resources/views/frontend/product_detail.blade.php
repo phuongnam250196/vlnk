@@ -1,5 +1,11 @@
 @extends('frontend.layout')
-@section('title', $product->prod_name)
+@section('title', $seopost->title)
+@section('description', $seopost->description)
+@section('image', url('/'.$seopost->image))
+@section('url', $seopost->url)
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', $seopost->keywords)
+@section('author', $seopost->author)
 @section('main')
 	<div class="main_body">
         <div class="container">
@@ -11,7 +17,9 @@
                             <div class="row row-padding-15">
                                 <div class="col-md-9 col-sm-12 col-xs-12 product-left">
                                     <div class="img-product clearfix">
-                                        <span class="onsale">Giảm giá!</span>
+                                        @if(!empty($product->prod_sale))
+                                            <span class="onsale">Giảm giá!</span>
+                                        @endif
                                         <div class="{{url('/vlnk')}}/images">
                                             <div id="product_slider" class="owl-carousel">
                                                 <div class="item">
@@ -61,7 +69,16 @@
                                     </div>
                                     <div class="summary entry-summary">
                                         <h1 class="product_title entry-title">{{$product->prod_name}}</h1>
-                                        <p class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($product->prod_price,0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($product->prod_price,0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></p>
+                                        <p class="price">
+                                            @if(!empty($product->prod_sale))
+                                                    <del>
+                                                        <span class="woocommerce-Price-amount amount">{{number_format($product->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                    </del>
+                                                @endif 
+                                                <ins>
+                                                    <span class="woocommerce-Price-amount amount">{{number_format($product->prod_price-($product->prod_price*$product->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                </ins>
+                                        </p>
                                         <div itemprop="description" class="tinymce">
                                             {!! $product->prod_short_description !!}
                                         </div>
@@ -88,14 +105,14 @@
                                         </div>
                                         <div class="contact-detail">
                                             <ul>
-                                                <li><span class="fa fa-phone"></span><strong>012.5222.5111</strong></li>
+                                                <li><span class="fa fa-phone"></span><strong>{{phoneNumber(infoOther()->phone)}}</strong></li>
                                                 <li><span class="fa fa-phone"></span><strong>0888.090.898</strong></li>
-                                                <li><span class="fa fa-envelope"></span>tech360.com.vn@gmail.com</li>
+                                                <li><span class="fa fa-envelope"></span>{{infoOther()->email}}</li>
                                             </ul>
                                         </div>
                                         <ul class="social_list">
                                             <li class="facebook_like">
-                                                <div class="fb-like" data-href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
+                                                <div class="fb-like" data-href="{{url('product/'.$product->prod_slug)}}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
                                             </li>
                                             <li class="google_shared">
                                                 <div class="g-plusone" data-size="medium"></div>
@@ -151,64 +168,174 @@
                                             @if($key<4)
                                                 <li class="product">
                                                 <div class="shop_loop_box">
-                                                    <a href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                        <span class="onsale">Giảm giá!</span>
-                                                        <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                        @if(!empty($prod->prod_sale))
+                                                            <span class="onsale">Giảm giá!</span>
+                                                        @endif
+                                                        <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
                                                     </a>
                                                     <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
                                                 </div>
-                                                <a href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                                 </a>
-                                                <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                <div class="devvn_is_featured"><img width="80" height="44" src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                                <span class="price">
+                                                    @if(!empty($prod->prod_sale))
+                                                        <del>
+                                                            <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                        </del>
+                                                    @endif 
+                                                    <ins>
+                                                        <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price-($prod->prod_price*$prod->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                    </ins>
+                                                </span>
+                                                @if(!empty($prod->hot))
+                                                    <div class="devvn_is_featured">
+                                                        <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                    </div>
+                                                @endif
+                                                @if(!empty($prod->installment))
+                                                    <div class="devvn_is_tragop">
+                                                        <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
+                                                        <a href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                    </div>
+                                                @endif
                                             </li>
                                             @endif
                                             @endforeach
                                         </ul>
                                     </section>
-                                    <div class="row row-padding-0">
-                                        <div class="col-sm-6 col-xs-12 product-review-left">
+                                    <div class="row row-padding-15">
+                                        <div class="col-xs-12 product-review-left">
                                             <div class="section_cvp_title margin-b-15">
                                                 <h2>Đánh giá sản phẩm</h2>
                                             </div>
                                             <div id="reviews" class="woocommerce-Reviews">
                                                 <div id="comments">
-                                                    <h2 class="woocommerce-Reviews-title">Đánh giá</h2>
-                                                    <p class="woocommerce-noreviews">Chưa có đánh giá nào.</p>
+                                                    @if(!empty($comments))
+                                                    <h2 class="woocommerce-Reviews-title">
+                                                        {{count($comments)}} đánh giá cho <span>{{$product->prod_name}}</span> </h2>
+                                                    <ol class="commentlist">
+                                                        @foreach($comments as $key=>$comment)
+                                                        <li class="review even thread-even">
+                                                            <div class="comment_container">
+                                                                <img alt="" src="{{url('vlnk/images/review_user.png')}}" class="avatar avatar-60 photo" height="60" width="60">
+                                                                <div class="comment-text">
+                                                                    <div class="star-rating">
+                                                                        @for($i=0;$i<5;$i++)
+                                                                            @if($i < $comment->star)
+                                                                                <i class="fa fa-star" style="color:#FF912C;"></i>
+                                                                            @else
+                                                                                <i class="fa fa-star"></i>
+                                                                            @endif
+                                                                        @endfor
+                                                                    </div>
+                                                                    <p class="meta">
+                                                                        <strong class="woocommerce-review__author">{{$comment->name}} </strong>
+                                                                        <span class="woocommerce-review__dash">–</span> <time class="woocommerce-review__published-date" datetime="{{$comment->created_at}}">{{date_format($comment->created_at, 'd/m/Y')}}</time>
+                                                                    </p>
+                                                                    <div class="description">
+                                                                        <p>{{$comment->content}}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        @endforeach
+                                                    </ol>
+                                                    @endif
                                                 </div>
+                                                
                                                 <div id="review_form_wrapper">
                                                     <div id="review_form">
                                                         <div id="respond" class="comment-respond">
-                                                            <span id="reply-title" class="comment-reply-title">Hãy là người đầu tiên nhận xét &ldquo;IP CAMERA BÁO ĐỘNG CHỐNG TRỘM QF004 HD WIFI&rdquo; <small><a rel="nofollow" id="cancel-comment-reply-link" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/#respond" style="display:none;">Hủy</a></small></span>
-                                                            <form action="/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
-                                                                <p class="comment-notes"><span id="email-notes">Email của bạn sẽ không được hiển thị công khai.</span> Các trường bắt buộc được đánh dấu <span class="required">*</span></p>
-                                                                <div class="comment-form-rating"><label for="rating">Đánh giá của bạn</label><select name="rating" id="rating" aria-required="true" required>
-                                                                        <option value="">Xếp hạng&hellip;</option>
+                                                            <span id="reply-title" class="comment-reply-title">Thêm đánh giá</span>
+                                                            <form action="{{url('/review/product')}}" method="post" id="commentform" class="comment-form">
+                                                                <p class="comment-notes"><span id="email-notes">Email của bạn sẽ không được hiển thị công khai.</span> Các trường bắt buộc được đánh dấu <span class="required" aria-required="true">*</span></p>
+                                                                <div class="comment-form-rating"><label for="rating">Đánh giá của bạn</label>
+                                                                    <div class='rating-stars'>
+                                                                        <ul id='stars'>
+                                                                            <li class='star' title='Rất tệ' data-value='1'>
+                                                                                <i class='fa fa-star fa-fw'></i>
+                                                                            </li>
+                                                                            <li class='star' title='Không tệ' data-value='2'>
+                                                                                <i class='fa fa-star fa-fw'></i>
+                                                                            </li>
+                                                                            <li class='star' title='Trung bình' data-value='3'>
+                                                                                <i class='fa fa-star fa-fw'></i>
+                                                                            </li>
+                                                                            <li class='star' title='Tốt' data-value='4'>
+                                                                                <i class='fa fa-star fa-fw'></i>
+                                                                            </li>
+                                                                            <li class='star' title='Rất tốt' data-value='5'>
+                                                                                <i class='fa fa-star fa-fw'></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                        @if($errors->has('star'))
+                                                                            <p class="help text-danger">{{ $errors->first('star') }}</p>
+                                                                        @endif
+                                                                    </div>
+                                                                    <style>
+                                                                        .rating-stars ul {
+                                                                            list-style-type:none;
+                                                                            padding:0;
+                                                                            -moz-user-select:none;
+                                                                            -webkit-user-select:none;
+                                                                        }
+                                                                        .rating-stars ul > li.star {
+                                                                            display:inline-block;
+                                                                        }
+                                                                        .rating-stars ul > li.star > i.fa {
+                                                                            font-size:20px;
+                                                                            color:#ccc;
+                                                                        }
+                                                                        .rating-stars ul > li.star.hover > i.fa {
+                                                                          color:#FFCC36;
+                                                                        }
+                                                                        .rating-stars ul > li.star.selected > i.fa {
+                                                                          color:#FF912C;
+                                                                        }
+                                                                    </style>
+                                                                    <select name="star" id="rating" style="display: none;">
+                                                                        <option value="">Xếp hạng…</option>
                                                                         <option value="5">Rất tốt</option>
                                                                         <option value="4">Tốt</option>
                                                                         <option value="3">Trung bình</option>
                                                                         <option value="2">Không tệ</option>
                                                                         <option value="1">Rất tệ</option>
-                                                                    </select></div>
-                                                                <p class="comment-form-comment"><label for="comment">Nhận xét của bạn&nbsp;<span class="required">*</span></label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true" required></textarea></p>
-                                                                <p class="comment-form-author"><label for="author">Tên&nbsp;<span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true" required /></p>
-                                                                <p class="comment-form-email"><label for="email">Email&nbsp;<span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" aria-required="true" required /></p>
-                                                                <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Gửi đi" /> <input type='hidden' name='comment_post_ID' value='90' id='comment_post_ID' />
-                                                                    <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+                                                                    </select>
+                                                                </div>
+                                                                <p class="comment-form-comment">
+                                                                    <label for="comment">Nhận xét của bạn&nbsp;<span class="required" aria-required="true">*</span></label>
+                                                                    <textarea id="comment" name="content" cols="45" rows="8" required="" aria-required="true">{{old('content')}}</textarea>
+                                                                    @if($errors->has('content'))
+                                                                        <p class="help text-danger">{{ $errors->first('content') }}</p>
+                                                                    @endif
                                                                 </p>
+                                                                <p class="comment-form-author">
+                                                                    <label for="author">Tên&nbsp;<span class="required" aria-required="true">*</span></label> 
+                                                                    <input id="author" name="name" type="text" value="{{old('name')}}" size="30" required="" aria-required="true">
+                                                                    @if($errors->has('name'))
+                                                                        <p class="help text-danger">{{ $errors->first('name') }}</p>
+                                                                    @endif
+                                                                </p>
+                                                                <p class="comment-form-email">
+                                                                    <label for="email">Email&nbsp;<span class="required" aria-required="true">*</span></label> 
+                                                                    <input id="email" name="email" type="email" value="{{old('email')}}" size="30" required="" aria-required="true">
+                                                                    @if($errors->has('email'))
+                                                                        <p class="help text-danger">{{ $errors->first('email') }}</p>
+                                                                    @endif
+                                                                </p>
+                                                                <p class="form-submit">
+                                                                    <input type="submit" class="submit" id="submit" value="Gửi đi">
+                                                                    <input type="hidden" name="prod_id" value="{{$product->id}}">
+                                                                </p>
+                                                                {{csrf_field()}}
                                                             </form>
                                                         </div><!-- #respond -->
                                                     </div>
                                                 </div>
                                                 <div class="clear"></div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xs-12 product-review-right">
-                                            <div class="section_cvp_title margin-b-15">
-                                                <h2>Bình luận trên Facebook</h2>
-                                            </div>
-                                            <div class="fb-comments" data-href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/" data-numposts="10" data-order-by="time" data-width="100%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -268,79 +395,57 @@
                                     <div id="categories-4" class="widget widget_categories">
                                         <h3 class="title-sidebar">Danh mục tin tức</h3>
                                         <ul>
-                                            <li class="cat-item"><a href="#">Android Box</a> (2)
-                                            </li>
-                                            <li class="cat-item"><a href="#">Camera Thông Minh</a> (4)
-                                            </li>
-                                            <li class="cat-item"><a href="#">Máy chiếu &amp; Phụ kiện</a> (1)
-                                            </li>
-                                            <li class="cat-item"><a href="#">Phụ kiện kết nối &amp; Chuyển đổi</a> (1)
-                                            </li>
-                                            <li class="cat-item"><a href="#">Sản Phẩm XIAOMI</a> (1)
-                                            </li>
-                                            <li class="cat-item"><a href="#">Smart Watch</a> (1)
-                                            </li>
-                                            <li class="cat-item"><a href="#">Thiết Bị Truyền Hình &amp; TV</a> (1)
-                                            </li>
+                                            @foreach(listCate() as $key=>$cate)
+                                            @if($key < 7)
+                                                <li class="cat-item">
+                                                    <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a> ({{count($cate->products)}})
+                                                </li>
+                                            @endif
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div id="newsnoibat_widget-2" class="widget newsnoibat_widget">
                                         <h3 class="title-sidebar">Tin tức nổi bật</h3>
                                         <div class="tintuc_lienquan">
                                             <ul class="news_list">
-                                                <li class="has-thumbnail">
-                                                    <a href="#">
-                                                        <img width="150" height="150" src="{{url('/vlnk')}}/images/anh-dep-girl-xinh-02-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
-                                                        <h3>Quay video 360 độ, trải nghiệm VR với action camera SJCAM SJ360</h3>
-                                                    </a>
-                                                </li>
-                                                <li class="has-thumbnail">
-                                                    <a href="#">
-                                                        <img width="150" height="150" src="{{url('/vlnk')}}/images/anh-dep-meo-con3__76574_zoom-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
-                                                        <h3>Kinh nghiệm sử dụng camera hành động cho phượt thủ</h3>
-                                                    </a>
-                                                </li>
-                                                <li class="has-thumbnail">
-                                                    <a href="#">
-                                                        <img width="150" height="150" src="{{url('/vlnk')}}/images/maxresdefault-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
-                                                        <h3>Sau camera thể thao SJ6 Legend của SJCAM thị trường sắp đón nhận sản phẩm cao cấp mới mang tên SJ7 Star</h3>
-                                                    </a>
-                                                </li>
-                                                <li class="has-thumbnail">
-                                                    <a href="#">
-                                                        <img width="150" height="150" src="{{url('/vlnk')}}/images/ipcam-qf004-10-20160517042804-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
-                                                        <h3>Có gì mới trên hai phiên bản SJCAM SJ6 Legend và SJ7 Star</h3>
-                                                    </a>
-                                                </li>
+                                                @foreach(listPosts() as $key=>$post)
+                                                @if($key<5)
+                                                    <li class="has-thumbnail">
+                                                        <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}">
+                                                            <img width="150" height="150" src="{{url('/'.$post->post_img)}}" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" />
+                                                            <h3>{{$post->post_name}}</h3>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>
                                     <div id="devvn_widget_most_viewed_entries-2" class="widget devvn_widget_most_viewed_entries">
                                         <h3 class="title-sidebar">Xem nhiều nhất</h3>
                                         <ul>
-                                            <li><a href="#">
-                                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/maxresdefault-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> Sau camera thể thao SJ6 Legend của SJCAM thị trường sắp đón nhận sản phẩm cao cấp mới mang tên SJ7 Star </a></li>
-                                            <li><a href="#">
-                                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/ipcam-qf004-10-20160517042804-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> Có gì mới trên hai phiên bản SJCAM SJ6 Legend và SJ7 Star </a></li>
-                                            <li><a href="#">
-                                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/anh-dep-girl-xinh-02-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> Quay video 360 độ, trải nghiệm VR với action camera SJCAM SJ360 </a></li>
-                                            <li><a href="#">
-                                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/anh-dep-meo-con3__76574_zoom-150x150.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt=""/> Kinh nghiệm sử dụng camera hành động cho phượt thủ </a></li>
-                                            <li><a href="#">
-                                                    <img width="150" height="150" src="{{url('/vlnk')}}/images/kiwibox-s3-49-1-150x150.png" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> Video review camera thể thao SJCAM SJ6 Legend cùng một số hình ảnh về nó </a></li>
+                                            @foreach(listPosts() as $key=>$post)
+                                                @if($key<5)
+                                                <li>
+                                                    <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}">
+                                                    <img width="150" height="150" src="{{url('/'.$post->post_img)}}" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" /> {{$post->post_name}} </a>
+                                                </li>
+                                            @endif
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div id="tag_cloud-3" class="widget widget_tag_cloud">
                                         <h3 class="title-sidebar">Từ khóa</h3>
-                                        <div class="tagcloud"><a href="#" class="tag-cloud-link tag-link-46 tag-link-position-1" style="font-size: 22pt;" aria-label="android (2 mục)">android</a>
-                                            <a href="#" class="tag-cloud-link tag-link-48 tag-link-position-2" style="font-size: 22pt;" aria-label="android box (2 mục)">android box</a>
-                                            <a href="#" class="tag-cloud-link tag-link-47 tag-link-position-3" style="font-size: 8pt;" aria-label="box (1 mục)">box</a></div>
+                                        <div class="tagcloud">
+                                            @foreach(listCate() as $key=>$cate)
+                                                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                                            @endforeach
                                     </div>
                                     <div id="media_image-5" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>
                                 </div>
                             </div>
                         </div><!-- #product-90 -->
-                        <div class="devvn-popup-quickbuy" data-popup="popup-quickbuy" id="popup_content_90">
+                        <div class="devvn-popup-quickbuy" data-popup="popup-quickbuy" id="popup_content_90" style="display: none;">
                             <div class="devvn-popup-inner">
                                 <div class="devvn-popup-title">
                                     <span>Đặt mua IP CAMERA BÁO ĐỘNG CHỐNG TRỘM QF004 HD WIFI</span>
@@ -362,7 +467,8 @@
                                                 </div>
                                                 <input type="hidden" name="add-to-cart" value="90" />
                                                 <button type="submit" class="single_add_to_cart_button button alt" id="single_addtocart">Thêm vào giỏ</button>
-                                                <a title="Hướng dẫn mua hàng" href="/huong-dan-mua-hang/" class="button huong-dan-mua-hang"><i class="fa fa-reply" aria-hidden="true"></i> Hướng dẫn mua hàng</a>
+                                                <a title="Hướng dẫn mua hàng" href="/huong-dan-mua-hang/" class="button huong-dan-mua-hang">Mua thêm</a>
+                                                <a title="Hướng dẫn mua hàng" href="/huong-dan-mua-hang/" class="button huong-dan-mua-hang">Đặt hàng và Thanh toán</a>
                                             </form>
                                         </div>
                                         Bạn vui lòng nhập đúng số điện thoại để chúng tôi sẽ gọi xác nhận đơn hàng trước khi giao hàng. Xin cảm ơn!
@@ -370,152 +476,34 @@
                                     <div class="devvn-popup-content-right">
                                         <form class="devvn_cusstom_info" id="devvn_cusstom_info" method="post">
                                             <div class="popup-customer-info">
-                                                <div class="popup-customer-info-title">Thông tin người mua</div>
-                                                <div class="popup-customer-info-group popup-customer-info-radio">
-                                                    <label>
-                                                        <input type="radio" name="customer-gender" value="1" checked />
-                                                        <span>Anh</span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="radio" name="customer-gender" value="2" />
-                                                        <span>Chị</span>
-                                                    </label>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-2">
-                                                        <input type="text" class="customer-name" name="customer-name" placeholder="Họ và tên">
-                                                    </div>
-                                                    <div class="popup-customer-info-item-2">
-                                                        <input type="text" class="customer-phone" name="customer-phone" placeholder="Số điện thoại">
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1">
-                                                        <input type="text" class="customer-email" name="customer-email" data-required="false" placeholder="Địa chỉ email (Không bắt buộc)">
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-3-13">
-                                                        <select class="customer-location" name="customer-location" id="devvn_city">
-                                                            <option value="">Tỉnh thành</option>
-                                                            <option value="01">Hà Nội</option>
-                                                            <option value="02">Hà Giang</option>
-                                                            <option value="04">Cao Bằng</option>
-                                                            <option value="06">Bắc Kạn</option>
-                                                            <option value="08">Tuyên Quang</option>
-                                                            <option value="10">Lào Cai</option>
-                                                            <option value="11">Điện Biên</option>
-                                                            <option value="12">Lai Châu</option>
-                                                            <option value="14">Sơn La</option>
-                                                            <option value="15">Yên Bái</option>
-                                                            <option value="17">Hoà Bình</option>
-                                                            <option value="19">Thái Nguyên</option>
-                                                            <option value="20">Lạng Sơn</option>
-                                                            <option value="22">Quảng Ninh</option>
-                                                            <option value="24">Bắc Giang</option>
-                                                            <option value="25">Phú Thọ</option>
-                                                            <option value="26">Vĩnh Phúc</option>
-                                                            <option value="27">Bắc Ninh</option>
-                                                            <option value="30">Hải Dương</option>
-                                                            <option value="31">Hải Phòng</option>
-                                                            <option value="33">Hưng Yên</option>
-                                                            <option value="34">Thái Bình</option>
-                                                            <option value="35">Hà Nam</option>
-                                                            <option value="36">Nam Định</option>
-                                                            <option value="37">Ninh Bình</option>
-                                                            <option value="38">Thanh Hóa</option>
-                                                            <option value="40">Nghệ An</option>
-                                                            <option value="42">Hà Tĩnh</option>
-                                                            <option value="44">Quảng Bình</option>
-                                                            <option value="45">Quảng Trị</option>
-                                                            <option value="46">Thừa Thiên Huế</option>
-                                                            <option value="48">Đà Nẵng</option>
-                                                            <option value="49">Quảng Nam</option>
-                                                            <option value="51">Quảng Ngãi</option>
-                                                            <option value="52">Bình Định</option>
-                                                            <option value="54">Phú Yên</option>
-                                                            <option value="56">Khánh Hòa</option>
-                                                            <option value="58">Ninh Thuận</option>
-                                                            <option value="60">Bình Thuận</option>
-                                                            <option value="62">Kon Tum</option>
-                                                            <option value="64">Gia Lai</option>
-                                                            <option value="66">Đắk Lắk</option>
-                                                            <option value="67">Đắk Nông</option>
-                                                            <option value="68">Lâm Đồng</option>
-                                                            <option value="70">Bình Phước</option>
-                                                            <option value="72">Tây Ninh</option>
-                                                            <option value="74">Bình Dương</option>
-                                                            <option value="75">Đồng Nai</option>
-                                                            <option value="77">Bà Rịa - Vũng Tàu</option>
-                                                            <option value="79" selected='selected'>Hồ Chí Minh</option>
-                                                            <option value="80">Long An</option>
-                                                            <option value="82">Tiền Giang</option>
-                                                            <option value="83">Bến Tre</option>
-                                                            <option value="84">Trà Vinh</option>
-                                                            <option value="86">Vĩnh Long</option>
-                                                            <option value="87">Đồng Tháp</option>
-                                                            <option value="89">An Giang</option>
-                                                            <option value="91">Kiên Giang</option>
-                                                            <option value="92">Cần Thơ</option>
-                                                            <option value="93">Hậu Giang</option>
-                                                            <option value="94">Sóc Trăng</option>
-                                                            <option value="95">Bạc Liêu</option>
-                                                            <option value="96">Cà Mau</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="popup-customer-info-item-3-23">
-                                                        <select class="customer-quan" name="customer-quan" id="devvn_district">
-                                                            <option value="">Quận/huyện</option>
-                                                        </select>
-                                                        <input name="require_district" id="require_district" type="hidden" value="0" />
-                                                    </div>
-                                                    <div class="popup-customer-info-item-3-33">
-                                                        <select class="customer-xa" name="customer-xa" id="devvn_ward">
-                                                            <option value="">Xã/phường</option>
-                                                        </select>
-                                                        <input name="require_village" id="require_village" type="hidden" value="0" />
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1">
-                                                        <input type="text" class="customer-address" name="customer-address" placeholder="Số nhà, tên đường (Không bắt buộc)" />
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1">
-                                                        <textarea class="order-note" name="order-note" placeholder="Ghi chú đơn hàng (Không bắt buộc)"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1 popup_quickbuy_shipping">
-                                                        <div class="popup_quickbuy_shipping_title">Phí vận chuyển:</div>
-                                                        <div class="popup_quickbuy_shipping_calc"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1 popup_quickbuy_shipping">
-                                                        <div class="popup_quickbuy_shipping_title">Tổng:</div>
-                                                        <div class="popup_quickbuy_total_calc"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1">
-                                                        <button type="button" class="devvn-order-btn">Đặt hàng ngay</button>
-                                                    </div>
-                                                </div>
-                                                <div class="popup-customer-info-group">
-                                                    <div class="popup-customer-info-item-1">
-                                                        <div class="devvn_quickbuy_mess"></div>
-                                                    </div>
-                                                </div>
+                                                <div class="popup-customer-info-title">Sản phẩm liên quan</div>
                                             </div>
-                                            <input type="hidden" name="prod_id" id="prod_id" value="90">
-                                            <input type="hidden" name="prod_nonce" id="prod_nonce" value="">
-                                            <input type="hidden" name="enable_ship" id="enable_ship" value="1">
-                                            <input name="require_address" id="require_address" type="hidden" value="0" />
                                         </form>
                                     </div>
                                 </div>
+                                <div class="devvn-popup-content">
+                                    <ul class="products columns-4">
+                                        @foreach(listProducts() as $key=>$prod)
+                                        @if($key<4)
+                                            <li class="product">
+                                                <div class="shop_loop_box">
+                                                    <a class="product_id" data-id="{{$dat->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                        <span class="onsale">Giảm giá!</span>
+                                                        <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
+                                                    </a>
+                                                    <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
+                                                </div>
+                                                <a class="product_id" data-id="{{$dat->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                                </a>
+                                                <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                <div class="devvn_is_featured"><img width="80" height="44" src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                            </li>
+                                        @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -534,4 +522,206 @@
             }
         }
     </style>
+    <div class="fancybox-overlay fancybox-overlay-fixed" style="width: auto; height: auto; display: none;">
+        <div class="fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened" tabindex="-1" style="width: 817px; height: auto; position: absolute; top: 24px; left: 266px; opacity: 1; overflow: visible;">
+            <div class="fancybox-skin" style="padding: 0px; width: auto; height: auto;">
+                <div class="fancybox-outer">
+                    <div class="fancybox-inner" style="overflow: auto;">
+                        <div id="devvn-wacp-popup">
+                            <div class="devvn-wacp-wrapper woocommerce">
+                                <div class="devvn-wacp-main">
+                                    <div class="devvn-wacp-content">
+                                        <h2>1 Sản phẩm đã được thêm vào giỏ hàng.</h2>
+                                        <div class="info-box">
+                                            <div class="product-thumb">
+                                                <a href="https://tech360.vn/action-camera-sjcam-sj8-plus"><img width="300" height="300" src="https://tech360.vn/wp-content/uploads/2016/12/SJ8-pro-1-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""></a> </div>
+                                            <div class="product-info">
+                                                <h3 class="product-title">
+                                                    <a href="https://tech360.vn/action-camera-sjcam-sj8-plus">
+                                                        Action camera SJACM SJ8 Plus 4K Wifi </a>
+                                                </h3>
+                                                <span class="product-price">
+                                                    <del><span class="woocommerce-Price-amount amount">4.349.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></del> <ins><span class="woocommerce-Price-amount amount">4.149.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></ins> </span>
+                                            </div>
+                                        </div>
+                                        <div class="cart-info">
+                                            <h3>Giỏ hàng của bạn</h3>
+                                            <div class="cart-totals">
+                                                Tổng: <span class="cart-cost">
+                                                    <span class="woocommerce-Price-amount amount">16.596.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span> </span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="text-right button_popup_cart">
+                                            <a href="#" class="tat_popup" id="button_muathemsanpham">Mua thêm sản phẩm</a>
+                                            <a href="https://tech360.vn/thanh-toan" id="button_dathang_thanhtoan">Đặt hàng và thanh toán</a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="woocommmerce devvn-wacp-related">
+                                            <h3>Một số sản phẩm có thể bạn quan tâm</h3>
+                                            <ul class="products columns-4">
+                                        @foreach(listProducts() as $key=>$prod)
+                                        @if($key<4)
+                                            <li class="product">
+                                                <div class="shop_loop_box">
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                        <span class="onsale">Giảm giá!</span>
+                                                        <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
+                                                    </a>
+                                                    <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
+                                                </div>
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                                </a>
+                                                <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                <div class="devvn_is_featured"><img width="80" height="44" src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                            </li>
+                                        @endif
+                                        @endforeach
+                                    </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>
+            </div>
+        </div>
+    </div>
+    <style>
+        div#devvn-wacp-popup {
+            background: #fff;
+            padding: 10px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .devvn-wacp-content h2 {
+            font-size: 18px;
+            margin: 0 0 10px;
+            font-weight: 700;
+            color: #e03232;
+        }
+        div#devvn-wacp-popup .info-box {
+            overflow: hidden;
+            float: left;
+            padding-right: 230px;
+            width: 100%;
+        }
+        .devvn-wacp-content {
+            position: relative;
+        }
+        div#devvn-wacp-popup .cart-info {
+            float: right;
+            width: 220px;
+            padding: 15px 10px 10px 10px;
+            border: 1px solid #ccc;
+            position: absolute;
+            line-height: 22px;
+            background: #fff;
+            right: 0;
+            top: 50px;
+        }
+        div#devvn-wacp-popup .product-thumb {
+            float: left;
+            width: 110px;
+            margin: 0 20px 0 0;
+        }
+        div#devvn-wacp-popup .product-info {
+            padding-top: 20px;
+        }
+        div#devvn-wacp-popup .cart-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0;
+            background: #fff;
+            padding: 5px;
+            position: absolute;
+            top: -15px;
+        }
+        div#devvn-wacp-popup .cart-info span.shipping-cost,
+        div#devvn-wacp-popup .cart-info span.cart-cost {
+            font-weight: 700;
+            color: #e03232;
+        }
+        div#devvn-wacp-popup .info-box .product-info h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        div#devvn-wacp-popup .info-box .product-info span.product-price {
+            color: #e03232;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        div#devvn-wacp-popup .info-box .product-info span.product-price del {
+            opacity: 1;
+            display: inline-block;
+            color: #898989;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        div#devvn-wacp-popup .info-box .product-info span.product-price ins {
+            background: 0 0;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .button_popup_cart a {
+            display: inline-block;
+            background: #e03232;
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 15px;
+            margin: 0 4px;
+            text-decoration: none;
+        }
+        .button_popup_cart a:hover {
+            background: #6d6d6d;
+        }
+        .devvn-wacp-related > h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e03232;
+        }
+        @media (max-width: 767px){
+            div#devvn-wacp-popup .info-box {
+                padding-right: 0;
+            }
+            div#devvn-wacp-popup .cart-info {
+                position: relative;
+                width: 100%;
+                top: 0;
+                margin: 15px 0;
+            }   
+        }
+        @media (max-width: 399px){  
+            .devvn-wacp-content h2 {
+                font-size: 14px;
+                line-height: 20px;
+            }
+            div#devvn-wacp-popup .info-box .product-info h3 {
+                margin: 0 0 10px;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+            }
+            div#devvn-wacp-popup .product-info {
+                padding-top: 0;
+            }
+            .button_popup_cart a {
+                margin: 0 auto 5px;
+                width: 100%;
+            }
+            .text-right {
+                text-align: center;
+            }
+        }
+    </style>
+   {{--  <div id="show_phone_mobile_popup">
+        <p style="text-align: center;"><strong>Hotline</strong></p>
+        <p style="text-align: center;">Hà Nội:&nbsp;<a href="tel:0938941111"><strong>0938.94.1111</strong></a><br>
+            Tp.HCM: <a href="tel:0938941115"><strong>0938.94.1115</strong></a></p>
+    </div> --}}
 @endsection
