@@ -31,7 +31,7 @@
                             @foreach($data as $key=>$dat)
                                 <li class="product type-product">
                                     <div class="shop_loop_box">
-                                        <a class="product_id" data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                        <a data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                             @if(!empty($dat->prod_sale))
                                                 <span class="onsale">Giảm giá!</span>
                                             @endif
@@ -39,7 +39,7 @@
                                         </a>
                                         <a rel="nofollow" href="#" data-quantity="1" data-product_id="98" data-product_sku="TYCOT35" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_98">Thêm vào giỏ</a> 
                                     </div>
-                                    <a class="product_id" data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                    <a data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="product_idwoocommerce-LoopProduct-link woocommerce-loop-product__link">
                                         <h2 class="woocommerce-loop-product__title">{{$dat->prod_name}}</h2>
                                     </a>
                                     <div class="woocommerce-product-rating">

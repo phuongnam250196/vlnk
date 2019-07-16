@@ -9,7 +9,7 @@
                 @if($key<5)
                     <li class="product">
                         <div class="shop_loop_box">
-                            <a class="product_id" data-id="{{$product->id}}" href="{{url('product/'.$product->prod_slug)}}" class="">
+                            <a class="product_id" data-id="{{$product->id}}" href="{{url('product/'.$product->prod_slug)}}">
                                 @if(!empty($product->prod_sale))
                                     <span class="onsale">Giảm giá!</span>
                                 @endif
@@ -17,7 +17,7 @@
                             </a>
                             <a rel="nofollow" href="#" data-quantity="1" data-product_id="224" data-product_sku="" class="button product_type_simple ajax_add_to_cart" id="tech_addtocart_224">Đọc tiếp</a> 
                         </div>
-                        <a class="product_id" data-id="{{$product->id}}" href="{{url('product/'.$product->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                        <a data-id="{{$product->id}}" href="{{url('product/'.$product->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                             <h2 class="woocommerce-loop-product__title">{{$product->prod_name}}</h2>
                         </a>
                         <span class="price">

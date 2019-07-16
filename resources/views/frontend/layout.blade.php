@@ -87,7 +87,7 @@
         .section_cvp_title h3:after {
             border-left: 30px solid {{infoOther()->color}};
         }
-        .woocommerce ul.products li.product .price, .widget_recent_entries_svl ul li a:hover, .woocommerce ul.products li.product a:hover, .widget.block-sidebar > ul li a:hover, h1.title-page, h2.post-title a:hover, ul.news_list li a:hover, .widget > ul li a:hover, .relatedcat a:hover, a.cart-contents:hover, .tinymce a, ul.devvn_mega_menu_ul > li:hover > a, .woocommerce div.product p.price, .woocommerce div.product span.price, .chinhsach_content strong, .contact-detail ul li span, .related.products h2, .up-sells.upsells.products h2, .product_meta .sku, .product_meta a, .cart_totals h2 {
+        .woocommerce ul.products li.product .price, .widget_recent_entries_svl ul li a:hover, .woocommerce ul.products li.product a:hover, .widget.block-sidebar > ul li a:hover, h1.title-page, h2.post-title a:hover, ul.news_list li a:hover, .widget > ul li a:hover, .relatedcat a:hover, a.cart-contents:hover, .tinymce a, ul.devvn_mega_menu_ul > li:hover > a, .woocommerce div.product p.price, .woocommerce div.product span.price, .chinhsach_content strong, .contact-detail ul li span, .related.products h2, .up-sells.upsells.products h2, .product_meta .sku, .product_meta a, .cart_totals h2, div#customer_details h3, h3#order_review_heading {
             color: {{infoOther()->color}};
         }
         div#reviews div#comments {
@@ -96,6 +96,9 @@
         h1.page-title {
             color: {{infoOther()->color}};
             border-bottom: 2px solid {{infoOther()->color}};
+        }
+        .woocommerce-info {
+            border-top-color: {{infoOther()->color}};
         }
     </style>
 </head>
@@ -274,18 +277,11 @@
     <script type='text/javascript' src='{{url("/vlnk")}}/js/scripts.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.validate.min.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.bpopup.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/underscore.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/wp-util.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/add-to-cart-variation.min.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/devvn-quick-buy.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/devvn_main.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/add-to-cart.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.blockUI.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/js.cookie.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/woocommerce.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/cart-fragments.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/wp-embed.min.js'></script>
-    <script type='text/javascript' src='{{url("/vlnk")}}/js/drag-quick-call-button.js'></script>
+    {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/js.cookie.min.js'></script> --}}
+    {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/woocommerce.min.js'></script> --}}
+    {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/drag-quick-call-button.js'></script> --}}
     <a title="Lên đầu trang" href="#" class="scrollTo_top"><i class="fa fa-arrow-up"></i></a>
     <div class="cart_floating_right">
         <div class="cart_floating_right_button"><strong><i class="fa fa-shopping-basket"></i> Giỏ hàng</strong></div>

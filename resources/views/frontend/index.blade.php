@@ -1,9 +1,11 @@
 @extends('frontend.layout')
-@section('title', 'Trang chủ')
-@section('description', 'Đem khách hàng cho cho bạn')
-@section('image', url('/'.infoOther()->logo))
-@section('url', url('/'))
-@section('sitename', 'vlnk')
+@section('title', 'Trang chủ - '.$seopost->title)
+@section('description', $seopost->description)
+@section('image', url('/'.$seopost->image))
+@section('url', $seopost->url)
+@section('sitename', $_SERVER['REQUEST_URI'])
+@section('keywords', $seopost->keyword)
+@section('author', $seopost->author)
 @section('main')
 	<div class="main_body">
         <div class="container">
@@ -83,7 +85,7 @@
                                     @if($key<4)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
@@ -91,7 +93,7 @@
                                                 </a>
                                                 <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
                                             </div>
-                                            <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
                                             <span class="price">
@@ -132,7 +134,7 @@
                                     @if($key<4)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
@@ -140,7 +142,7 @@
                                                 </a>
                                                 <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
                                             </div>
-                                            <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
                                             <span class="price">
@@ -181,7 +183,7 @@
                                     @if($key<4)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
@@ -189,7 +191,7 @@
                                                 </a>
                                                 <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
                                             </div>
-                                            <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                 <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                             </a>
                                             <span class="price">

@@ -4,7 +4,7 @@
 @section('image', url('/'.$seopost->image))
 @section('url', $seopost->url)
 @section('sitename', $_SERVER['REQUEST_URI'])
-@section('keywords', $seopost->keywords)
+@section('keywords', $seopost->keyword)
 @section('author', $seopost->author)
 @section('main')
 	<div class="main_body">
@@ -19,7 +19,7 @@
                                 <div class="post-info">
                                     <span class="thetime updated"><i class="fa fa-clock-o"></i> <span>{{date_format($post->created_at, 'd/m/Y')}}</span></span>
                                     <span class="post_count"><i class="fa fa-eye"></i> <span>
-                                            <p class="bawpvc-ajax-counter" data-id="9087">8 lượt xem</p>
+                                            <p class="bawpvc-ajax-counter">{{!empty($view->count)?$view->count:0}} lượt xem</p>
                                         </span></span>
                                 </div>
                             </header>
@@ -35,8 +35,11 @@
                                 <nav class="navigation post-navigation" role="navigation">
                                     <h2 class="screen-reader-text">Điều hướng bài viết</h2>
                                     <div class="nav-links">
-                                        <div class="nav-previous"><a href="https://tech360.vn/goc-lam-giau-cach-mo-rap-chieu-phim-mini-von-it-loi-nhuan-cao" rel="prev"><span class="meta-nav" aria-hidden="true">Bài trước</span> <br><span class="post-title">[Góc làm giàu] Cách mở rạp chiếu phim mini vốn ít, lợi nhuận cao</span></a></div>
-                                        <div class="nav-next"><a href="https://tech360.vn/co-dang-de-chi-tien-cho-mot-chiec-may-chieu-co-do-phan-giai-cao-hon-khong" rel="next"><span class="meta-nav" aria-hidden="true">Bài tiếp</span> <br><span class="post-title">Có đáng để chi tiền cho một chiếc máy chiếu có độ phân giải cao hơn không?</span></a></div>
+                                        @foreach($post_others as $key=>$posttwo)
+                                        @if($key<2)
+                                            <div class="@if($key==0) nav-previous @else nav-next @endif"><a data-id="{{$posttwo->id}}" class="news_id" href="{{url('/news/'.$posttwo->post_slug)}}" rel="@if($key==0) prev @else next @endif"><span class="meta-nav" aria-hidden="true">@if($key==0) Bài trước @else Bài tiếp @endif</span> <br><span class="post-title">{{$posttwo->post_name}}</span></a></div>
+                                        @endif
+                                        @endforeach
                                     </div>
                                 </nav>
                             </div>

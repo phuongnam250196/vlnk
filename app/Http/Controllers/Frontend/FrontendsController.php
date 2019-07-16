@@ -25,7 +25,8 @@ class FrontendsController extends Controller
         $products = Products::orderBy('created_at', 'desc')->get();
         $posts = Posts::orderBy('created_at', 'desc')->get();
         $sliders = sliders::where('status', 1)->orderBy('created_at', 'desc')->limit(5)->get();
-    	return view('frontend.index', compact('products', 'posts', 'sliders'));
+        $seopost = seos::where('type', 'admin')->where('p_id', 1)->first();
+    	return view('frontend.index', compact('products', 'posts', 'sliders', 'seopost'));
     }
 
     public function getContact() {
@@ -81,7 +82,8 @@ class FrontendsController extends Controller
         $comments = comments::where('news_id', $post->id)->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
         // dd($post_others);
         $seopost = seos::where('type', 'post')->where('p_id', $post->id)->first();
-        return view('frontend.news_detail', compact('post', 'post_others', 'comments', 'seopost'));
+        $view = views::where('other_id', $post->id)->where('type', 'news')->first();
+        return view('frontend.news_detail', compact('post', 'post_others', 'comments', 'seopost', 'view'));
     }
 
     public function getNewsDetailCategorySlug($slug) {
@@ -138,11 +140,12 @@ class FrontendsController extends Controller
 
     public function getVideosDetailSlug($slug) {
         $video = Videos::where('video_slug', $slug)->first();
+        $video_others = Videos::where('id', '!=', $video->id)->orderBy('created_at', 'desc')->limit(2)->get();
         $post_others = Posts::orderBy('created_at', 'desc')->limit(6)->get();
         $comments = comments::where('videos_id', $video->id)->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
         $seopost = seos::where('type', 'video')->where('p_id', $video->id)->first();
         $view = views::where('other_id', $video->id)->where('type', 'videos')->first();
-        return view('frontend.videos_detail', compact('video', 'post_others', 'comments', 'seopost', 'view'));
+        return view('frontend.videos_detail', compact('video', 'post_others', 'video_others', 'comments', 'seopost', 'view'));
     }
 
     public function getVideosCategorySlug($slug) {
@@ -194,14 +197,23 @@ class FrontendsController extends Controller
 
     public function getCategorySlug($slug) {
         $cate = Categories::where('cate_slug', $slug)->first();
-        $data = Products::whereHas('categories', function($b) use($slug) {
-            $b->where('cate_slug', $slug);
-        })->orderBy('created_at', 'desc')->paginate(24);
+        if(!empty($_GET['type'])) {
+            if($_GET['type'] == 'view') {
+                $data = Products::whereHas('categories', function($b) use($slug) {
+                    $b->where('cate_slug', $slug);
+                })->with('views')->paginate(24);
+                // dd($data);
+            }
+        } else {
+            $data = Products::whereHas('categories', function($b) use($slug) {
+                $b->where('cate_slug', $slug);
+            })->paginate(24);
+        }
         // dd($data);
         return view('frontend.category', compact('data', 'cate'));
     }
 
-    public function getProductDetail($slug) {
+    public function getProductDetail(Request $request, $slug) {
         $product = Products::where('prod_slug', $slug)->first();
         $comments = comments::where('prod_id', $product->id)->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
         $seopost = seos::where('type', 'product')->where('p_id', $product->id)->first();

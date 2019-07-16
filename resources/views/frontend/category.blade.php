@@ -19,23 +19,22 @@
                         </div>
                         <div class="woocommerce-notices-wrapper"></div>
                         <p class="woocommerce-result-count">
-                            Hiển thị {{!empty($_GET['page'])?$_GET['page']:1}}–{{!empty($_GET['page'])?$_GET['page']*24:24}} của {{count($cate->products)}} sản phẩm</p>
-                        <form class="woocommerce-ordering" method="get">
-                            <select name="orderby" class="orderby" aria-label="Shop order">
-                                <option value="menu_order" selected="selected">Thứ tự mặc định</option>
-                                <option value="popularity">Thứ tự theo mức độ phổ biến</option>
-                                <option value="rating">Thứ tự theo điểm đánh giá</option>
-                                <option value="date">Mới nhất</option>
-                                <option value="price">Thứ tự theo giá: thấp đến cao</option>
-                                <option value="price-desc">Thứ tự theo giá: cao xuống thấp</option>
+                            Hiển thị {{!empty($_GET['page'])?$_GET['page']:1}}–{{!empty($_GET['page'])?$_GET['page']*24:24}} của {{count($data)}} sản phẩm</p>
+                        <div class="woocommerce-ordering">
+                            <select name="orderby" class="orderby" onchange="location = this.value;">
+                                <option value="{{url('/category/'.$cate->cate_slug)}}" selected="selected">Thứ tự mặc định</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=view')}}">Thứ tự theo lượt xem nhiều nhất</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=review')}}">Thứ tự theo điểm đánh giá cao nhất</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=new')}}">Mới nhất</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=price')}}">Thứ tự theo giá: thấp đến cao</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=price-desc')}}">Thứ tự theo giá: cao xuống thấp</option>
                             </select>
-                            <input type="hidden" name="paged" value="1">
-                        </form>
+                        </div>
                         <ul class="products columns-4">
                             @foreach($data as $key=>$dat)
                                 <li class="product type-product">
                                     <div class="shop_loop_box">
-                                        <a class="product_id" data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                        <a data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                             @if(!empty($dat->prod_sale))
                                                 <span class="onsale">Giảm giá!</span>
                                             @endif
@@ -43,7 +42,7 @@
                                         </a>
                                         <a rel="nofollow" href="#" data-quantity="1" data-product_id="98" data-product_sku="TYCOT35" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_98">Thêm vào giỏ</a> 
                                     </div>
-                                    <a class="product_id" data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                    <a data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                         <h2 class="woocommerce-loop-product__title">{{$dat->prod_name}}</h2>
                                     </a>
                                     <div class="woocommerce-product-rating">

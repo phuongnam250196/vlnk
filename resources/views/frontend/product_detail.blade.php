@@ -4,7 +4,7 @@
 @section('image', url('/'.$seopost->image))
 @section('url', $seopost->url)
 @section('sitename', $_SERVER['REQUEST_URI'])
-@section('keywords', $seopost->keywords)
+@section('keywords', $seopost->keyword)
 @section('author', $seopost->author)
 @section('main')
 	<div class="main_body">
@@ -22,45 +22,18 @@
                                         @endif
                                         <div class="{{url('/vlnk')}}/images">
                                             <div id="product_slider" class="owl-carousel">
+                                                @foreach(explode('|',$product->prod_gallery) as $key=>$image)
                                                 <div class="item">
-                                                    <a href="{{url('/vlnk')}}/images/ipcam-qf004-4-20160517042804.jpg" itemprop="image" class="woocommerce-main-image zoom single-product-lightbox" title="" rel="single-gallery" data-rel="prettyPhoto[product-gallery]"><img width="600" height="600" src="{{url('/vlnk')}}/images/ipcam-qf004-4-20160517042804-600x600.jpg" class="attachment-shop_single size-shop_single wp-post-image" alt="" title="ipcam-qf004-4-20160517042804" /></a> 
+                                                    <a href="{{url('/'.$image)}}" class="woocommerce-main-image zoom single-product-lightbox"><img width="600" height="600" src="{{url('/'.$image)}}" class="attachment-shop_single size-shop_single wp-post-image" /></a> 
                                                 </div>
-                                                <div class="item">
-                                                    <a href="{{url('/vlnk')}}/images/ipcam-qf004-4-20160517042804.jpg" class="zoom single-product-lightbox" title="" rel="single-gallery" data-rel="prettyPhoto[product-gallery]"><img width="600" height="600" src="{{url('/vlnk')}}/images/ipcam-qf004-4-20160517042804-600x600.jpg" class="attachment-shop_single size-shop_single" /></a>
-                                                </div>
-                                                <div class="item">
-                                                    <a href="{{url('/vlnk')}}/images/ipcam-qf004-8-20160517042804.jpg" class="zoom single-product-lightbox" title="" rel="single-gallery" data-rel="prettyPhoto[product-gallery]"><img width="600" height="600" src="{{url('/vlnk')}}/images/ipcam-qf004-8-20160517042804-600x600.jpg" class="attachment-shop_single size-shop_single" />
-                                                    </a>
-                                                </div>
-                                                <div class="item">
-                                                    <a href="{{url('/vlnk')}}/images/ipcam-qf004-18-20160517042804.jpg" class="zoom single-product-lightbox" title="" rel="single-gallery" data-rel="prettyPhoto[product-gallery]"><img width="600" height="600" src="{{url('/vlnk')}}/images/ipcam-qf004-18-20160517042804-600x600.jpg" class="attachment-shop_single size-shop_single" /></a>
-                                                </div>
-                                                <div class="item">
-                                                    <a href="{{url('/vlnk')}}/images/ipcam-qf004-14-20160517042804.jpg" class="zoom single-product-lightbox" title="" rel="single-gallery" data-rel="prettyPhoto[product-gallery]"><img width="600" height="600" src="{{url('/vlnk')}}/images/ipcam-qf004-14-20160517042804-600x600.jpg" class="attachment-shop_single size-shop_single" /></a>
-                                                </div>
-                                                <div class="item">
-                                                    <a href="{{url('/vlnk')}}/images/ipcam-qf004-10-20160517042804.jpg" class="zoom single-product-lightbox" title="" rel="single-gallery" data-rel="prettyPhoto[product-gallery]"><img width="600" height="600" src="{{url('/vlnk')}}/images/ipcam-qf004-10-20160517042804-600x600.jpg" class="attachment-shop_single size-shop_single" /></a>
-                                                </div>
+                                                @endforeach
                                             </div>
                                             <div id="product_thumbnails" class="owl-carousel">
+                                                @foreach(explode('|',$product->prod_gallery) as $key=>$image)
                                                 <div class="item" data-id="1">
-                                                    <img width="100" height="100" src="{{url('/vlnk')}}/images/ipcam-qf004-4-20160517042804-100x100.jpg" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" />
+                                                    <img width="100" height="100" src="{{url('/'.$image)}}" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" />
                                                 </div>
-                                                <div class="item" data-id="2">
-                                                    <img width="100" height="100" src="{{url('/vlnk')}}/images/ipcam-qf004-4-20160517042804-600x600.jpg" class="attachment-shop_thumbnail size-shop_thumbnail" alt="" />
-                                                </div>
-                                                <div class="item" data-id="3">
-                                                    <img width="100" height="100" src="{{url('/vlnk')}}/images/ipcam-qf004-8-20160517042804-600x600.jpg" class="attachment-shop_thumbnail size-shop_thumbnail" />
-                                                </div>
-                                                <div class="item" data-id="4">
-                                                    <img width="100" height="100" src="{{url('/vlnk')}}/images/ipcam-qf004-18-20160517042804-600x600.jpg" class="attachment-shop_thumbnail size-shop_thumbnail" />
-                                                </div>
-                                                <div class="item" data-id="5">
-                                                    <img width="100" height="100" src="{{url('/vlnk')}}/images/ipcam-qf004-14-20160517042804-600x600.jpg" class="attachment-shop_thumbnail size-shop_thumbnail" />
-                                                </div>
-                                                <div class="item" data-id="6">
-                                                    <img width="100" height="100" src="{{url('/vlnk')}}/images/ipcam-qf004-10-20160517042804-600x600.jpg" class="attachment-shop_thumbnail size-shop_thumbnail" />
-                                                </div>
+                                                @endforeach
                                             </div>
                                             <div class="thiet-bi">
                                                 <p><img class="alignnone size-full wp-image-66" src="{{url('/vlnk')}}/images/home_07.png" alt="" width="100%" /></p>
@@ -99,7 +72,7 @@
                                             <span class="sku_wrapper">Mã: <span class="sku">QF004 HD WIFI</span></span>
                                             <span class="posted_in">Danh mục: 
                                                 @foreach(listCate() as $cate)
-                                                    <a href="{{url('/category/'.$cate->cate_slug)}}" rel="tag">{{$cate->cate_name}}</a>,
+                                                    <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" rel="tag">{{$cate->cate_name}}</a>,
                                                 @endforeach
                                              </span>
                                         </div>
@@ -168,7 +141,7 @@
                                             @if($key<4)
                                                 <li class="product">
                                                 <div class="shop_loop_box">
-                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                         @if(!empty($prod->prod_sale))
                                                             <span class="onsale">Giảm giá!</span>
                                                         @endif
@@ -176,7 +149,7 @@
                                                     </a>
                                                     <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
                                                 </div>
-                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                                 </a>
                                                 <span class="price">
@@ -197,7 +170,7 @@
                                                 @if(!empty($prod->installment))
                                                     <div class="devvn_is_tragop">
                                                         <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
-                                                        <a href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                        <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
                                                     </div>
                                                 @endif
                                             </li>
@@ -438,7 +411,7 @@
                                         <h3 class="title-sidebar">Từ khóa</h3>
                                         <div class="tagcloud">
                                             @foreach(listCate() as $key=>$cate)
-                                                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                                                <a data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="category_id tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
                                             @endforeach
                                     </div>
                                     <div id="media_image-5" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>
@@ -487,13 +460,13 @@
                                         @if($key<4)
                                             <li class="product">
                                                 <div class="shop_loop_box">
-                                                    <a class="product_id" data-id="{{$dat->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                         <span class="onsale">Giảm giá!</span>
                                                         <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
                                                     </a>
                                                     <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
                                                 </div>
-                                                <a class="product_id" data-id="{{$dat->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                                 </a>
                                                 <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
@@ -564,13 +537,13 @@
                                         @if($key<4)
                                             <li class="product">
                                                 <div class="shop_loop_box">
-                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                         <span class="onsale">Giảm giá!</span>
                                                         <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
                                                     </a>
                                                     <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
                                                 </div>
-                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                                 </a>
                                                 <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>

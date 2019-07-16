@@ -3,7 +3,7 @@
         <h3 class="title-sidebar">Loại sản phẩm</h3>
         <ul class="product-categories">
             @foreach(listCate() as $key=>$cate)
-            <li class="cat-item"><a href="{{url('/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a> <span class="count">({{count($cate->products)}})</span></li>
+            <li class="cat-item"><a class="category_id" data-id="$cate->id" href="{{url('/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a> <span class="count">({{count($cate->products)}})</span></li>
             @endforeach
         </ul>
     </div>

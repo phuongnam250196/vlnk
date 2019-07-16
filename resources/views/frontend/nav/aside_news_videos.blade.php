@@ -62,7 +62,7 @@
         <h3 class="title-sidebar">Từ khóa</h3>
         <div class="tagcloud">
             @foreach(listCate() as $key=>$cate)
-                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                <a data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="category_id tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
             @endforeach
     </div>
     <div id="media_image-5" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>

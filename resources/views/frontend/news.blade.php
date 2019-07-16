@@ -66,7 +66,7 @@
                                             <div class="post-excerpt">
                                                 <p>{!! strip_tags(preg_replace("/<img[^>]+\>/i", "(image) ", $post->post_content)) !!}</p>
                                             </div>
-                                            <a class="news_id" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}" title="{{$post->post_name}}" rel="nofollow" class="read_more">Xem thêm</a>
+                                            <a class="news_id read_more" data-id="{{$post->id}}" href="{{url('/news/'.$post->post_slug)}}" title="{{$post->post_name}}" rel="nofollow">Xem thêm</a>
                                         </div>
                                     </div>
                                 </article>
