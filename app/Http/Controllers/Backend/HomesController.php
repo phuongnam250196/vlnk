@@ -54,6 +54,6 @@ class HomesController extends Controller
 
     public function getLogout() {
         Auth::logout();
-        return redirect()->intended('/login');
+        return redirect()->intended('quantri/login');
     }
 }

@@ -99,7 +99,8 @@
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Gắn tag</div>
 										  	<div class="product_d_flex_input">
-												<select class="form-control select2" id="example2" name="tag_id[]" multiple="multiple">  
+												<select class="form-control select2" id="example2" name="tag_id[]" multiple="multiple">
+													@if(!empty($tag))
 													<option value="1" <?php if(in_array('1', $tag)) echo 'selected'; ?>>Argentina</option>
 													<option value="2" <?php if(in_array('2', $tag)) echo 'selected'; ?>>Australia</option>
 													<option value="3" <?php if(in_array('3', $tag)) echo 'selected'; ?>>Austria</option>
@@ -110,6 +111,7 @@
 													<option value="8" <?php if(in_array('8', $tag)) echo 'selected'; ?>>Canada</option>
 													<option value="9" <?php if(in_array('9', $tag)) echo 'selected'; ?>>China</option>
 													<option value="10" <?php if(in_array('10', $tag)) echo 'selected'; ?>>Colombia</option>
+													@endif
 												</select>
 										  	</div>
 										</div>

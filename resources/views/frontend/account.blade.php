@@ -2,7 +2,7 @@
 @section('title', 'Đăng nhập')
 @section('description', 'Giúp người dùng có thể đăng nhập vào hệ thống')
 @section('image', url('/'.infoOther()->logo))
-@section('url', url('/account'))
+@section('url', url('/login'))
 @section('sitename', $_SERVER['REQUEST_URI'])
 @section('keywords', 'Đăng ký, đăng nhập, lấy lại mật khẩu')
 @section('author', $_SERVER['HTTP_HOST'])

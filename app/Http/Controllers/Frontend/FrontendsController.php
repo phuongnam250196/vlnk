@@ -11,6 +11,7 @@ use App\contacts;
 use App\Categories;
 use App\comments;
 use App\seos;
+use App\carts;
 use App\sliders;
 use App\User;
 use App\views;
@@ -204,10 +205,31 @@ class FrontendsController extends Controller
                 })->with('views')->paginate(24);
                 // dd($data);
             }
+            if($_GET['type'] == 'review') {
+                $data = Products::whereHas('categories', function($b) use($slug) {
+                    $b->where('cate_slug', $slug);
+                })->with('views')->paginate(24);
+                // dd($data);
+            }
+            if($_GET['type'] == 'price') {
+                $data = Products::whereHas('categories', function($b) use($slug) {
+                    $b->where('cate_slug', $slug);
+                })->with('views')->orderBy('prod_price', 'asc')->paginate(24);
+            }
+            if($_GET['type'] == 'price-desc') {
+                $data = Products::whereHas('categories', function($b) use($slug) {
+                    $b->where('cate_slug', $slug);
+                })->with('views')->orderBy('prod_price', 'desc')->paginate(24);
+            }
+            if($_GET['type'] == 'new') {
+                $data = Products::whereHas('categories', function($b) use($slug) {
+                    $b->where('cate_slug', $slug);
+                })->with('views')->orderBy('created_at', 'desc')->paginate(24);
+            }
         } else {
             $data = Products::whereHas('categories', function($b) use($slug) {
                 $b->where('cate_slug', $slug);
-            })->paginate(24);
+            })->with('views')->paginate(24);
         }
         // dd($data);
         return view('frontend.category', compact('data', 'cate'));
@@ -299,7 +321,7 @@ class FrontendsController extends Controller
             }
             if(Auth::attempt($arr, $remember)) {
                 // return redirect()->intended('admin');
-                return back();
+                return redirect()->intended('account');
             } else {
                 return back()->withInput()->with('error', 'Tài khoản hoặc mật khẩu không hợp lệ!!!!');
             }
@@ -307,6 +329,11 @@ class FrontendsController extends Controller
             return view('frontend.account', ['errors'=>$validator->errors()->all()]);
         }
         
+    }
+
+    /* Đăng nhập thành công */
+    public function getAccountInfo() {
+        return view('frontend.login_success');
     }
 
     /* Đăng ký */
@@ -375,5 +402,57 @@ class FrontendsController extends Controller
             }
             return response()->json(compact('data'));
         }
+    }
+
+    public function addProductToCart(Request $request) {
+        
+        $message = [];
+        $rules = [
+            'id' => 'required',
+        ];
+        $messages = [
+            'id.required' => 'Id không được để trống',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            $data = carts::where('product_id', $request->id)->where('user_id', 2)->first();
+            if(!empty($data)) {
+                $data->amount += 1;
+                $data->price = $request->price*$data->amount;
+                $data->save();
+                $message = ['code'=>'200', 'message'=>'Thêm sản phẩm vào giỏ hàng thành công!'];
+                $data = carts::where('product_id', $request->id)->where('user_id', 2)->with('products')->first();
+                $count = carts::count();
+            } else {
+                $data = new carts;
+                $data->price = $request->price;
+                $data->amount = 1;
+                $data->product_id = $request->id;
+                $data->user_id = $request->user_id;
+                $data->status = 1;
+                $data->save();
+                $message = ['code'=>'200', 'message'=>'Thêm sản phẩm vào giỏ hàng thành công!'];
+                $data = carts::where('product_id', $request->id)->where('user_id', $request->user_id)->orderBy('created_at', 'desc')->with('products')->first();
+                $count = carts::count();
+            }
+            return response()->json(compact('data', 'message', 'count'));
+        }
+    }
+
+    public function delProductToCart(Request $request) {
+        $message = [];
+        $data = carts::find($request->id);
+        if(!empty($data)) {
+            $data->delete();
+            $message[] = ['code'=>200, 'Xóa sản phẩm thành công!'];
+        }
+        return response()->json(compact('message', 'data'));
+    }
+
+    public function listToCart() {
+        $data = carts::with('products')->get();
+        return response()->json(compact('data'));
     }
 }

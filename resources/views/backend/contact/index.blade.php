@@ -46,43 +46,14 @@
                                         <td>
                                             {{$dat->name}}<br />
                                             {{$dat->email}}<br />
-                                            IP: 79.112.97.75 </td>
+                                            IP: 79.112.97.75 
+                                        </td>
                                         <td>
                                             <a href="pro-contact-messages-details.html" class="btn btn-primary btn-sm" data-placement="top" data-toggle="tooltip" data-title="Read message"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            <a href="javascript:deleteRecord_2('2');" class="btn btn-danger btn-sm" data-placement="top" data-toggle="tooltip" data-title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                            <script>
-                                            function deleteRecord_2(RecordId) {
-                                                if (confirm('Confirm delete')) {
-                                                    window.location.href = '#';
-                                                }
-                                            }
-
-                                            </script>
+                                            <button id="post_del_{{$dat->id}}" data-id="{{$dat->id}}" class="btn btn-danger btn-sm posts_del" data-placement="top" data-toggle="tooltip" data-title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
-                                    <tr>
-                                        <td>
-                                            <a href="pro-contact-messages-details.html"><b>Test message subject</b></a>
-                                            <p>I interest with your script, i wanna buy your script, but i need some change, please replay this email ASAP...</p>
-                                        </td>
-                                        <td>
-                                            David Guetta<br />
-                                            gabriel1978@gmail.com<br />
-                                            IP: 192.124.125.125 </td>
-                                        <td>
-                                            <a href="pro-contact-messages-details.html" class="btn btn-primary btn-sm" data-placement="top" data-toggle="tooltip" data-title="Read message"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            <a href="javascript:deleteRecord_1('1');" class="btn btn-danger btn-sm" data-placement="top" data-toggle="tooltip" data-title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                            <script>
-                                            function deleteRecord_1(RecordId) {
-                                                if (confirm('Confirm delete')) {
-                                                    window.location.href = '#';
-                                                }
-                                            }
-
-                                            </script>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                             {{$data->links()}}
@@ -97,4 +68,41 @@
         </div>
         <!-- END container-fluid -->
     </div>
+    <script>
+        $(document).ready(function(){
+            $('.posts_del').click(function() {
+                var id = $(this).data('id');
+                swal({
+                    title: "Are you sure?",
+                    text: "Nếu xóa, Bạn sẽ không thể khôi phục dữ liệu này!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "POST",
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            url: '{{url("/")}}/admin/contact/del',
+                            data: {
+                                "id": id
+                            },
+                            success: function(){
+                                swal("Dữ liệu đã được xóa thành công", {
+                                  icon: "success",
+                                }).then(()=>{
+                                    location.reload();
+                                });
+                            }
+                        });
+                        
+                    } else {
+                        swal("Bạn đã hủy thao tác xóa");
+                    }
+                });
+
+            });
+        });
+    </script>
 @endsection

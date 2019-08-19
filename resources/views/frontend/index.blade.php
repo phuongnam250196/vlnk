@@ -1,12 +1,14 @@
 @extends('frontend.layout')
-@section('title', 'Trang chủ - '.$seopost->title)
-@section('description', $seopost->description)
+@section('title', $seopost->title)
+@section('description'){!!substr($seopost->description, 0, 160)!!}@endsection
 @section('image', url('/'.$seopost->image))
 @section('url', $seopost->url)
 @section('sitename', $_SERVER['REQUEST_URI'])
 @section('keywords', $seopost->keyword)
 @section('author', $seopost->author)
 @section('main')
+    <h1 hidden="">{{$seopost->title}}</h1>
+    <h2 hidden="">{{$seopost->title}}</h2>
 	<div class="main_body">
         <div class="container">
             <div class="row row-padding-15">
@@ -15,12 +17,12 @@
                         <ul class="bxslider">
                             @foreach($sliders as $key=>$slider)
                                 <li @if($key !=0) class="hiddenFirst" @endif>
-                                    <a href="{{$slider->link}}" title="{{$slider->title}}" target="_self"> <img width="855" height="260" src="{{url('/'.$slider->image)}}" class="attachment-full size-full" alt="{{$slider->title}}" /> </a> 
+                                    <a href="{{$slider->link}}" title="{{$slider->title}}" target="_self"> <img width="855" height="260" src="{{url('/'.$slider->image)}}" class="attachment-full size-full" alt="{{$slider->title}}" title="{{$slider->title}}" /> </a> 
                                 </li>
                             @endforeach
                         </ul>
                     </div>
-                    <div class="section_custom_view_products ">
+                    <section class="section_custom_view_products ">
                         <div class="section_cvp_title">
                             <h3><span id="jj">Sản phẩm khuyến mại</span></h3>
                         </div>
@@ -31,16 +33,16 @@
                                     @if($key<8)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">
+                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" title="{{$prod->prod_name}}">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
-                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a rel="nofollow" href="#" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
+                                                <a data-price="{{$prod->prod_price}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                             </div>
-                                            <a class="product_id" data-id="{{$prod->id}}"  href="{{url('/product/'.$prod->prod_slug)}}">
-                                                <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                            <a class="product_id" data-id="{{$prod->id}}"  href="{{url('/product/'.$prod->prod_slug)}}" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}">
+                                                <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>
                                             </a>
                                             <span class="price">
                                                 @if(!empty($prod->prod_sale))
@@ -54,13 +56,13 @@
                                             </span>
                                             @if(!empty($prod->hot))
                                                 <div class="devvn_is_featured">
-                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="Sản phẩm hot" title="Sản phẩm hot" />
                                                 </div>
                                             @endif
                                             @if(!empty($prod->installment))
                                                 <div class="devvn_is_tragop">
-                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
-                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" title="Trả góp" alt="Trả góp" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" title="{{$prod->prod_name}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
                                                 </div>
                                             @endif
                                         </li>
@@ -69,12 +71,12 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </section>
                    
                     <div class="section_oneimage">
-                        <a href="#" title="" target="_blank"> <img width="912" height="75" src="{{url('/vlnk')}}/images/home_07.png" class="attachment-full size-full" alt="" /> </a>
+                        <a href="#" title="" target="_blank"> <img width="912" height="75" src="{{url('/vlnk')}}/images/home_07.png" class="attachment-full size-full" title="Vì sao mua hàng ở chúng tôi" alt="Vì sao mua hàng ở chúng tôi" /> </a>
                     </div>
-                    <div class="section_custom_view_products ">
+                    <section class="section_custom_view_products ">
                         <div class="section_cvp_title">
                             <h3><span>Sản phẩm nổi bật</span></h3>
                         </div>
@@ -85,16 +87,16 @@
                                     @if($key<4)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
-                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
+                                                <a href="#" data-price="{{$prod->prod_price}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                             </div>
-                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
+                                                <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>
                                             </a>
                                             <span class="price">
                                                 <del>
@@ -106,13 +108,13 @@
                                             </span>
                                             @if(!empty($prod->hot))
                                                 <div class="devvn_is_featured">
-                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="Sản phẩm hot" title="Sản phẩm hot" />
                                                 </div>
                                             @endif
                                             @if(!empty($prod->installment))
                                                 <div class="devvn_is_tragop">
-                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
-                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" alt="Trả góp" title="Trả góp" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" title="{{$prod->prod_name}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
                                                 </div>
                                             @endif
                                         </li>
@@ -121,7 +123,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </section>
                     <div class="section_custom_view_products ">
                         <div class="section_cvp_title">
                             <h3><span>Android Box</span></h3>
@@ -134,16 +136,16 @@
                                     @if($key<4)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
-                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
+                                                <a href="#" data-price="{{$prod->prod_price}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                             </div>
-                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
+                                                <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>
                                             </a>
                                             <span class="price">
                                                 <del>
@@ -155,13 +157,13 @@
                                             </span>
                                             @if(!empty($prod->hot))
                                                 <div class="devvn_is_featured">
-                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="Sản phẩm hot" title="Sản phẩm hot" />
                                                 </div>
                                             @endif
                                             @if(!empty($prod->installment))
                                                 <div class="devvn_is_tragop">
-                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
-                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" title="Trả góp" alt="Trả góp" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" title="{{$prod->prod_name}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
                                                 </div>
                                             @endif
                                         </li>
@@ -174,7 +176,7 @@
                     <div class="section_custom_view_products ">
                         <div class="section_cvp_title">
                             <h3><span>MÁY CHIẾU ANDROID</span></h3>
-                            <a href="/danh-muc/may-chieu-android" class="section_cvp_link" title="Xem thêm MÁY CHIẾU ANDROID">Xem thêm</a>
+                            <a href="#" class="section_cvp_link" title="Xem thêm MÁY CHIẾU ANDROID">Xem thêm</a>
                         </div>
                         <div class="section_cvp_content">
                             <div class="woocommerce columns-4 ">
@@ -183,16 +185,16 @@
                                     @if($key<4)
                                         <li class="product">
                                             <div class="shop_loop_box">
-                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
                                                     @if(!empty($prod->prod_sale))
                                                         <span class="onsale">Giảm giá!</span>
                                                     @endif
-                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" />
+                                                    <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a rel="nofollow" href="/?add-to-cart=214" data-quantity="1" data-product_id="214" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_214">Thêm vào giỏ</a> 
+                                                <a href="#" data-price="{{$prod->prod_price}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
                                             </div>
-                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                            <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
+                                                <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>
                                             </a>
                                             <span class="price">
                                                 <del>
@@ -204,13 +206,13 @@
                                             </span>
                                             @if(!empty($prod->hot))
                                                 <div class="devvn_is_featured">
-                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" />
+                                                    <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="Sản phẩm hot" title="Sản phẩm hot" />
                                                 </div>
                                             @endif
                                             @if(!empty($prod->installment))
                                                 <div class="devvn_is_tragop">
-                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" /> 
-                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                    <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" alt="Trả góp" title="Trả góp" /> 
+                                                    <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" title="{{$prod->prod_name}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
                                                 </div>
                                             @endif
                                         </li>
@@ -232,14 +234,14 @@
                         </div>
                     </div>
                     <div id="recent-posts_svl-2" class="widget widget_recent_entries_svl">
-                        <h3 class="title-sidebar">Tin tức mới</h3>
+                        <h4 class="title-sidebar">Tin tức mới</h4>
                         @include('frontend.nav.nav_news')
                     </div>
                     <div id="recent-videos-svl-2" class="widget widget_recent_entries_svl">
-                        <h3 class="title-sidebar">Videos</h3>
+                        <h4 class="title-sidebar">Videos</h4>
                         @include('frontend.nav.nav_videos')
                     </div>
-                    <div id="media_image-2" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" class="image wp-image-78  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>
+                    <div id="media_image-2" class="widget widget_media_image"><img width="224" height="366" src="{{url('/vlnk')}}/images/banner-xe-dien-1.jpg" title="Ảnh quảng cáo" alt="Ảnh quảng cáo" class="image  attachment-full size-full" alt="" style="max-width: 100%; height: auto;" /></div>
                 </aside>
             </div>
         </div>

@@ -9,6 +9,6 @@ class Videos extends Model
     protected $table = 'videos';
 
     public function categories() {
-    	return $this->belongsTo('App\Categories', 'cate_id');
+    	return $this->belongsTo('App\tblCategories', 'cate_id');
     }
 }

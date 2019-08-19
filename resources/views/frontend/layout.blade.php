@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') - vlnk</title>
+    <title>@yield('title') - phuctoidental.com</title>
     <meta name="description" content="@yield('description')"/>
-    <link rel="icon" href="{{url('/vlnk')}}/images/logo.png" sizes="192x192" />
+    <link rel="icon" href="{{url('/')}}/images/fabicon-3.png" sizes="192x192" />
     <link rel="canonical" href="@yield('url')" />
+    <link rel="alternate" href="@yield('url')" hreflang="x-default" />
     <meta name="keywords" content="@yield('keywords')" />
     <meta name="author" content="@yield('author')" />
     <meta property="og:title" content="@yield('title')" />
@@ -17,47 +18,53 @@
     <meta property="og:site_name" content="@yield('sitename')" />
     <meta property="og:image" content="@yield('image')" />
     <meta property="og:url" content="@yield('url')" />
+    <meta property="og:type" content="website" />
     <meta property="og:image:width" content="800" />
     <meta property="og:image:height" content="550" />
     <meta name="twitter:description" content="@yield('description')" />
     <meta name="twitter:title" content="@yield('title')" />
     <meta name="twitter:image" content="@yield('image')" />
     <meta name="twitter:url" content="@yield('url')" />
+    <meta name="twitter:card" content="@yield('description')" />
+    <meta name="twitter:site" content="{{$_SERVER['HTTP_HOST']}}" />
 
 
-    <link rel='stylesheet' href='{{url("/vlnk")}}/css/styles.css?ver=5.0.4' type='text/css' />
+    <link rel='stylesheet' href='{{url("/vlnk")}}/css/styles.css' type='text/css' />
     <link rel='stylesheet' href='{{url("/vlnk")}}/css/setup_css.css' type='text/css' />
-    <link rel='stylesheet' href='{{url("/vlnk")}}/css/devvn-quick-buy.css?ver=2.0.0' type='text/css' />
-    <link rel='stylesheet' href='{{url("/vlnk")}}/css/woocommerce-layout.css?ver=3.4.5' type='text/css' />
-    <link rel='stylesheet' href='{{url("/vlnk")}}/css/woocommerce-smallscreen.css?ver=3.4.5' type='text/css' media='only screen and (max-width: 768px)' />
-    <link rel='stylesheet' href='{{url("/vlnk")}}/css/woocommerce.css?ver=3.4.5' type='text/css' />
-    <link rel='stylesheet' id='style-css' href='{{url("/vlnk")}}/css/devvn_style.css?ver=1.02' type='text/css' />
-    <link rel='stylesheet' id='respon-css' href='{{url("/vlnk")}}/css/respon.css?ver=1.02' type='text/css' />
+    <link rel='stylesheet' href='{{url("/vlnk")}}/css/devvn-quick-buy.css' type='text/css' />
+    <link rel='stylesheet' href='{{url("/vlnk")}}/css/woocommerce-layout.css' type='text/css' />
+    <link rel='stylesheet' href='{{url("/vlnk")}}/css/woocommerce-smallscreen.css' type='text/css' media='only screen and (max-width: 768px)' />
+    <link rel='stylesheet' href='{{url("/vlnk")}}/css/woocommerce.css' type='text/css' />
+    <link rel='stylesheet' id='style-css' href='{{url("/vlnk")}}/css/devvn_style.css' type='text/css' />
+    <link rel='stylesheet' id='respon-css' href='{{url("/vlnk")}}/css/respon.css' type='text/css' />
+    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> --}}
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery-migrate.min.js'></script>
+    {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> --}}
+    {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/tcc_l.combined.1.0.6.min.js'></script> --}}
     <script>
         jQuery( document ).ready(function() {
-		jQuery('img[data-lazy-src]').each(function() 
-		{  
-            var imgsrc = jQuery(this).attr("data-lazy-src");
-            jQuery(this).attr('src',imgsrc);
-        });    
-        var tbay_bottom_header = jQuery('header.header');
-        var CurrentScroll = 0;
-        var tbay_width = jQuery(window).width();
-        var header_height = tbay_bottom_header.height();
-        jQuery(window).scroll(function() {
-            if(tbay_width <= 767) {
-				//alert('ss');
-                var NextScroll = jQuery(this).scrollTop();
-                if (NextScroll > header_height + 30) {
-                    tbay_bottom_header.addClass('sticky-header');
-                } else {
-                    tbay_bottom_header.removeClass('sticky-header');  
+    		jQuery('img[data-lazy-src]').each(function() 
+    		{  
+                var imgsrc = jQuery(this).attr("data-lazy-src");
+                jQuery(this).attr('src',imgsrc);
+            });    
+            var tbay_bottom_header = jQuery('header.header');
+            var CurrentScroll = 0;
+            var tbay_width = jQuery(window).width();
+            var header_height = tbay_bottom_header.height();
+            jQuery(window).scroll(function() {
+                if(tbay_width <= 767) {
+    				//alert('ss');
+                    var NextScroll = jQuery(this).scrollTop();
+                    if (NextScroll > header_height + 30) {
+                        tbay_bottom_header.addClass('sticky-header');
+                    } else {
+                        tbay_bottom_header.removeClass('sticky-header');  
+                    }
                 }
-            }
+            });
         });
-    });
 	
 	</script>
     <style>
@@ -123,9 +130,10 @@
         </div>
         <div class="main_header">
             <div class="container">
-                <h2 class="logo">
-                    <a href="{{url('/')}}" title="Công nghệ cho cuộc sống"><img src="{{url('/'.infoOther()->logo)}}" /></a>
-                </h2>
+                <h2 hidden="">Danh sách vật liệu giá rẻ</h2>
+                <p class="logo">
+                    <a href="{{url('/')}}" title="@yield('title')"><img src="{{url('/'.infoOther()->logo)}}" alt="@yield('title')" title="@yield('title')" /></a>
+                </p>
                 <div class="search_header">
                     <form  method="get" class="woocommerce-product-search" action="{{url('search')}}">
                         <input type="search" id="woocommerce-product-search-field" class="search-field" placeholder="Tìm kiếm sản phẩm" name="keyword" value="@if(!empty($_GET['keyword'])) {{$_GET['keyword']}} @endif" title="Tìm kiếm:" />
@@ -137,11 +145,11 @@
                     <div class="popup_cart_hover">
                         <a class="cart-contents" href="#" title="Hiển thị giỏ hàng">
                             <span>Giỏ hàng của bạn</span>
-                            <small>Chưa có sản phẩm</small>
+                            <small>Có <strong id="pr_count">0</strong> sản phẩm</small>
                         </a>
                         <div class="popup_cart">
-                            <ul class="cart_list product_list_widget ">
-                                <li class="empty">Chưa có sản phẩm trong giỏ hàng.</li>
+                            <ul id="cart_id_none" class="cart_list product_list_widget">
+                                {{-- <li class="empty">Chưa có sản phẩm trong giỏ hàng.</li> --}}
                             </ul><!-- end product list -->
                         </div>
                     </div>
@@ -157,30 +165,30 @@
                     </div>
                 </div>
                 <a href="#" class="button_open_menu"><i class="fa fa-bars"></i> Menu</a>
-                <div class="menu_header">
+                <nav class="menu_header">
                     <ul id="menu-main-menu" class="menu">
-                        <li id="menu-item-31" class="menu-item @if(Request::is('/')) current_page_ancestor @endif"><a href="{{url('/')}}">Trang chủ</a>
+                        <li id="menu-item-31" class="menu-item @if(Request::is('/')) current_page_ancestor @endif"><a href="{{url('/')}}" title="@yield('title')">Trang chủ</a>
                         </li>
-                        <li id="menu-item-29" class="menu-item @if(Request::is('news') || Request::is('news/*')) current_page_ancestor @endif"><a href="{{url('/news')}}">Tin tức</a>
+                        <li id="menu-item-29" class="menu-item @if(Request::is('news') || Request::is('news/*')) current_page_ancestor @endif"><a href="{{url('/news')}}" title="Tin tức">Tin tức</a>
                             <ul class="sub-menu">
                                 @foreach(listCatePost() as $key=>$cate)
-                                    <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/news/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a></li>
+                                    <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/news/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a></li>
                                 @endforeach
                             </ul>
                         </li>
-                        <li id="menu-item-183" class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif"><a href="{{url('/videos')}}">Videos</a>
+                        <li id="menu-item-183" class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif"><a href="{{url('/videos')}}" title="Videos">Videos</a>
                             <ul class="sub-menu">
                                 @foreach(listCateVideo() as $key=>$cate)
-                                    <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/videos/category/'.$cate->cate_slug)}}">{{$cate->cate_name}}</a></li>
+                                    <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/videos/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a></li>
                                 @endforeach
                             </ul>
                         </li>
-                        <li id="menu-item-28" class="menu-item @if(Request::is('support') || Request::is('support/*')) current_page_ancestor @endif"><a href="{{url('/support')}}">Hỗ trợ khách hàng</a></li>
-                        <li id="menu-item-232" class="menu-item @if(Request::is('agency') || Request::is('agency/*')) current_page_ancestor @endif"><a href="{{url('/agency')}}">Hệ thống đại lý</a></li>
-                        <li id="menu-item-27" class="menu-item @if(Request::is('contact') || Request::is('contact/*')) current_page_ancestor @endif"><a href="{{url('/contact')}}">Liên hệ</a></li>
-                        <li id="menu-item-516" class="menu-item @if(Request::is('account') || Request::is('account/*')) current_page_ancestor @endif"><a href="{{url('/account')}}">Tài khoản</a></li>
+                        <li id="menu-item-28" class="menu-item @if(Request::is('support') || Request::is('support/*')) current_page_ancestor @endif"><a href="{{url('/support')}}" title="Hỗ trợ khách hàng">Hỗ trợ khách hàng</a></li>
+                        <li id="menu-item-232" class="menu-item @if(Request::is('agency') || Request::is('agency/*')) current_page_ancestor @endif"><a href="{{url('/agency')}}" title="Hệ thống đại lý">Hệ thống đại lý</a></li>
+                        <li id="menu-item-27" class="menu-item @if(Request::is('contact') || Request::is('contact/*')) current_page_ancestor @endif"><a href="{{url('/contact')}}" title="Liên hệ">Liên hệ</a></li>
+                        <li id="menu-item-516" class="menu-item @if(Request::is('login') || Request::is('login/*')) current_page_ancestor @endif"><a href="{{url('/login')}}" title="Tài khoản">Tài khoản</a></li>
                     </ul>
-                </div>
+                </nav>
             </div>
         </div>
         <div class="end_navpage"></div>
@@ -196,7 +204,7 @@
             <div class="row footer_wrap">
                 <div class="footer1 col-md-3 col-sm-3 col-xs-12">
                     <div id="text-2" class="widget-footer widget_text">
-                        <h3 class="title-sidebar-footer">Thông tin liên hệ</h3>
+                        <h4 class="title-sidebar-footer">Thông tin liên hệ</h4>
                         <div class="textwidget">
                             <p><b><span class="text-uppercase" style="color: red">Vật liệu nha Khoa</span></b><br />
                                 {{infoOther()->address}}<br />
@@ -207,39 +215,39 @@
                         </div>
                     </div>
                     <div id="text-5" class="widget-footer widget_text">
-                        <h3 class="title-sidebar-footer">Theo dõi SHOP</h3>
+                        <h4 class="title-sidebar-footer">Theo dõi SHOP</h4>
                         <div class="textwidget">
                             <ul class="list-socials">
-                                <li><a href="{{infoOther()->fanpage_id}}" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="{{infoOther()->twitter_id}}" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-                                <li><a href="{{infoOther()->skype_id}}" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                                <li><a href="{{infoOther()->fanpage_id}}" target="_blank" title="fanpage facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="{{infoOther()->twitter_id}}" target="_blank" title="fanpage twitter"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="{{infoOther()->skype_id}}" target="_blank" title="fanpage youtube"><i class="fa fa-youtube"></i></a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="footer2 col-md-3 col-sm-3 col-xs-12">
                     <div id="nav_menu-2" class="widget-footer widget_nav_menu">
-                        <h3 class="title-sidebar-footer">Trợ giúp</h3>
+                        <h4 class="title-sidebar-footer">Trợ giúp</h4>
                         <div class="menu-menu-tro-giup-container">
                             <ul id="menu-menu-tro-giup" class="menu">
-                                <li class="menu-item"><a href="{{url('/')}}">Giới thiệu</a></li>
-                                <li class="menu-item"><a href="{{url('/news')}}">Tin tức</a></li>
-                                <li class="menu-item"><a href="{{url('/support')}}">Hỗ trợ khách hàng</a></li>
-                                <li class="menu-item"><a href="{{url('/support')}}">Hình thức thanh toán</a></li>
-                                <li class="menu-item"><a href="{{url('/support')}}">Hình thức vận chuyển</a></li>
-                                <li class="menu-item"><a href="{{url('/contact')}}">Liên hệ</a></li>
-                                <li class="menu-item"><a href="{{url('/account')}}">Tài khoản</a></li>
+                                <li class="menu-item"><a href="{{url('/')}}" title="Giới thiệu">Giới thiệu</a></li>
+                                <li class="menu-item"><a href="{{url('/news')}}" title="Tin tức">Tin tức</a></li>
+                                <li class="menu-item"><a href="{{url('/support')}}" title="Hỗ trợ khách hàng">Hỗ trợ khách hàng</a></li>
+                                <li class="menu-item"><a href="{{url('/support')}}" title="Hình thức thanh toán">Hình thức thanh toán</a></li>
+                                <li class="menu-item"><a href="{{url('/support')}}" title="Hình thức vận chuyển">Hình thức vận chuyển</a></li>
+                                <li class="menu-item"><a href="{{url('/contact')}}" title="Liên hệ">Liên hệ</a></li>
+                                <li class="menu-item"><a href="{{url('/account')}}" title="Tài khoản">Tài khoản</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="footer3 col-md-3 col-sm-3 col-xs-12">
                     <div id="text-4" class="widget-footer widget_text">
-                        <h3 class="title-sidebar-footer">Facebook</h3>
+                        <h4 class="title-sidebar-footer">Facebook</h4>
                         <div class="textwidget">
                             <div class="fb-page" data-href="https://www.facebook.com/covekila" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
                                 <blockquote class="fb-xfbml-parse-ignore" cite="https://www.facebook.com/covekila">
-                                    <p><a href="https://www.facebook.com/covekila">Levantoi.vn</a></p>
+                                    <p><a href="https://www.facebook.com/covekila" title="fanpage facebook">Levantoi.vn</a></p>
                                 </blockquote>
                             </div>
                         </div>
@@ -247,19 +255,19 @@
                 </div>
                 <div class="footer4 col-md-3 col-sm-3 col-xs-12">
                     <div id="text-6" class="widget-footer widget_text">
-                        <h3 class="title-sidebar-footer">Bản đồ</h3>
+                        <h4 class="title-sidebar-footer">Bản đồ</h4>
                         <div class="textwidget">
-                            <div class="full_mobile"><a href="#" target="_blank"><img src="{{url('/vlnk')}}/images/maps.png" alt="" /></a></div>
+                            <div class="full_mobile"><a href="#" target="_blank" title="Bản đồ {{$_SERVER['HTTP_HOST']}}"><img src="{{url('/vlnk')}}/images/maps.png" alt="Bản đồ {{$_SERVER['HTTP_HOST']}}" title="Bản đồ {{$_SERVER['HTTP_HOST']}}" /></a></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="footer_tags">
                 <div id="woocommerce_product_tag_cloud-2" class="widget-footer woocommerce widget_product_tag_cloud">
-                    <h3 class="title-sidebar-footer">Từ khóa thông dụng</h3>
+                    <h4 class="title-sidebar-footer">Từ khóa thông dụng</h4>
                     <div class="tagcloud">
                         @foreach(listCate() as $key=>$cate)
-                    	   <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;">{{$cate->cate_name}}</a>
+                    	   <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" class="tag-cloud-link" style="font-size: 22pt;" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a>
                         @endforeach
                     </div>
                 </div>
@@ -269,6 +277,211 @@
             </div>
         </div>
     </footer>
+
+
+    {{-- pop đơn hàng --}}
+    <div id="fancybox_id" class="fancybox-overlay fancybox-overlay-fixed" style="width: auto; height: auto; display: none;">
+        <div class="fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened" tabindex="-1" style="width: 817px; height: 100%; position: absolute; top: 24px; left: 266px; opacity: 1; overflow: visible;">
+            <div class="fancybox-skin">
+                <div class="fancybox-outer">
+                    <div class="fancybox-inner">
+                        <div id="devvn-wacp-popup">
+                            <div class="devvn-wacp-wrapper woocommerce">
+                                <div class="devvn-wacp-main">
+                                    <div class="devvn-wacp-content">
+                                        <h2>1 Sản phẩm đã được thêm vào giỏ hàng.</h2>
+                                        <div class="info-box">
+                                            <div class="product-thumb">
+                                                <a href="https://tech360.vn/action-camera-sjcam-sj8-plus"><img width="300" height="300" src="https://tech360.vn/wp-content/uploads/2016/12/SJ8-pro-1-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""></a> </div>
+                                            <div class="product-info">
+                                                <h3 class="product-title">
+                                                    <a href="https://tech360.vn/action-camera-sjcam-sj8-plus">
+                                                        Action camera SJACM SJ8 Plus 4K Wifi </a>
+                                                </h3>
+                                                <span class="product-price">
+                                                    <del><span class="woocommerce-Price-amount amount">4.349.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></del> <ins><span class="woocommerce-Price-amount amount">4.149.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></ins> </span>
+                                            </div>
+                                        </div>
+                                        <div class="cart-info">
+                                            <h3>Giỏ hàng của bạn</h3>
+                                            <div class="cart-totals">
+                                                Tổng: <span class="cart-cost">
+                                                    <span class="woocommerce-Price-amount amount">16.596.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span> </span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="text-right button_popup_cart">
+                                            <a href="#" class="tat_popup" id="button_muathemsanpham">Mua thêm sản phẩm</a>
+                                            <a href="https://tech360.vn/thanh-toan" id="button_dathang_thanhtoan">Đặt hàng và thanh toán</a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="woocommmerce devvn-wacp-related">
+                                            <h3>Một số sản phẩm có thể bạn quan tâm</h3>
+                                            <ul class="products columns-4">
+                                                @foreach(listProducts() as $key=>$prod)
+                                                @if($key<4)
+                                                    <li class="product">
+                                                        <div class="shop_loop_box">
+                                                            <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                                <span class="onsale">Giảm giá!</span>
+                                                                <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
+                                                            </a>
+                                                            <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
+                                                        </div>
+                                                        <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                            <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
+                                                        </a>
+                                                        <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
+                                                        <div class="devvn_is_featured"><img width="80" height="44" src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                                    </li>
+                                                @endif
+                                                @endforeach
+                                            </ul>
+                                        <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <style>
+        div#devvn-wacp-popup {
+            background: #fff;
+            padding: 10px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .devvn-wacp-content h2 {
+            font-size: 18px;
+            margin: 0 0 10px;
+            font-weight: 700;
+            color: #e03232;
+        }
+        div#devvn-wacp-popup .info-box {
+            overflow: hidden;
+            float: left;
+            padding-right: 230px;
+            width: 100%;
+        }
+        .devvn-wacp-content {
+            position: relative;
+        }
+        div#devvn-wacp-popup .cart-info {
+            float: right;
+            width: 220px;
+            padding: 15px 10px 10px 10px;
+            border: 1px solid #ccc;
+            position: absolute;
+            line-height: 22px;
+            background: #fff;
+            right: 0;
+            top: 50px;
+        }
+        div#devvn-wacp-popup .product-thumb {
+            float: left;
+            width: 110px;
+            margin: 0 20px 0 0;
+        }
+        div#devvn-wacp-popup .product-info {
+            padding-top: 20px;
+        }
+        div#devvn-wacp-popup .cart-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0;
+            background: #fff;
+            padding: 5px;
+            position: absolute;
+            top: -15px;
+        }
+        div#devvn-wacp-popup .cart-info span.shipping-cost,
+        div#devvn-wacp-popup .cart-info span.cart-cost {
+            font-weight: 700;
+            color: #e03232;
+        }
+        div#devvn-wacp-popup .info-box .product-info h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        div#devvn-wacp-popup .info-box .product-info span.product-price {
+            color: #e03232;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        div#devvn-wacp-popup .info-box .product-info span.product-price del {
+            opacity: 1;
+            display: inline-block;
+            color: #898989;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        div#devvn-wacp-popup .info-box .product-info span.product-price ins {
+            background: 0 0;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .button_popup_cart a {
+            display: inline-block;
+            background: #e03232;
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 15px;
+            margin: 0 4px;
+            text-decoration: none;
+        }
+        .button_popup_cart a:hover {
+            background: #6d6d6d;
+        }
+        .devvn-wacp-related > h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e03232;
+        }
+        @media (max-width: 767px){
+            div#devvn-wacp-popup .info-box {
+                padding-right: 0;
+            }
+            div#devvn-wacp-popup .cart-info {
+                position: relative;
+                width: 100%;
+                top: 0;
+                margin: 15px 0;
+            }   
+        }
+        @media (max-width: 399px){  
+            .devvn-wacp-content h2 {
+                font-size: 14px;
+                line-height: 20px;
+            }
+            div#devvn-wacp-popup .info-box .product-info h3 {
+                margin: 0 0 10px;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+            }
+            div#devvn-wacp-popup .product-info {
+                padding-top: 0;
+            }
+            .button_popup_cart a {
+                margin: 0 auto 5px;
+                width: 100%;
+            }
+            .text-right {
+                text-align: center;
+            }
+        }
+    </style>
+    {{-- End popup đơn hàng --}}
+
+
     <div class="box_overlay"></div>
     <!-- Start Quick Buttons By https://muatheme.com -->
     <div class='quick-call-button'></div>
@@ -279,6 +492,7 @@
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.bpopup.min.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/devvn-quick-buy.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/devvn_main.js'></script>
+    <script type='text/javascript' src='{{url("/vlnk")}}/js/add-cart-myscript.js'></script>
     {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/js.cookie.min.js'></script> --}}
     {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/woocommerce.min.js'></script> --}}
     {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/drag-quick-call-button.js'></script> --}}
@@ -301,17 +515,16 @@
     </div>
   
     <script>
-		    (function($) {
-		        $(document).ready(function() {
-		            $('.cart_floating_right_button').click(function() {
-		                $('.cart_floating_right').addClass('open_float_cart');
-		            });
-		            $('.cart_floating_right_title').click(function() {
-		                $('.cart_floating_right').removeClass('open_float_cart');
-		            });
-		        });
-		    })(jQuery);
-            
+	    (function($) {
+	        $(document).ready(function() {
+	            $('.cart_floating_right_button').click(function() {
+	                $('.cart_floating_right').addClass('open_float_cart');
+	            });
+	            $('.cart_floating_right_title').click(function() {
+	                $('.cart_floating_right').removeClass('open_float_cart');
+	            });
+	        });
+	    })(jQuery);
     </script>
     <script>
         (function($) {
@@ -352,41 +565,7 @@
             });  
         })(jQuery);
     </script>
-    <script>
-        (function($) {
-            $(document).ready(function() {
-                viewClick('product_id', 'product');
-                viewClick('category_id', 'category');
-                viewClick('news_id', 'news');
-                viewClick('videos_id', 'videos');
-            });
-            function viewClick(nameClass, type) {
-                $('.'+nameClass).click(function() {
-                    var id = $(this).data('id');
-                    addView(id, type);
-                });
-            }
-            function addView(id, type) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: "{{url('view')}}",
-                    type: 'POST',
-                    data: {
-                        other_id:id,
-                        'type':type
-                    },
-                    success: function(data) {
-                        console.log(data)
-                        console.log('thanh cong')
-                    }
-                });
-            }
-       })(jQuery);
-    </script>          
+    
     
 </body>
 

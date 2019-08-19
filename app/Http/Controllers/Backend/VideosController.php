@@ -133,7 +133,7 @@ class VideosController extends Controller
                     $seo->description = cutString($request->video_description, 255);
                     $seo->author = $_SERVER['HTTP_HOST'];
                     $seo->keyword = $data->video_name;
-                    $seo->url = url('/news/'.$data->video_slug);
+                    $seo->url = url('/videos/'.$data->video_slug);
                     $seo->image = $data->video_img;
                     $seo->site_name = $_SERVER['REQUEST_URI'];
                     $seo->save();
@@ -143,7 +143,7 @@ class VideosController extends Controller
                     $seo->description = cutString($request->video_description, 255);
                     $seo->author = $_SERVER['HTTP_HOST'];
                     $seo->keyword = $data->video_name;
-                    $seo->url = url('/news/'.$data->video_slug);
+                    $seo->url = url('/videos/'.$data->video_slug);
                     $seo->image = $data->video_img;
                     $seo->site_name = $_SERVER['REQUEST_URI'];
                     $seo->type = 'video';

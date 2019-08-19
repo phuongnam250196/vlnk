@@ -3,10 +3,10 @@
         @foreach(listCate() as $key=>$cate)
         @if($key<7)
             <li class="@if($key !=0) no-have-mega @endif">
-                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}"><i class="devvn_mega_menu_icon" style="background: url({{url('/vlnk')}}/images/android_box.png) no-repeat center center;"></i>{{$cate->cate_name}}</a>
+                <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}"><i class="devvn_mega_menu_icon" style="background: url({{url('/vlnk')}}/images/android_box.png) no-repeat center center;"></i>{{$cate->cate_name}}</a>
                 <i class="click_open_sub_megamenu">+</i>
                 <div class="devvn_sub_mega_content" style="background: #fff url({{url('vlnk')}}/images/androidbox.png) no-repeat right bottom;">
-                    <div class="devvn_sub_mega_content_box devvn-megamenu-3-column">
+                    {{-- <div class="devvn_sub_mega_content_box devvn-megamenu-3-column">
                         <div class="devvn-mega-sub-column-3 devvn_sub_mega_content_column">
                             <div class="devvn_mega_menu_title">
                                 <h2>Sub menu 1</h2>
@@ -31,7 +31,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </li>
         @endif

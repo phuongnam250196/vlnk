@@ -11,13 +11,11 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['namespace'=>'Frontend'], function() {
 	Route::get('/', 'FrontendsController@getHome');
 	Route::get('/contact', 'FrontendsController@getContact');
@@ -27,6 +25,7 @@ Route::group(['namespace'=>'Frontend'], function() {
 		Route::get('/search/', 'FrontendsController@getVideosSearch');
 		Route::get('/category/{slug}', 'FrontendsController@getVideosCategorySlug');
 		Route::get('/{slug}', 'FrontendsController@getVideosDetailSlug');
+		Route::get('/detail/{slug}', 'FrontendsController@getVideosDetailSlug');
 	});
 	Route::group(['prefix'=>'news'], function() {
 		Route::get('/', 'FrontendsController@getNews');
@@ -45,21 +44,25 @@ Route::group(['namespace'=>'Frontend'], function() {
 	Route::get('/agency', 'FrontendsController@getAgency');
 	Route::get('/support', 'FrontendsController@getSupport');
 	Route::get('/search', 'FrontendsController@getSearch');
-	Route::get('/account', 'FrontendsController@getAccount');
-	Route::post('/account', 'FrontendsController@postAccount');
+	Route::get('/login', 'FrontendsController@getAccount');
+	Route::post('/login', 'FrontendsController@postAccount');
 	Route::get('/register', 'FrontendsController@getRegister');
 	Route::post('/register', 'FrontendsController@postRegister');
 	Route::get('/pay', 'FrontendsController@getPays');
 	Route::get('/cart', 'FrontendsController@getCarts');
+	Route::get('/account', 'FrontendsController@getAccountInfo');
 
 	Route::post('/view', 'FrontendsController@postView');
+	Route::post('/addtocart', 'FrontendsController@addProductToCart');
+	Route::post('/deltocart', 'FrontendsController@delProductToCart');
+	Route::get('/listtocart', 'FrontendsController@listToCart');
 
 });
 
 Route::group(['namespace'=>'Backend', ], function() {
 	Route::group(['middleware'=>'checklogin'], function() {
-		Route::get('/login', 'HomesController@getLogin');
-		Route::post('/login', 'HomesController@postLogin');
+		Route::get('quantri/login', 'HomesController@getLogin');
+		Route::post('quantri/login', 'HomesController@postLogin');
 	});
 
 	Route::group(['prefix'=>'admin', 'middleware'=>['checkadmin', 'checklogoutadmin']], function() {
@@ -109,6 +112,7 @@ Route::group(['namespace'=>'Backend', ], function() {
 
 		Route::group(['prefix'=>'contact'], function() {
 			Route::get('/', 'ContactsController@getContacts');
+			Route::post('/del', 'ContactsController@postDeleteContacts');
 		});
 
 		Route::group(['prefix'=>'setting'], function() {

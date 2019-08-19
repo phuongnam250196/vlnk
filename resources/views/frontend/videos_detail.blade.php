@@ -29,7 +29,7 @@
                             </div>
                             <ul class="social_list">
                                 <li class="facebook_like">
-                                   <div class="fb-like" data-href="{{url('video/'.$video->video_slug)}}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                                   <div class="fb-like" data-href="{{url('videos/'.$video->video_slug)}}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
                                 </li>
                             </ul>
                             <div class="post_navigation">

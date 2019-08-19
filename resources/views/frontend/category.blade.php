@@ -22,12 +22,12 @@
                             Hiển thị {{!empty($_GET['page'])?$_GET['page']:1}}–{{!empty($_GET['page'])?$_GET['page']*24:24}} của {{count($data)}} sản phẩm</p>
                         <div class="woocommerce-ordering">
                             <select name="orderby" class="orderby" onchange="location = this.value;">
-                                <option value="{{url('/category/'.$cate->cate_slug)}}" selected="selected">Thứ tự mặc định</option>
-                                <option value="{{url('/category/'.$cate->cate_slug.'?type=view')}}">Thứ tự theo lượt xem nhiều nhất</option>
-                                <option value="{{url('/category/'.$cate->cate_slug.'?type=review')}}">Thứ tự theo điểm đánh giá cao nhất</option>
-                                <option value="{{url('/category/'.$cate->cate_slug.'?type=new')}}">Mới nhất</option>
-                                <option value="{{url('/category/'.$cate->cate_slug.'?type=price')}}">Thứ tự theo giá: thấp đến cao</option>
-                                <option value="{{url('/category/'.$cate->cate_slug.'?type=price-desc')}}">Thứ tự theo giá: cao xuống thấp</option>
+                                <option value="{{url('/category/'.$cate->cate_slug)}}" @if(empty($_GET['type'])) selected @endif>Thứ tự mặc định</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=view')}}" @if(!empty($_GET['type']) && $_GET['type']=='view') selected @endif>Thứ tự theo lượt xem nhiều nhất</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=review')}}" @if(!empty($_GET['type']) && $_GET['type']=='review') selected @endif>Thứ tự theo điểm đánh giá cao nhất</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=new')}}" @if(!empty($_GET['type']) && $_GET['type']=='new') selected @endif>Mới nhất</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=price')}}" @if(!empty($_GET['type']) && $_GET['type']=='price') selected @endif>Thứ tự theo giá: thấp đến cao</option>
+                                <option value="{{url('/category/'.$cate->cate_slug.'?type=price-desc')}}" @if(!empty($_GET['type']) && $_GET['type']=='price-desc') selected @endif>Thứ tự theo giá: cao xuống thấp</option>
                             </select>
                         </div>
                         <ul class="products columns-4">
@@ -46,7 +46,7 @@
                                         <h2 class="woocommerce-loop-product__title">{{$dat->prod_name}}</h2>
                                     </a>
                                     <div class="woocommerce-product-rating">
-                                        <div class="star-rating" role="img" aria-label="Được xếp hạng 5.00 5 sao"><span style="width:100%">Được xếp hạng <strong class="rating">5.00</strong> 5 sao</span></div><a href="#reviews" class="woocommerce-review-link" rel="nofollow">(<span class="count">1</span> đánh giá của khách hàng)</a>
+                                        <div class="star-rating" role="img" aria-label="Được xếp hạng 5.00 5 sao"><span style="width:100%">Được xếp hạng <strong class="rating">5.00</strong> 5 sao</span></div><a href="#reviews" class="woocommerce-review-link" rel="nofollow">(<span class="count">@if(!empty($dat->views)){{$dat->views->count}}@else 0 @endif</span> đánh giá của khách hàng)</a>
                                     </div>
                                     <span class="price">
                                         @if(!empty($dat->prod_sale))

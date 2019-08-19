@@ -12,6 +12,6 @@ class Products extends Model
     	return $this->belongsTo('App\Categories', 'cate_id');
     }
     public function views() {
-    	return $this->hasOne('App\views', 'other_id')->orderBy('count', 'desc');
+    	return $this->hasOne('App\views', 'other_id')->where('type', 'product')->orderBy('count', 'desc');
     }
 }

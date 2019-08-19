@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class tblCategories extends Model
 {
     public $table = 'categories';
 

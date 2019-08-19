@@ -24,9 +24,11 @@ class ProductsController extends Controller
     public function postAddProduct(Request $request) {
         $rules = [
             'prod_name' => 'required',
+            'cate_id' => 'required',
         ];
         $messages = [
             'prod_name.required' => 'Sản phẩm không được để trống',
+            'cate_id.required' => 'Loại sản phẩm không được để trống',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
@@ -104,9 +106,11 @@ class ProductsController extends Controller
     public function postUpdateProduct(Request $request, $id) {
         $rules = [
             'prod_name' => 'required',
+            'cate_id' => 'required',
         ];
         $messages = [
             'prod_name.required' => 'Sản phẩm không được để trống',
+            'cate_id.required' => 'Loại sản phẩm không được để trống',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {

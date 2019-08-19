@@ -12,4 +12,8 @@ class ContactsController extends Controller
         $data = contacts::orderBy('created_at', 'desc')->paginate(10);
     	return view('backend.contact.index', compact('data'));
     }
+    public function postDeleteContacts(Request $request) {
+    	$data = contacts::find($request->id)->delete();
+        return response()->json($data);
+    }
 }
