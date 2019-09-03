@@ -49,37 +49,7 @@
 
         <nav class="navbar-custom">
             <ul class="list-inline float-right mb-0">
-				<li class="list-inline-item dropdown notif">
-                    <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="fa fa-fw fa-question-circle"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-                        <!-- item-->
-                        <div class="dropdown-item noti-title">
-                            <h5><small>Help and Support</small></h5>
-                        </div>
-                        <!-- item-->
-                            <p class="notify-details ml-0">
-                                <b>Do you want custom development to integrate this theme?</b>
-                                <span>Contact Us</span>
-                            </p>
-                        </a>
-
-                        <!-- item-->
-                        <a target="_blank" href="https://www.pikeadmin.com/pike-admin-pro" class="dropdown-item notify-item">                                    
-                            <p class="notify-details ml-0">
-                                <b>Do you want PHP version of the theme that save dozens of hours of work?</b>
-                                <span>Try Pike Admin PRO</span>
-                            </p>
-                        </a>                               
-
-                        <!-- All-->
-                        <a title="Clcik to visit Pike Admin Website" target="_blank" href="https://www.pikeadmin.com" class="dropdown-item notify-item notify-all">
-                            <i class="fa fa-link"></i> Visit Pike Admin Website
-                        </a>
-
-                    </div>
-                </li>
+				
 				
                 <li class="list-inline-item dropdown notif">
                     <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -240,13 +210,13 @@
                     <li class="submenu">
                         <a class="@if(Request::is('admin/video') || Request::is('admin/video/*')) pro @endif" href="{{url('admin/video')}}"><i class="fa fa-play-circle bigfonts"></i><span> Videos</span> </a>
                     </li>
-    				<li class="submenu">
+    				{{-- <li class="submenu">
                         <a href="#"><i class="fa fa-fort-awesome bigfonts"></i> <span> Đại lý </span> <span class="menu-arrow"></span></a>
     						<ul class="list-unstyled">
     							<li><a href="tables-basic.html">Basic Tables</a></li>
     							<li><a href="tables-datatable.html">Data Tables</a></li>
     						</ul>
-                    </li>
+                    </li> --}}
                     <li class="submenu">
                         <a class="@if(Request::is('admin/contact') || Request::is('admin/contact/*')) pro @endif" href="{{url('admin/contact')}}"><i class="fa fa-volume-control-phone bigfonts"></i><span> Liên hệ </span> </a>
                     </li>
@@ -275,7 +245,7 @@
 		Copyright <a target="_blank" href="#">Your Website</a>
 		</span> --}}
 		<span class="float-right">
-		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+		Powered by <a href="tel:0354524503"><b>Phương Nam</b></a>
 		</span>
 	</footer>
 

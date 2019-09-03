@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Auth::routes();
 Route::group(['namespace'=>'Frontend'], function() {
@@ -48,15 +48,22 @@ Route::group(['namespace'=>'Frontend'], function() {
 	Route::post('/login', 'FrontendsController@postAccount');
 	Route::get('/register', 'FrontendsController@getRegister');
 	Route::post('/register', 'FrontendsController@postRegister');
-	Route::get('/pay', 'FrontendsController@getPays');
 	Route::get('/cart', 'FrontendsController@getCarts');
-	Route::get('/account', 'FrontendsController@getAccountInfo');
+	Route::post('/cart', 'FrontendsController@postCarts');
+	Route::get('/pay', 'FrontendsController@getPays');
+	Route::post('/pay', 'FrontendsController@postPays');
+	// Đăng nhập thanh toán
+	Route::post('pay/login', 'FrontendsController@postPayLogin');
 
 	Route::post('/view', 'FrontendsController@postView');
 	Route::post('/addtocart', 'FrontendsController@addProductToCart');
 	Route::post('/deltocart', 'FrontendsController@delProductToCart');
 	Route::get('/listtocart', 'FrontendsController@listToCart');
 
+	Route::group(['prefix'=>'account'], function() {
+		Route::get('/', 'FrontendsController@getAccountInfo');
+		Route::get('/logout', 'FrontendsController@getAccountLogout');
+	});
 });
 
 Route::group(['namespace'=>'Backend', ], function() {

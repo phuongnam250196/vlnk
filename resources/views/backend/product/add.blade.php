@@ -8,9 +8,9 @@
                     <div class="breadcrumb-holder">
                         <h1 class="main-title float-left">Thêm mới sản phẩm</h1>
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item">Products</li>
-                            <li class="breadcrumb-item active">Add</li>
+                            <li class="breadcrumb-item"><a href="{{url('admin')}}">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="{{url('admin/product')}}">Sản phẩm</a></li>
+                            <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                         <div class="clearfix"></div>
                     </div>
@@ -41,6 +41,9 @@
 										  	<div class="product_d_flex_title  align-self-center">Tên sản phẩm</div>
 										  	<div class="product_d_flex_input">
 												<input type="text" class="form-control" name="prod_name" value="{{old('prod_name')}}" placeholder="VD: Iphone 6 plus">
+												@if($errors->has('prod_name'))
+                                                    <p class="help text-danger">{{ $errors->first('prod_name') }}</p>
+                                                @endif
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
@@ -48,14 +51,53 @@
 										  	<div class="product_d_flex_input">
 												<input id="img" type="file" name="prod_img" class="form-control" style="display: none" onchange="changeImg(this)" value="{{old('prod_img')}}">
 		                                        <img id="avatar" class="thumbnail" src="{{url('/images/new_seo-10-512.png')}}" width="150">
+		                                        @if($errors->has('prod_img'))
+                                                    <p class="help text-danger">{{ $errors->first('prod_img') }}</p>
+                                                @endif
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Thư viện ảnh</div>
 										  	<div class="product_d_flex_input">
-												<input type="file" class="form-control" name="prod_gallery[]" multiple>
+												{{-- <input type="file" class="form-control" name="prod_gallery[]" multiple> --}}
+												<input type="file" class="form-control" name="prod_gallery[]" multiple id="gallery-photo-add">
+												@if($errors->has('prod_gallery'))
+                                                    <p class="help text-danger">{{ $errors->first('prod_gallery') }}</p>
+                                                @endif
+										  	</div>
+										  	<style>
+										  		.gallery img {
+										  			width: 90px;
+										  			height: 90px;
+										  			margin-left: 10px;
+										  		}
+										  	</style>
+										</div>
+										<div class="d-flex product_d_flex">
+											<div class="product_d_flex_title  align-self-center"></div>
+										  	<div class="product_d_flex_input">
+										  		<div class="gallery"></div>
 										  	</div>
 										</div>
+										<script>
+											$(function() {
+											    var imagesPreview = function(input, placeToInsertImagePreview) {
+											        if (input.files) {
+											            var filesAmount = input.files.length;
+											            for (i = 0; i < filesAmount; i++) {
+											                var reader = new FileReader();
+											                reader.onload = function(event) {
+											                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+											                }
+											                reader.readAsDataURL(input.files[i]);
+											            }
+											        }
+											    };
+											    $('#gallery-photo-add').on('change', function() {
+											        imagesPreview(this, 'div.gallery');
+											    });
+											});
+										</script>
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Giá bán</div>
 										  	<div class="product_d_flex_input">
@@ -90,7 +132,7 @@
 												<input type="number" class="form-control" name="prod_sale" value="{{old('prod_sale')}}" placeholder="VD: 12 - Giảm 12%">
 										  	</div>
 										</div>
-										<div class="d-flex product_d_flex">
+										{{-- <div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Gắn tag</div>
 										  	<div class="product_d_flex_input">
 												<select class="form-control select2" id="example2" name="tag_id[]" multiple="multiple">    
@@ -106,7 +148,7 @@
 													<option value="10">Colombia</option>
 												</select>
 										  	</div>
-										</div>
+										</div> --}}
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Đáng xem</div>
 										  	<div class="product_d_flex_input">
@@ -130,10 +172,13 @@
 										  	<div class="product_d_flex_title  align-self-center">Loại sản phẩm</div>
 										  	<div class="product_d_flex_input">
 												<div class="form-group">
-												  <select class="form-control" name="cate_id" id="sel1">
-												    <option>Chọn loại sản phẩm</option>
-												    {{showCategories($category, 0)}}
-												  </select>
+												  	<select class="form-control" name="cate_id">
+												    	<option value="">Chọn loại sản phẩm</option>
+												    	{{showCategories($category, 0)}}
+											  		</select>
+												  	@if($errors->has('cate_id'))
+                                                    	<p class="help text-danger">{{ $errors->first('cate_id') }}</p>
+                                                	@endif
 												</div>
 										  	</div>
 										</div>

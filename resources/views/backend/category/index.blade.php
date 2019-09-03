@@ -16,10 +16,12 @@
                 </div>
             </div>
             <!-- end row -->
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Important!</h4>
-                <p>This section is available in Pike Admin PRO version.</p>
-            </div>
+            @if(session('message'))
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Important!</h4>
+                    <p>This section is available in Pike Admin PRO version.</p>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="card mb-3">
@@ -42,14 +44,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                {{-- <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
                                                             <label>Ảnh</label>
                                                             <input class="form-control" id="cate_img" name="cate_img" type="file" />
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
@@ -181,8 +183,9 @@
                                         $('#cate_parent').val($(this).data('parent'));
                                         addUpdateCateDB('update');
                                     });
-                                    $('.btn_del').click(function() {
+                                    $('body').on('click', '.btn_del', function() {
                                         var id = $(this).data('id');
+                                        console.log(id);
                                         swal({
                                             title: "Are you sure?",
                                             text: "Nếu xóa, Bạn sẽ không thể khôi phục dữ liệu này!",

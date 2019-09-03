@@ -25,10 +25,14 @@ class ProductsController extends Controller
         $rules = [
             'prod_name' => 'required',
             'cate_id' => 'required',
+            'prod_img' => 'required',
+            'prod_gallery' => 'required',
         ];
         $messages = [
             'prod_name.required' => 'Sản phẩm không được để trống',
             'cate_id.required' => 'Loại sản phẩm không được để trống',
+            'prod_img.required' => 'Ảnh sản phẩm không được để trống',
+            'prod_gallery.required' => 'Thư viện ảnh không được để trống',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
@@ -39,6 +43,11 @@ class ProductsController extends Controller
             $data->prod_price = $request->prod_price;
             $data->prod_guarantee = $request->prod_guarantee;
             $data->prod_sale = $request->prod_sale;
+            if(intval($request->prod_sale) != 0) {
+                $data->prod_price_sale = $request->prod_price*$request->prod_sale;
+            } else {
+                $data->prod_price_sale = $request->prod_price;
+            }
             $data->prod_short_description = $request->prod_short_description;
             $data->prod_description = $request->prod_description;
             $data->prod_content = $request->prod_content;
@@ -104,6 +113,8 @@ class ProductsController extends Controller
     }
 
     public function postUpdateProduct(Request $request, $id) {
+
+        // dd($request->prop_gallery);
         $rules = [
             'prod_name' => 'required',
             'cate_id' => 'required',
@@ -122,6 +133,11 @@ class ProductsController extends Controller
             $data->prod_price = $request->prod_price;
             $data->prod_guarantee = $request->prod_guarantee;
             $data->prod_sale = $request->prod_sale;
+            if(intval($request->prod_sale) != 0) {
+                $data->prod_price_sale = $request->prod_price*$request->prod_sale;
+            } else {
+                $data->prod_price_sale = $request->prod_price;
+            }
             $data->prod_short_description = $request->prod_short_description;
             $data->prod_description = $request->prod_description;
             $data->prod_content = $request->prod_content;
@@ -146,19 +162,21 @@ class ProductsController extends Controller
                         $data->prod_img = $path.$modifiedFileName;
                     }
                 }
-                if($files=$request->file('prod_gallery')){
-                    foreach($files as $file){
-                        $path = 'uploads/products/gallery/'.$data->id.'/';
-                        $name=time().'_'.$file->getClientOriginalName();
-                        if($file->move($path,$name)) {
-                            $name = $path.$name;
-                            $prod_gallery[]=$name;                    
-                        }
+                if(!empty($request->prod_gallery)) {
+                    if($files=$request->file('prod_gallery')){
+                        foreach($files as $file){
+                            $path = 'uploads/products/gallery/'.$data->id.'/';
+                            $name=time().'_'.$file->getClientOriginalName();
+                            if($file->move($path,$name)) {
+                                $name = $path.$name;
+                                $prod_gallery[]=$name;                    
+                            }
 
+                        }
                     }
+                    $data->prod_gallery = implode("|",$prod_gallery);
+                    $data->save();
                 }
-                $data->prod_gallery = implode("|",$prod_gallery);
-                $data->save();
                 
                 $seo = seos::where('type', 'product')->where('p_id', $data->id)->where('status', 0)->first();
                 if(!empty($seo)) {

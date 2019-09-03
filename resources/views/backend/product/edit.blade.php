@@ -81,7 +81,7 @@
 												<input type="number" class="form-control" name="prod_sale" value="{{old('prod_sale')}}" placeholder="VD: 12 - Giảm 12%">
 										  	</div>
 										</div>
-										<div class="d-flex product_d_flex">
+										{{-- <div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Gắn tag</div>
 										  	<div class="product_d_flex_input">
 												<select class="form-control select2" id="example2" name="tag_id[]" multiple="multiple">    
@@ -97,7 +97,7 @@
 													<option value="CO">Colombia</option>
 												</select>
 										  	</div>
-										</div>
+										</div> --}}
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Đáng xem</div>
 										  	<div class="product_d_flex_input">

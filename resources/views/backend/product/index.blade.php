@@ -27,7 +27,7 @@
                     <div class="card mb-3">
                         <div class="card-header">
                             <span class="pull-right"><a href="{{url('admin/product/add')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> Add new product</a></span>
-                            <h3><i class="fa fa-sitemap"></i> All products (2 categories)</h3>
+                            <h3><i class="fa fa-sitemap"></i> Tất cả sản phẩm trang hiện tại ({{count($data)}} sản phẩm)</h3>
                         </div>
                         <!-- end card-header -->
                         <div class="card-body">

@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Input;
 use App\Categories;
 use App\Posts;
 use App\Videos;
+use App\User;
 use App\Products;
 use App\settings;
+use App\carts;
 
 function nameParent($cate_parent) {
 	$data = Categories::find($cate_parent);
@@ -128,4 +130,28 @@ function infoOther() {
 
 function phoneNumber($data) {
     return "(".substr($data, 0, 3).") ".substr($data, 3, 3)."-".substr($data,6);
+}
+
+// Trả về thông tin người dùng qua email
+function show_info_email() {
+    $user = User::where('email', Cookie::get('email'))->first();
+    return $user;
+}
+
+// Hàm xử lý cập nhật trạng thái sản phẩm giỏ hàng
+function updateCartStatus($str, $user_id) {
+    dd($str, $user_id);
+    $arr = [];
+    // $arr2 = [];
+    // $arr3 = [];
+    $exp = explode("##",ltrim($str, '##'));
+    foreach($exp as $e) {
+        $arr = explode("_", $e);
+        // $arr2[] = $arr[0];
+        // $arr3[] = $arr[1];
+        $cart = carts::where('user_id', $user_id)->where('status', 0)->where('product_id', $arr[0])->first();
+        dd($cart);
+        $cart->status = 1;
+        $cart->save();
+    }
 }

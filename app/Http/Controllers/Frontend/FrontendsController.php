@@ -14,11 +14,13 @@ use App\seos;
 use App\carts;
 use App\sliders;
 use App\User;
+use App\orders;
 use App\views;
 use Validator;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use Exception;
+use Cookie;
 
 class FrontendsController extends Controller
 {
@@ -63,7 +65,7 @@ class FrontendsController extends Controller
             if($data->save()) {
                 try {
                     Mail::send('emails.contact',['data'=> $data], function($m) use ($data) {
-                        $m->to($data->email)->subject(((!empty($data->name))?$data->name:$data->name).' đã gửi yêu cầu thành công');
+                        $m->to($data->email)->subject(((!empty($data->name))?$data->name:$data->email).' đã gửi yêu cầu thành công');
                     });
                 }catch(Exception $e){
                     return back()->with('message', 'Gửi yêu cầu thất bại! Kiểm tra lại mang!');
@@ -314,13 +316,14 @@ class FrontendsController extends Controller
                 'password'=>$request->password, 
                 'level'=>0,
             ];
-            if($request->remember = 'nho') {
+            if($request->remember == 'nho') {
                 $remember = true;
             } else {
                 $remember = false;
             }
             if(Auth::attempt($arr, $remember)) {
                 // return redirect()->intended('admin');
+                Cookie::queue('email', $request->email, 1440*7);
                 return redirect()->intended('account');
             } else {
                 return back()->withInput()->with('error', 'Tài khoản hoặc mật khẩu không hợp lệ!!!!');
@@ -334,6 +337,12 @@ class FrontendsController extends Controller
     /* Đăng nhập thành công */
     public function getAccountInfo() {
         return view('frontend.login_success');
+    }
+
+    // đăng xuất tài khoản người dùng
+    public function getAccountLogout() {
+        Auth::logout();
+        return redirect()->intended('/login')->withCookie(Cookie::forget('email'));
     }
 
     /* Đăng ký */
@@ -368,11 +377,147 @@ class FrontendsController extends Controller
     /* End đăng ký */
 
     public function getPays() {
-        return view('frontend.pay');
+        $total = 0;
+        if(!empty(show_info_email()->id)) {
+            $user_id = show_info_email()->id;
+        } else {
+            $user_id = 0;
+        }
+        $data = carts::where('user_id', $user_id)->where('status', 0)->with('products')->orderBy('created_at', 'desc')->get();
+        foreach($data as $d) {
+            $total += $d->price;
+        }
+        return view('frontend.pay', compact('data', 'total'));
+    }
+
+    public function postPays(Request $request) {
+        // updateCartStatus($request->order_list_product);
+        $rules = [
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'email' => 'required | min:6 | max:100'
+        ];
+        $messages = [
+            'name.required' => 'Họ tên không được để trống',
+            'address.required' => 'Địa chỉ không được để trống',
+            'phone.required' => 'Số điện thoại không được để trống',
+            'email.required' => 'Email không được để trống',
+        ];
+        if(empty(Cookie::get('email'))) {
+            $rules = [
+                'createaccount' => 'required',
+                'password' => 'required | min:6 | max:100'
+            ];
+            $messages = [
+                'createaccount.required' => 'Bạn chưa chọn tạo tài khoản mới',
+                'password.required' => 'Mật khẩu không được để trống'
+            ];
+        }
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            if(!empty(Cookie::get('email'))) {
+                $order = new orders;
+                $order->comment = $request->comment;
+                $order->product_str = $request->order_list_product;
+                $order->total_price = $request->total_price;
+                $order->user_id = show_info_email()->id;
+                $order->save();
+                updateCartStatus($request->order_list_product, show_info_email()->id);
+            } else {
+                if($request->createaccount == 1) {
+                    $data = new User;
+                    $data->email = $request->email;
+                    $data->password = bcrypt($request->password);
+                    $data->level = 0;
+                    if($data->save()) {
+                        $order = new orders;
+                        $order->comment = $request->comment;
+                        $order->product_str = $request->order_list_product;
+                        $order->total_price = $request->total_price;
+                        $order->user_id = $data->id;
+                        $order->save();
+                        updateCartStatus($request->order_list_product, $data->id);
+                    }
+                }
+            }
+        }
+        return back()->with('message', 'Đặt hàng thành công!');
+    }
+
+    public function postPayLogin(Request $request) {
+        $rules = [
+            'email'=>'required|email|:6|max:255',
+            'password'=>'required|min:6|max:255'
+        ];
+        $messages = [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'email.max' => 'Không được vượt quá 255 ký tự',
+            'email.min' => 'Không được nhỏ quá 5 ký tự',
+            'password.required' => 'Mật khẩu không được để trống',
+            'password.max' => 'Mật khẩu không được vượt quá 255 ký tự',
+            'password.min' => 'Mật khẩu không được nhỏ hơn 5 ký tự',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->passes()) {
+            $arr = [
+                'email'=>$request->email, 
+                'password'=>$request->password, 
+                'level'=>0,
+            ];
+            if($request->remember == 'nho') {
+                $remember = true;
+            } else {
+                $remember = false;
+            }
+            if(Auth::attempt($arr, $remember)) {
+                // return redirect()->intended('admin');
+                Cookie::queue('email', $request->email, 1440*7);
+                return back()->with('Đăng nhập thành công!');
+            } else {
+                return back()->withInput()->with('error', 'Tài khoản hoặc mật khẩu không hợp lệ!!!!');
+            }
+        } else {
+            return view('frontend.pay', ['errors'=>$validator->errors()->all()]);
+        }
     }
 
     public function getCarts() {
-        return view('frontend.shopcart');
+        $total = 0;
+        if(!empty(show_info_email()->id)) {
+            $user_id = show_info_email()->id;
+        } else {
+            $user_id = 0;
+        }
+        $data = carts::where('user_id', $user_id)->where('status', 0)->with('products')->orderBy('created_at', 'desc')->get();
+        foreach($data as $d) {
+            $total += $d->price;
+        }
+        // dd($data);
+        return view('frontend.shopcart', compact('data', 'total'));
+    }
+    public function postCarts(Request $request) {
+        if(!empty(show_info_email()->id)) {
+            $user_id = show_info_email()->id;
+        } else {
+            $user_id = 0;
+        }
+        $arr = array_except($request->all(), ['_token']);
+        list($keys, $values) = array_divide($arr);
+        $data = carts::where('user_id', $user_id)->where('status', 0)->with('products')->orderBy('created_at', 'desc')->get();
+        foreach($data as $key=>$dat) {
+            foreach($keys as $key=>$k) {
+                if($dat->product_id == $k) {
+                    $dat->amount = $values[$key];
+                    $dat->price = $dat->products->prod_price_sale*$values[$key];
+                    $dat->save();
+                }
+            }
+        }
+        return back()->with('message', 'Cập nhật giỏ hàng thành công!');
     }
 
     public function postView(Request $request) {
@@ -417,27 +562,32 @@ class FrontendsController extends Controller
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator->errors());
         } else {
-            $data = carts::where('product_id', $request->id)->where('user_id', 2)->first();
+            $data = carts::where('product_id', $request->id)->where('user_id', $request->user_id)->where('status', 0)->first();
             if(!empty($data)) {
                 $data->amount += 1;
                 $data->price = $request->price*$data->amount;
                 $data->save();
                 $message = ['code'=>'200', 'message'=>'Thêm sản phẩm vào giỏ hàng thành công!'];
-                $data = carts::where('product_id', $request->id)->where('user_id', 2)->with('products')->first();
-                $count = carts::count();
+                $data = carts::where('product_id', $request->id)->where('user_id', $request->user_id)->where('status', 0)->with('products')->first();
             } else {
                 $data = new carts;
                 $data->price = $request->price;
                 $data->amount = 1;
                 $data->product_id = $request->id;
                 $data->user_id = $request->user_id;
-                $data->status = 1;
+                $data->status = 0;
                 $data->save();
                 $message = ['code'=>'200', 'message'=>'Thêm sản phẩm vào giỏ hàng thành công!'];
-                $data = carts::where('product_id', $request->id)->where('user_id', $request->user_id)->orderBy('created_at', 'desc')->with('products')->first();
-                $count = carts::count();
+                $data = carts::where('product_id', $request->id)->where('status', 0)->where('user_id', $request->user_id)->orderBy('created_at', 'desc')->with('products')->first();
             }
-            return response()->json(compact('data', 'message', 'count'));
+            $prs = carts::where('user_id', $request->user_id)->where('status', 0)->get();
+            $total = 0;
+            foreach($prs as $key=>$pr) {
+                $total += $pr->price;
+            }
+            $total = number_format($total, 0, '.', '.');
+            $count = carts::where('user_id', $request->user_id)->where('status', 0)->count();
+            return response()->json(compact('data', 'message', 'count', 'total'));
         }
     }
 
@@ -446,13 +596,26 @@ class FrontendsController extends Controller
         $data = carts::find($request->id);
         if(!empty($data)) {
             $data->delete();
-            $message[] = ['code'=>200, 'Xóa sản phẩm thành công!'];
+            $warehouse = carts::where('user_id', $request->user_id)->where('status', 0)->get();
+            $total = 0;
+            foreach($warehouse as $key=>$pr) {
+                $total += $pr->price;
+            }
+            $total = number_format($total, 0, '.', '.');
+            $count = $warehouse->count();
+            $message = ['code'=>200, 'message'=>'Xóa sản phẩm thành công!'];
         }
-        return response()->json(compact('message', 'data'));
+        return response()->json(compact('message', 'count', 'total'));
     }
 
-    public function listToCart() {
-        $data = carts::with('products')->get();
-        return response()->json(compact('data'));
+    public function listToCart(Request $request) {
+        $data = carts::where('user_id', $request->user_id)->where('status', 0)->with('products')->orderBy('created_at', 'desc')->get();
+        // return $data;
+        $total = 0;
+        foreach($data as $key=>$pr) {
+            $total += $pr->price;
+        }
+        $total = number_format($total, 0, '.', '.');
+        return response()->json(compact('data', 'total'));
     }
 }

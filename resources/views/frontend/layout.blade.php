@@ -143,7 +143,7 @@
                 </div>
                 <div class="cart_header woocommerce">
                     <div class="popup_cart_hover">
-                        <a class="cart-contents" href="#" title="Hiển thị giỏ hàng">
+                        <a class="cart-contents" href="{{url('cart')}}" title="Hiển thị giỏ hàng">
                             <span>Giỏ hàng của bạn</span>
                             <small>Có <strong id="pr_count">0</strong> sản phẩm</small>
                         </a>
@@ -151,6 +151,7 @@
                             <ul id="cart_id_none" class="cart_list product_list_widget">
                                 {{-- <li class="empty">Chưa có sản phẩm trong giỏ hàng.</li> --}}
                             </ul><!-- end product list -->
+                            <input style="display: none;" type="text" id="user_id" @if(!empty(Cookie::get('email'))) value="{{show_info_email()->id}}" @else value="" @endif>
                         </div>
                     </div>
                 </div>
@@ -167,26 +168,32 @@
                 <a href="#" class="button_open_menu"><i class="fa fa-bars"></i> Menu</a>
                 <nav class="menu_header">
                     <ul id="menu-main-menu" class="menu">
-                        <li id="menu-item-31" class="menu-item @if(Request::is('/')) current_page_ancestor @endif"><a href="{{url('/')}}" title="@yield('title')">Trang chủ</a>
+                        <li class="menu-item @if(Request::is('/')) current_page_ancestor @endif"><a href="{{url('/')}}" title="@yield('title')">Trang chủ</a>
                         </li>
-                        <li id="menu-item-29" class="menu-item @if(Request::is('news') || Request::is('news/*')) current_page_ancestor @endif"><a href="{{url('/news')}}" title="Tin tức">Tin tức</a>
+                        <li class="menu-item @if(Request::is('news') || Request::is('news/*')) current_page_ancestor @endif"><a href="{{url('/news')}}" title="Tin tức">Tin tức</a>
                             <ul class="sub-menu">
                                 @foreach(listCatePost() as $key=>$cate)
                                     <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/news/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a></li>
                                 @endforeach
                             </ul>
                         </li>
-                        <li id="menu-item-183" class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif"><a href="{{url('/videos')}}" title="Videos">Videos</a>
+                        <li class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif"><a href="{{url('/videos')}}" title="Videos">Videos</a>
                             <ul class="sub-menu">
                                 @foreach(listCateVideo() as $key=>$cate)
                                     <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/videos/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a></li>
                                 @endforeach
                             </ul>
                         </li>
-                        <li id="menu-item-28" class="menu-item @if(Request::is('support') || Request::is('support/*')) current_page_ancestor @endif"><a href="{{url('/support')}}" title="Hỗ trợ khách hàng">Hỗ trợ khách hàng</a></li>
-                        <li id="menu-item-232" class="menu-item @if(Request::is('agency') || Request::is('agency/*')) current_page_ancestor @endif"><a href="{{url('/agency')}}" title="Hệ thống đại lý">Hệ thống đại lý</a></li>
-                        <li id="menu-item-27" class="menu-item @if(Request::is('contact') || Request::is('contact/*')) current_page_ancestor @endif"><a href="{{url('/contact')}}" title="Liên hệ">Liên hệ</a></li>
-                        <li id="menu-item-516" class="menu-item @if(Request::is('login') || Request::is('login/*')) current_page_ancestor @endif"><a href="{{url('/login')}}" title="Tài khoản">Tài khoản</a></li>
+                        <li class="menu-item @if(Request::is('support') || Request::is('support/*')) current_page_ancestor @endif"><a href="{{url('/support')}}" title="Hỗ trợ khách hàng">Hỗ trợ khách hàng</a></li>
+                        <li class="menu-item @if(Request::is('agency') || Request::is('agency/*')) current_page_ancestor @endif"><a href="{{url('/agency')}}" title="Hệ thống đại lý">Hệ thống đại lý</a></li>
+                        <li class="menu-item @if(Request::is('contact') || Request::is('contact/*')) current_page_ancestor @endif"><a href="{{url('/contact')}}" title="Liên hệ">Liên hệ</a></li>
+                        <li class="menu-item @if(Request::is('login') || Request::is('login/*')) current_page_ancestor @endif">
+                            @if(empty(Cookie::get('email')))
+                                <a href="{{url('/login')}}" title="Tài khoản">Tài khoản</a>
+                            @else
+                                <a href="{{url('account')}}" title="Tài khoản">{{Cookie::get('email')}}</a>
+                            @endif
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -230,13 +237,35 @@
                         <h4 class="title-sidebar-footer">Trợ giúp</h4>
                         <div class="menu-menu-tro-giup-container">
                             <ul id="menu-menu-tro-giup" class="menu">
-                                <li class="menu-item"><a href="{{url('/')}}" title="Giới thiệu">Giới thiệu</a></li>
-                                <li class="menu-item"><a href="{{url('/news')}}" title="Tin tức">Tin tức</a></li>
-                                <li class="menu-item"><a href="{{url('/support')}}" title="Hỗ trợ khách hàng">Hỗ trợ khách hàng</a></li>
-                                <li class="menu-item"><a href="{{url('/support')}}" title="Hình thức thanh toán">Hình thức thanh toán</a></li>
-                                <li class="menu-item"><a href="{{url('/support')}}" title="Hình thức vận chuyển">Hình thức vận chuyển</a></li>
-                                <li class="menu-item"><a href="{{url('/contact')}}" title="Liên hệ">Liên hệ</a></li>
-                                <li class="menu-item"><a href="{{url('/account')}}" title="Tài khoản">Tài khoản</a></li>
+                                <li class="menu-item @if(Request::is('/')) current_page_ancestor @endif">
+                                    <a href="{{url('/')}}" title="@yield('title')">Trang chủ</a>
+                                </li>
+                                <li class="menu-item @if(Request::is('news') || Request::is('news/*')) current_page_ancestor @endif">
+                                    <a href="{{url('/news')}}" title="Tin tức">Tin tức</a>
+                                    <ul class="sub-menu">
+                                        @foreach(listCatePost() as $key=>$cate)
+                                            <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/news/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                <li class="menu-item @if(Request::is('videos') || Request::is('videos/*')) current_page_ancestor @endif">
+                                    <a href="{{url('/videos')}}" title="Videos">Videos</a>
+                                    <ul class="sub-menu">
+                                        @foreach(listCateVideo() as $key=>$cate)
+                                            <li class="menu-item"><a class="category_id" data-id="{{$cate->id}}" href="{{url('/videos/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}">{{$cate->cate_name}}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                <li class="menu-item @if(Request::is('support') || Request::is('support/*')) current_page_ancestor @endif"><a href="{{url('/support')}}" title="Hỗ trợ khách hàng">Hỗ trợ khách hàng</a></li>
+                                <li class="menu-item @if(Request::is('agency') || Request::is('agency/*')) current_page_ancestor @endif"><a href="{{url('/agency')}}" title="Hệ thống đại lý">Hệ thống đại lý</a></li>
+                                <li class="menu-item @if(Request::is('contact') || Request::is('contact/*')) current_page_ancestor @endif"><a href="{{url('/contact')}}" title="Liên hệ">Liên hệ</a></li>
+                                <li class="menu-item @if(Request::is('login') || Request::is('login/*')) current_page_ancestor @endif">
+                                    @if(empty(Cookie::get('email')))
+                                        <a href="{{url('/login')}}" title="Tài khoản">Tài khoản</a>
+                                    @else
+                                        <a href="{{url('account')}}" title="Tài khoản">{{Cookie::get('email')}}</a>
+                                    @endif
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -326,7 +355,7 @@
                                                                 <span class="onsale">Giảm giá!</span>
                                                                 <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
                                                             </a>
-                                                            <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
+                                                            <a class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
                                                         </div>
                                                         <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                             <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
@@ -486,13 +515,14 @@
     <!-- Start Quick Buttons By https://muatheme.com -->
     <div class='quick-call-button'></div>
     <div class="show_phone_mobile"><a href="tel:{{infoOther()->phone}}" title="Gọi ngay"><i class="fa  fa-phone"></i> {{phoneNumber(infoOther()->phone)}}</a></div>
-    <link rel='stylesheet' id='lv_css-css' href='{{url("/vlnk")}}/css/quick-call-button.css?ver=1.0.3' type='text/css' />
+    <link rel='stylesheet' href='{{url("/vlnk")}}/css/quick-call-button.css?ver=1.0.3' type='text/css' />
     <script type='text/javascript' src='{{url("/vlnk")}}/js/scripts.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.validate.min.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/jquery.bpopup.min.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/devvn-quick-buy.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/devvn_main.js'></script>
     <script type='text/javascript' src='{{url("/vlnk")}}/js/add-cart-myscript.js'></script>
+    <script src="{{url('/pike')}}/assets/js/sweetalert.min.js"></script>
     {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/js.cookie.min.js'></script> --}}
     {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/woocommerce.min.js'></script> --}}
     {{-- <script type='text/javascript' src='{{url("/vlnk")}}/js/drag-quick-call-button.js'></script> --}}
@@ -506,9 +536,15 @@
             </div>
             <div class="cart_floating_right_minicart woocommerce">
                 <div class="floating_popup_cart">
-                    <ul class="cart_list product_list_widget ">
-                        <li class="empty">Chưa có sản phẩm trong giỏ hàng.</li>
-                    </ul><!-- end product list -->
+                    <div class="mini-cart-body">
+                        <ul class="cart_list product_list_widget" id="list_cart_right">
+                        </ul><!-- end product list -->
+                        <p class="total"><strong>Tạm tính:</strong> <span class="woocommerce-Price-amount amount"><span class="total_price"></span>&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></p>
+                        <p class="buttons">
+                            <a href="{{url('cart')}}" class="button wc-forward" id="button_xemgiohang">Giỏ hàng</a>
+                            <a href="{{url('pay')}}" class="button checkout wc-forward" id="button_thanhtoan">Thanh toán</a>
+                        </p>
+                    </div>
                 </div>
             </div> 
         </div>

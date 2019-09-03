@@ -44,6 +44,9 @@
 										  	<div class="product_d_flex_title  align-self-center">Tên sản phẩm</div>
 										  	<div class="product_d_flex_input">
 												<input type="text" class="form-control" name="prod_name" value="{{$data->prod_name}}" placeholder="VD: Iphone 6 plus">
+												@if($errors->has('prod_name'))
+                                                    <p class="help text-danger">{{ $errors->first('prod_name') }}</p>
+                                                @endif
 										  	</div>
 										</div>
 										<div class="d-flex product_d_flex">
@@ -56,9 +59,54 @@
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Thư viện ảnh</div>
 										  	<div class="product_d_flex_input">
-												<input type="file" class="form-control" name="prod_gallery[]" value="{{$data->prod_gallery}}" multiple>
+												<input type="file" class="form-control" name="prod_gallery[]" value="{{$data->prod_gallery}}" multiple id="gallery-photo-add">
+										  		{{-- <input type="file" class="form-control" name="prod_gallery[]" multiple id="gallery-photo-add"> --}}
+										  		@if($errors->has('prod_gallery'))
+                                                    <p class="help text-danger">{{ $errors->first('prod_gallery') }}</p>
+                                                @endif
+												
+										  	</div>
+										  	<style>
+										  		.gallery img {
+										  			width: 90px;
+										  			height: 90px;
+										  			margin-left: 10px;
+										  		}
+										  	</style>
+										</div>
+										<div class="d-flex product_d_flex">
+											<div class="product_d_flex_title  align-self-center"></div>
+										  	<div class="product_d_flex_input">
+										  		<div class="gallery">
+										  			<?php
+										  				$gars = explode("|", $data->prod_gallery); 
+										  			?>
+										  			@foreach($gars as $g)
+										  				<img class="img_preview" src="{{url('/'.$g)}}" alt="">
+										  			@endforeach
+										  		</div>
 										  	</div>
 										</div>
+										<script>
+											$(function() {
+											    var imagesPreview = function(input, placeToInsertImagePreview) {
+											        if (input.files) {
+											            var filesAmount = input.files.length;
+											            for (i = 0; i < filesAmount; i++) {
+											                var reader = new FileReader();
+											                reader.onload = function(event) {
+											                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+											                }
+											                reader.readAsDataURL(input.files[i]);
+											            }
+											        }
+											    };
+											    $('#gallery-photo-add').on('change', function() {
+											        imagesPreview(this, 'div.gallery');
+											        $('.img_preview').css('display', 'none');
+											    });
+											});
+										</script>
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Giá bán</div>
 										  	<div class="product_d_flex_input">
@@ -96,7 +144,7 @@
 										<?php 
 											$tag=json_decode($data->tag_id);
 										 ?>
-										<div class="d-flex product_d_flex">
+										<!-- <div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Gắn tag</div>
 										  	<div class="product_d_flex_input">
 												<select class="form-control select2" id="example2" name="tag_id[]" multiple="multiple">
@@ -114,7 +162,7 @@
 													@endif
 												</select>
 										  	</div>
-										</div>
+										</div> -->
 										<div class="d-flex product_d_flex">
 										  	<div class="product_d_flex_title  align-self-center">Đáng xem</div>
 										  	<div class="product_d_flex_input">
@@ -137,10 +185,13 @@
 										  	<div class="product_d_flex_title  align-self-center">Loại sản phẩm</div>
 										  	<div class="product_d_flex_input">
 												<div class="form-group">
-												  <select class="form-control" name="cate_id" id="sel1">
-												    <option>Chọn loại sản phẩm</option>
-												    {{showCategories($category, $data->cate_id)}}
-												  </select>
+												  	<select class="form-control" name="cate_id">
+												    	<option value="">Chọn loại sản phẩm</option>
+												    	{{showCategories($category, $data->cate_id)}}
+												  	</select>
+												  	@if($errors->has('cate_id'))
+                                                    	<p class="help text-danger">{{ $errors->first('cate_id') }}</p>
+                                                	@endif
 												</div>
 										  	</div>
 										</div>

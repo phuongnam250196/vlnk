@@ -21,7 +21,7 @@
 	    margin: 0 10px 5px 0;
 	}
 	.menu_header > ul > li > a {
-	    padding: 0 10px;
+	    padding: 0 6px;
 	}
 	.sidebar_to_menu .menu_header {
 	    margin-left: 240px;
@@ -47,7 +47,7 @@
 	    margin-left: 185px;
 	}
 	.menu_header > ul > li > a {
-    	padding: 0 8px;
+    	padding: 0 6px;
     	font-size: 14px;
 	}
 	h3.title-sidebar {

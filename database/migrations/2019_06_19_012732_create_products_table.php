@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('prod_img', 255)->nullable();
             $table->string('prod_gallery', 255)->nullable();
             $table->string('prod_price', 255)->nullable();
+            $table->string('prod_price_sale', 255)->nullable();
             $table->string('prod_guarantee', 255)->nullable();
             $table->string('prod_sale', 255)->nullable();
             $table->longtext('prod_short_description')->nullable();
