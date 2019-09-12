@@ -14,6 +14,7 @@ use App\seos;
 use App\carts;
 use App\sliders;
 use App\User;
+use App\ordercode;
 use App\orders;
 use App\views;
 use Validator;
@@ -65,8 +66,10 @@ class FrontendsController extends Controller
             if($data->save()) {
                 try {
                     Mail::send('emails.contact',['data'=> $data], function($m) use ($data) {
+                        $m->from('tpn250196@gmail.com', 'phuctoidental');
                         $m->to($data->email)->subject(((!empty($data->name))?$data->name:$data->email).' đã gửi yêu cầu thành công');
                     });
+                    return back()->with('message', 'Gửi tin nhắn thành công!');
                 }catch(Exception $e){
                     return back()->with('message', 'Gửi yêu cầu thất bại! Kiểm tra lại mang!');
                 }
@@ -297,7 +300,7 @@ class FrontendsController extends Controller
     }
     public function postAccount(Request $request) {
         $rules = [
-            'email'=>'required|email|:6|max:255',
+            'email'=>'required|email|min:6|max:255',
             'password'=>'required|min:6|max:255'
         ];
         $messages = [
@@ -310,7 +313,9 @@ class FrontendsController extends Controller
             'password.min' => 'Mật khẩu không được nhỏ hơn 5 ký tự',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->passes()) {
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
             $arr = [
                 'email'=>$request->email, 
                 'password'=>$request->password, 
@@ -326,11 +331,9 @@ class FrontendsController extends Controller
                 Cookie::queue('email', $request->email, 1440*7);
                 return redirect()->intended('account');
             } else {
-                return back()->withInput()->with('error', 'Tài khoản hoặc mật khẩu không hợp lệ!!!!');
+                return back()->withInput()->with('message', 'Tài khoản hoặc mật khẩu không hợp lệ!!!!');
             }
-        } else {
-            return view('frontend.account', ['errors'=>$validator->errors()->all()]);
-        }
+        } 
         
     }
 
@@ -419,13 +422,33 @@ class FrontendsController extends Controller
             return back()->withInput()->withErrors($validator->errors());
         } else {
             if(!empty(Cookie::get('email'))) {
-                $order = new orders;
-                $order->comment = $request->comment;
-                $order->product_str = $request->order_list_product;
-                $order->total_price = $request->total_price;
-                $order->user_id = show_info_email()->id;
-                $order->save();
-                updateCartStatus($request->order_list_product, show_info_email()->id);
+                $code = new ordercode;
+                $code->code = time();
+                $code->total_price = $request->total_price;
+                $code->user_id = show_info_email()->id;
+                $code->status = 0;
+                if($code->save()) {
+                    $arr = [];
+                    $exp = explode("##",ltrim($request->order_list_product, '##'));
+                    foreach($exp as $e) {
+                        $arr = explode("_", $e);
+                        $order = new orders;
+                        $order->amount = $arr[1];
+                        $order->price = $arr[2];
+                        $order->user_id = show_info_email()->id;
+                        $order->product_id = $arr[0];
+                        $order->order_id = $code->id;
+                        $order->status = 0;
+                        if($order->save()) {
+                            $cart = carts::where('user_id', show_info_email()->id)->where('status', 0)->where('product_id', $arr[0])->first();
+                            // dd($cart);
+                            $cart->status = 1;
+                            $cart->save();
+                        }
+                        // dd($arr);
+                    }
+                }
+                // updateCartStatus($request->order_list_product, show_info_email()->id);
             } else {
                 if($request->createaccount == 1) {
                     $data = new User;
@@ -433,13 +456,32 @@ class FrontendsController extends Controller
                     $data->password = bcrypt($request->password);
                     $data->level = 0;
                     if($data->save()) {
-                        $order = new orders;
-                        $order->comment = $request->comment;
-                        $order->product_str = $request->order_list_product;
-                        $order->total_price = $request->total_price;
-                        $order->user_id = $data->id;
-                        $order->save();
-                        updateCartStatus($request->order_list_product, $data->id);
+                        $code = new ordercode;
+                        $code->code = time();
+                        $code->total_price = $request->total_price;
+                        $code->user_id = $data->id;
+                        $code->status = 0;
+                        if($code->save()) {
+                            $arr = [];
+                            $exp = explode("##",ltrim($request->order_list_product, '##'));
+                            foreach($exp as $e) {
+                                $arr = explode("_", $e);
+                                $order = new orders;
+                                $order->amount = $arr[1];
+                                $order->price = $arr[2];
+                                $order->user_id = $data->id;
+                                $order->product_id = $arr[0];
+                                $order->order_id = $code->id;
+                                $order->status = 0;
+                                if($order->save()) {
+                                    $cart = carts::where('user_id', $data->id)->where('status', 0)->where('product_id', $arr[0])->first();
+                                    // dd($cart);
+                                    $cart->status = 1;
+                                    $cart->save();
+                                }
+                                // dd($arr);
+                            }
+                        }
                     }
                 }
             }
@@ -617,5 +659,104 @@ class FrontendsController extends Controller
         }
         $total = number_format($total, 0, '.', '.');
         return response()->json(compact('data', 'total'));
+    }
+
+
+    public function myInfo() {
+        $data = User::where('email', Cookie::get('email'))->first();
+        return view('frontend.users.info', compact('data'));
+    }
+
+    public function changeName() {
+        $data = User::where('email', Cookie::get('email'))->first();
+        return view('frontend.users.change_name', compact('data'));
+    }
+    public function postChangeName(Request $request) {
+        $rules = [
+            'name' => 'required',
+        ];
+        $messages = [
+            'name.required' => 'Họ tên không được để trống',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            $data = User::where('email', Cookie::get('email'))->first();
+            if(!empty($data)) {
+                $data->name = $request->name;
+                $data->save();
+                return redirect('account/my-info')->with('message', 'Bạn đã cập nhật họ tên thành công');
+            } else {
+                return back()->with('message', 'Không tìm thấy tài khoản người dùng!');
+            }
+        }
+    }
+
+    public function changePhone() {
+        $data = User::where('email', Cookie::get('email'))->first();
+        return view('frontend.users.change_phone');
+    }
+    public function postChangePhone(Request $request) {
+        $rules = [
+            'phone' => 'required',
+        ];
+        $messages = [
+            'phone.required' => 'Số điện thoại không được để trống',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            $data = User::where('email', Cookie::get('email'))->first();
+            if(!empty($data)) {
+                $data->phone = $request->phone;
+                $data->save();
+                return redirect('account/my-info')->with('message', 'Bạn đã cập nhật số điện thoại thành công');
+            } else {
+                return back()->with('message', 'Không tìm thấy tài khoản người dùng!');
+            }
+        }
+    }
+
+    public function changeAddress() {
+        $data = User::where('email', Cookie::get('email'))->first();
+        return view('frontend.users.change_address', compact('data'));
+    }
+    public function postChangeAddress(Request $request) {
+        $rules = [
+            'address' => 'required',
+        ];
+        $messages = [
+            'address.required' => 'Địa chỉ mới không được để trống',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->errors());
+        } else {
+            $data = User::where('email', Cookie::get('email'))->first();
+            if(!empty($data)) {
+                $data->address = $request->address;
+                $data->save();
+                return redirect('account/my-info')->with('message', 'Bạn đã cập nhật địa chỉ thành công');
+            } else {
+                return back()->with('message', 'Không tìm thấy tài khoản người dùng!');
+            }
+        }
+    }
+
+    public function listOrderAccount() {
+        $data = orders::where('user_id', show_info_email()->id)->where('status', 0)->with('products')->with('orders')->paginate(10);
+        // dd($data);
+        return view('frontend.users.listorders', compact('data'));
+    }
+
+    public function listOrderHistoryAccount() {
+        $data = orders::where('user_id', show_info_email()->id)->where('status', 1)->with('products')->with('orders')->paginate(10);
+        return view('frontend.users.history', compact('data'));
+    }
+
+    public function listReviewAccount() {
+
     }
 }

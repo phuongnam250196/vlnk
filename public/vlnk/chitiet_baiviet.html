@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
 
+
 <head>
     <meta charset="UTF-8" />
     <title>Demo theme WordPress bán hàng điện tử, điện máy | Công nghệ cho cuộc sống</title>
@@ -23,12 +24,12 @@
     <meta name="msapplication-TileImage" content="images/logo.png" />
     <script>
         jQuery( document ).ready(function() {
-		jQuery('img[data-lazy-src]').each(function() 
-		{  
+        jQuery('img[data-lazy-src]').each(function() 
+        {  
               var imgsrc = jQuery(this).attr("data-lazy-src");
               jQuery(this).attr('src',imgsrc);
         });    
-	var tbay_bottom_header = jQuery('header.header');
+    var tbay_bottom_header = jQuery('header.header');
    
         var CurrentScroll = 0;
         var tbay_width = jQuery(window).width();
@@ -36,7 +37,7 @@
        
         jQuery(window).scroll(function() {
             if(tbay_width <= 767) {
-				//alert('ss');
+                //alert('ss');
                 var NextScroll = jQuery(this).scrollTop();
                 if (NextScroll > header_height + 30) {
                     tbay_bottom_header.addClass('sticky-header');
@@ -49,20 +50,20 @@
             }
         });
     });
-	
-	</script>
+    
+    </script>
 </head>
 
 <body data-rsssl=1 class="home page-template page-template-templates page-template-home-default page-template-templateshome-default-php page page-id-409 woocommerce-no-js devvn_desktop sidebar_to_menu logo_menu_stick">
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.12&autoLogAppEvents=1';
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-	</script>
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.12&autoLogAppEvents=1';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
     <header class="header">
         <div class="top_header">
             <div class="container">
@@ -224,9 +225,7 @@
         </div>
         <div class="end_navpage"></div>
     </header>
-
     <!-- Thay đổi ở đây -->
-
     <div class="main_body">
         <div class="container">
             <div class="row row-padding-15">
@@ -391,7 +390,6 @@
         </div>
     </div>
     <!-- End thay đổi -->
-
     <footer class="footer">
         <div class="container">
             <div class="row footer_wrap">
@@ -462,7 +460,7 @@
                 <div id="woocommerce_product_tag_cloud-2" class="widget-footer woocommerce widget_product_tag_cloud">
                     <h3 class="title-sidebar-footer">Từ khóa thông dụng</h3>
                     <div class="tagcloud">
-                    	<a href="#" class="tag-cloud-link tag-link-16 tag-link-position-1" style="font-size: 22pt;" aria-label="android TV Box (2 sản phẩm)">android TV Box</a>
+                        <a href="#" class="tag-cloud-link tag-link-16 tag-link-position-1" style="font-size: 22pt;" aria-label="android TV Box (2 sản phẩm)">android TV Box</a>
                         <a href="/tu-khoa/camera-the-thao/" class="tag-cloud-link tag-link-18 tag-link-position-2" style="font-size: 22pt;" aria-label="Camera thể thao (2 sản phẩm)">Camera thể thao</a>
                         <a href="/tu-khoa/hdmi/" class="tag-cloud-link tag-link-40 tag-link-position-3" style="font-size: 8pt;" aria-label="hdmi (1 sản phẩm)">hdmi</a>
                         <a href="/tu-khoa/kiwibox/" class="tag-cloud-link tag-link-17 tag-link-position-4" style="font-size: 22pt;" aria-label="Kiwibox (2 sản phẩm)">Kiwibox</a>
@@ -513,18 +511,18 @@
             </div>
         </div>
     </div>
-  
     <script>
-		    (function($) {
-		        $(document).ready(function() {
-		            $('.cart_floating_right_button').click(function() {
-		                $('.cart_floating_right').addClass('open_float_cart');
-		            });
-		            $('.cart_floating_right_title').click(function() {
-		                $('.cart_floating_right').removeClass('open_float_cart');
-		            });
-		        });
-		    })(jQuery);
+    (function($) {
+        $(document).ready(function() {
+            $('.cart_floating_right_button').click(function() {
+                $('.cart_floating_right').addClass('open_float_cart');
+            });
+            $('.cart_floating_right_title').click(function() {
+                $('.cart_floating_right').removeClass('open_float_cart');
+            });
+        });
+    })(jQuery);
+
     </script>
 </body>
 

@@ -37,7 +37,7 @@
                                             @endif
                                             <img width="300" height="300" src="{{url('/'.$dat->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt=""/>
                                         </a>
-                                        <a rel="nofollow" href="#" data-quantity="1" data-product_id="98" data-product_sku="TYCOT35" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_98">Thêm vào giỏ</a> 
+                                        <a data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
                                     </div>
                                     <a data-id="{{$dat->id}}" href="{{url('/product/'.$dat->prod_slug)}}" class="product_idwoocommerce-LoopProduct-link woocommerce-loop-product__link">
                                         <h2 class="woocommerce-loop-product__title">{{$dat->prod_name}}</h2>

@@ -93,7 +93,7 @@
                                                     @endif
                                                     <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a href="#" data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
+                                                <a data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                             </div>
                                             <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
                                                 <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>
@@ -142,7 +142,7 @@
                                                     @endif
                                                     <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a href="#" data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
+                                                <a data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                             </div>
                                             <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
                                                 <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>
@@ -191,7 +191,7 @@
                                                     @endif
                                                     <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{$prod->prod_name}}" title="{{$prod->prod_name}}" />
                                                 </a>
-                                                <a href="#" data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
+                                                <a data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
                                             </div>
                                             <a data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link" title="{{$prod->prod_name}}">
                                                 <h4 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h4>

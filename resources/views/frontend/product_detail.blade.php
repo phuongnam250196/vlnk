@@ -147,7 +147,7 @@
                                                         @endif
                                                         <img src="{{url('/'.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
                                                     </a>
-                                                    <a rel="nofollow" href="/san-pham/ip-camera-bao-dong-chong-trom-qf004-hd-wifi/?add-to-cart=207" data-quantity="1" data-product_id="207" data-product_sku="SJCAM SJ4000" class="button product_type_simple add_to_cart_button ajax_add_to_cart" id="tech_addtocart_207">Thêm vào giỏ</a> 
+                                                    <a data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                                 </div>
                                                 <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                     <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>

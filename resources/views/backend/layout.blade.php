@@ -221,7 +221,7 @@
                         <a class="@if(Request::is('admin/contact') || Request::is('admin/contact/*')) pro @endif" href="{{url('admin/contact')}}"><i class="fa fa-volume-control-phone bigfonts"></i><span> Liên hệ </span> </a>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="fa fa-cart-plus bigfonts"></i><span> Đặt hàng </span> </a>
+                        <a class="@if(Request::is('admin/order') || Request::is('admin/order/*')) pro @endif" href="{{url('admin/order/')}}"><i class="fa fa-cart-plus bigfonts"></i><span> Đơn hàng </span> </a>
                     </li>
                 </ul>
                 <div class="clearfix"></div>

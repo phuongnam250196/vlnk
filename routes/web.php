@@ -62,6 +62,18 @@ Route::group(['namespace'=>'Frontend'], function() {
 
 	Route::group(['prefix'=>'account'], function() {
 		Route::get('/', 'FrontendsController@getAccountInfo');
+		Route::get('/my-info', 'FrontendsController@myInfo');
+		Route::get('change-name', 'FrontendsController@changeName');
+		Route::post('change-name', 'FrontendsController@postChangeName');
+		Route::get('change-phone', 'FrontendsController@changePhone');
+		Route::post('change-phone', 'FrontendsController@postChangePhone');
+		Route::get('change-address', 'FrontendsController@changeAddress');
+		Route::post('change-address', 'FrontendsController@postChangeAddress');
+
+		Route::get('orders', 'FrontendsController@listOrderAccount');
+		Route::get('history', 'FrontendsController@listOrderHistoryAccount');
+		Route::get('reviews', 'FrontendsController@listReviewAccount');
+
 		Route::get('/logout', 'FrontendsController@getAccountLogout');
 	});
 });
@@ -120,6 +132,12 @@ Route::group(['namespace'=>'Backend', ], function() {
 		Route::group(['prefix'=>'contact'], function() {
 			Route::get('/', 'ContactsController@getContacts');
 			Route::post('/del', 'ContactsController@postDeleteContacts');
+		});
+
+		Route::group(['prefix'=>'order'], function() {
+			Route::get('/', 'OrdersController@listOrders');
+			Route::post('confirm', 'OrdersController@confirmOrders');
+			Route::post('/del', 'OrdersController@delOrders');
 		});
 
 		Route::group(['prefix'=>'setting'], function() {

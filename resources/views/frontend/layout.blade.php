@@ -309,8 +309,8 @@
 
 
     {{-- pop đơn hàng --}}
-    <div id="fancybox_id" class="fancybox-overlay fancybox-overlay-fixed" style="width: auto; height: auto; display: none;">
-        <div class="fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened" tabindex="-1" style="width: 817px; height: 100%; position: absolute; top: 24px; left: 266px; opacity: 1; overflow: visible;">
+    <div id="fancybox_id" class="fancybox-overlay fancybox-overlay-fixed">
+        <div class="fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened" tabindex="-1">
             <div class="fancybox-skin">
                 <div class="fancybox-outer">
                     <div class="fancybox-inner">
@@ -321,27 +321,33 @@
                                         <h2>1 Sản phẩm đã được thêm vào giỏ hàng.</h2>
                                         <div class="info-box">
                                             <div class="product-thumb">
-                                                <a href="https://tech360.vn/action-camera-sjcam-sj8-plus"><img width="300" height="300" src="https://tech360.vn/wp-content/uploads/2016/12/SJ8-pro-1-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""></a> </div>
+                                                
+                                            </div>
                                             <div class="product-info">
-                                                <h3 class="product-title">
-                                                    <a href="https://tech360.vn/action-camera-sjcam-sj8-plus">
-                                                        Action camera SJACM SJ8 Plus 4K Wifi </a>
+                                                <h3 class="product-title product-title-popup">
+                                                    
                                                 </h3>
                                                 <span class="product-price">
-                                                    <del><span class="woocommerce-Price-amount amount">4.349.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></del> <ins><span class="woocommerce-Price-amount amount">4.149.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></ins> </span>
+                                                    <del>
+                                                        <span class="woocommerce-Price-amount amount" id="popup_cost"></span>
+                                                    </del> 
+                                                    <ins>
+                                                        <span class="woocommerce-Price-amount amount" id="popup_cost_present"></span>
+                                                    </ins> 
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="cart-info">
                                             <h3>Giỏ hàng của bạn</h3>
                                             <div class="cart-totals">
                                                 Tổng: <span class="cart-cost">
-                                                    <span class="woocommerce-Price-amount amount">16.596.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span> </span>
+                                                    <span class="woocommerce-Price-amount amount" id="total_cost_popup"></span> </span>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
                                         <div class="text-right button_popup_cart">
-                                            <a href="#" class="tat_popup" id="button_muathemsanpham">Mua thêm sản phẩm</a>
-                                            <a href="https://tech360.vn/thanh-toan" id="button_dathang_thanhtoan">Đặt hàng và thanh toán</a>
+                                            <a href="javascript:;" class="tat_popup" id="button_muathemsanpham">Mua thêm sản phẩm</a>
+                                            <a href="{{url('pay')}}" id="button_dathang_thanhtoan">Đặt hàng và thanh toán</a>
                                         </div>
                                         <div class="clearfix"></div>
                                         <div class="woocommmerce devvn-wacp-related">
@@ -349,19 +355,38 @@
                                             <ul class="products columns-4">
                                                 @foreach(listProducts() as $key=>$prod)
                                                 @if($key<4)
-                                                    <li class="product">
+                                                    <li class="product" style="height: inherit;">
                                                         <div class="shop_loop_box">
-                                                            <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                            <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id">
                                                                 <span class="onsale">Giảm giá!</span>
-                                                                <img src="{{url(''.$prod->prod_img)}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" />
+                                                                <img src="{{url(''.$prod->prod_img)}}" alt="" />
                                                             </a>
-                                                            <a class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a> 
+                                                            <a data-price="{{$prod->prod_price_sale}}" data-product_id="{{$prod->id}}" data-amount="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart">Thêm vào giỏ</a>
                                                         </div>
-                                                        <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                        <a data-id="{{$prod->id}}" href="{{url('product/'.$prod->prod_slug)}}" class="product_id">
                                                             <h2 class="woocommerce-loop-product__title">{{$prod->prod_name}}</h2>
                                                         </a>
-                                                        <span class="price"><del><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></del> <ins><span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0, '.', '.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span></ins></span>
-                                                        <div class="devvn_is_featured"><img width="80" height="44" src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="" /></div>
+                                                        <span class="price">
+                                                            @if(!empty($prod->prod_sale))
+                                                                <del>
+                                                                    <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price, 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                                </del>
+                                                            @endif 
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">{{number_format($prod->prod_price-($prod->prod_price*$prod->prod_sale*0.01), 0,'.','.')}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></span>
+                                                            </ins>
+                                                        </span>
+                                                        @if(!empty($prod->hot))
+                                                            <div class="devvn_is_featured">
+                                                                <img src="{{url('/vlnk')}}/images/70_58013_1a.png" class="attachment-full size-full" alt="Sản phẩm hot" title="Sản phẩm hot" />
+                                                            </div>
+                                                        @endif
+                                                        @if(!empty($prod->installment))
+                                                            <div class="devvn_is_tragop">
+                                                                <img src="{{url('/vlnk')}}/images/tap-tragop0dong.png" title="Trả góp" alt="Trả góp" /> 
+                                                                <a class="product_id" data-id="{{$prod->id}}" href="{{url('/product/'.$prod->prod_slug)}}" title="{{$prod->prod_name}}">Xem chi tiết <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        @endif
                                                     </li>
                                                 @endif
                                                 @endforeach
@@ -379,6 +404,21 @@
         <div class="clearfix"></div>
     </div>
     <style>
+        #fancybox_id {
+            width: auto; 
+            height: auto; 
+            display: none;
+        }
+        .fancybox-wrap {
+            width: 850px; 
+            height: 100%; 
+            position: absolute; 
+            left: 266px;
+            top: 24px; 
+            padding: 0;
+            opacity: 1; 
+            overflow: visible;
+        }
         div#devvn-wacp-popup {
             background: #fff;
             padding: 10px;
@@ -474,7 +514,25 @@
             font-weight: 700;
             color: #e03232;
         }
+        @media (max-width: 1199px){
+            .fancybox-wrap {
+                width: 100%; 
+                height: 100%; 
+                position: absolute; 
+                top: 24px; 
+                left: 0;
+                padding: 0 50px;
+                opacity: 1; 
+                overflow: visible;
+            }
+        }
         @media (max-width: 767px){
+            .fancybox-wrap {
+                width: 100%; 
+                height: 100%; 
+                padding: 20px;
+                overflow-x: scroll;
+            }
             div#devvn-wacp-popup .info-box {
                 padding-right: 0;
             }

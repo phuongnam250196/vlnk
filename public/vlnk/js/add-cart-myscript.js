@@ -25,14 +25,14 @@
                         $('#cart_id_none').prepend('<li class="mini_cart_item">' +
                             '<a href="#" style="line-height:1;" class="remove remove-'+data.data[i].id+'" title="Xóa sản phẩm này" data-id="' + data.data[i].id + '">×</a>' +
                             '<a href="' + url + 'product/' + data.data[i].products.prod_slug + '">' +
-                            '<img width="300" height="300" src="' + data.data[i].products.prod_img + '" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">' + data.data[i].products.prod_name + '</a>' +
-                            '<span class="quantity">' + data.data[i].amount + ' × <span class="woocommerce-Price-amount amount">' + data.data[i].products.prod_price_sale + '&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>' +
+                            '<img width="300" height="300" src="' + url+data.data[i].products.prod_img + '" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">' + data.data[i].products.prod_name + '</a>' +
+                            '<span class="quantity">' + data.data[i].amount + ' × <span class="woocommerce-Price-amount amount">' + formatNumber(data.data[i].products.prod_price_sale) + '&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>' +
                             '</li>');
                         $('#list_cart_right').prepend('<li class="mini_cart_item">'+
                             '<a href="#" class="remove remove-'+data.data[i].id+'" title="Xóa sản phẩm này" data-id="'+data.data[i].id+'">×</a>'+
                             '<a href="'+url+'product/'+data.data[i].products.prod_slug+'">'+
-                                '<img width="300" height="300" src="'+data.data[i].products.prod_img+'" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" >'+ data.data[i].products.prod_name +'&nbsp; </a>'+
-                            '<span class="quantity">'+data.data[i].amount+' × <span class="woocommerce-Price-amount amount">'+ data.data[i].products.prod_price_sale + '&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
+                                '<img width="300" height="300" src="'+url+data.data[i].products.prod_img+'" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" >'+ data.data[i].products.prod_name +'&nbsp; </a>'+
+                            '<span class="quantity">'+data.data[i].amount+' × <span class="woocommerce-Price-amount amount">'+ formatNumber(data.data[i].products.prod_price_sale) + '&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
                         '</li>');
                     }
                     $('.buttons').show();
@@ -80,32 +80,41 @@
                             console.log(data.total);
                             $('#pr_count').text(data.count);
                             $('.total_price').text(data.total);
+                            $('#total_cost_popup').html(formatNumber(data.total)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span>');
+                            $('#popup_cost').html(formatNumber(data.data.products.prod_price)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span>');
+                            $('#popup_cost_present').html(formatNumber(data.data.products.prod_price_sale)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span>');
+                            var link_pr = '<div class="product-thumb"><a href="'+url+'product/'+data.data.products.prod_slug+'">'+
+                                            '<img width="300" height="300" src="'+url+data.data.products.prod_img+'" alt="">'+
+                                        '</a></div>';
+                            $('.product-thumb').replaceWith(link_pr);
+                            var link_name = '<h3 class="product-title product-title-popup"><a href="'+url+'product/'+data.data.products.prod_slug+'">'+data.data.products.prod_name+'</a></h3>';
+                            $('.product-title-popup').replaceWith(link_name);
                             console.log($('.remove-'+data.data.id).attr('data-id'));
                             if($('.remove-'+data.data.id).attr('data-id') == undefined) {
     	                        $('#cart_id_none').prepend('<li class="mini_cart_item">'+
     	                            '<a href="#" style="line-height:1;" class="remove remove-'+data.data.id+'" title="Xóa sản phẩm này" data-id="'+data.data.id+'">×</a>'+
     	                            '<a href="'+url+'product/'+data.data.products.prod_slug+'">'+
     	                                '<img width="300" height="300" src="'+data.data.products.prod_img+'" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">'+data.data.products.prod_name+'&nbsp</a>'+
-    	                            '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+data.data.products.prod_price_sale+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
+    	                            '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+formatNumber(data.data.products.prod_price_sale)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
     	                        '</li>');
     	                        $('#list_cart_right').prepend('<li class="mini_cart_item">'+
                                 '<a href="#" class="remove remove-'+data.data.id+'" title="Xóa sản phẩm này" data-id="'+data.data.id+'">×</a>'+
                                 '<a href="'+url+'product/'+data.data.products.prod_slug+'">'+
                                     '<img width="300" height="300" src="'+data.data.products.prod_img+'" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" >'+data.data.products.prod_name+'&nbsp; </a>'+
-                                '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+data.data.products.prod_price_sale+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
+                                '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+formatNumber(data.data.products.prod_price_sale)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
                             '</li>');
                             } else {
                             	$('.remove-'+data.data.id).parent().replaceWith('<li class="mini_cart_item">'+
     	                            '<a href="#" style="line-height:1;" class="remove remove-'+data.data.id+'" title="Xóa sản phẩm này" data-id="'+data.data.id+'">×</a>'+
     	                            '<a href="'+url+'product/'+data.data.products.prod_slug+'">'+
     	                                '<img width="300" height="300" src="'+data.data.products.prod_img+'" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">'+data.data.products.prod_name+'&nbsp</a>'+
-    	                            '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+data.data.products.prod_price_sale+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
+    	                            '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+formatNumber(data.data.products.prod_price_sale)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
     	                        '</li>');
     	                        $('.remove-'+data.data.id).parent().replaceWith('<li class="mini_cart_item">'+
                                 '<a href="#" class="remove remove-'+data.data.id+'" title="Xóa sản phẩm này" data-id="'+data.data.id+'">×</a>'+
                                 '<a href="'+url+'product/'+data.data.products.prod_slug+'">'+
                                     '<img width="300" height="300" src="'+data.data.products.prod_img+'" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" >'+data.data.products.prod_name+'&nbsp; </a>'+
-                                '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+data.data.products.prod_price_sale+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
+                                '<span class="quantity">'+data.data.amount+' × <span class="woocommerce-Price-amount amount">'+formatNumber(data.data.products.prod_price_sale)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></span></span>'+
                             '</li>');
                             }
                             
@@ -220,8 +229,28 @@
             $('.show-price-'+id).html(formatNumber(price*val)+'&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span>');
             // console.log(val, formatNumber(price*val));
         });
+
+        // Hàm chỉnh popup thêm vào giỏ hàng khi thay đổi kích thước màn hình
+        var height_n = $(window).height();
+        var weight_n = $(window).width();
+        changePopup(height_n, weight_n);
+         $(window).resize(function() {
+            var height_c = $(window).height();
+            var weight_c = $(window).width();
+            console.log(height_c, weight_c);
+            changePopup(height_c, weight_c);
+         });
     });
 
+    // Hàm thay đổi kích thước popup thêm giỏ hàng
+    function changePopup(height, weight) {
+        // if(weight>=900) {
+        //     $('.fancybox-wrap').css({'weight':'inherit', 'padding':'inherit'})
+        // }
+        // if(weight<900) {
+        //     $('.fancybox-wrap').css({'weight':'100% !important', 'left':'0', 'padding':'20px'})
+        // }
+    } 
 
     // view sản phẩm, video, bài viết, danh mục    
     function viewClick(nameClass, type) {

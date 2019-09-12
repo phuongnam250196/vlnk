@@ -1591,13 +1591,13 @@ jQuery(function($) {
             });
         };
 
-        $(window).load(function() {
-            equalheight('.products li');
-        });
+        // $(window).load(function() {
+        //     equalheight('.products li');
+        // });
 
-        $(window).resize(function() {
-            equalheight('.products li');
-        });
+        // $(window).resize(function() {
+        //     equalheight('.products li');
+        // });
         /**********
          * Scroll
          * **************/

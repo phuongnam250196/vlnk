@@ -140,7 +140,7 @@ function show_info_email() {
 
 // Hàm xử lý cập nhật trạng thái sản phẩm giỏ hàng
 function updateCartStatus($str, $user_id) {
-    dd($str, $user_id);
+    // dd($str, $user_id);
     $arr = [];
     // $arr2 = [];
     // $arr3 = [];
@@ -150,7 +150,7 @@ function updateCartStatus($str, $user_id) {
         // $arr2[] = $arr[0];
         // $arr3[] = $arr[1];
         $cart = carts::where('user_id', $user_id)->where('status', 0)->where('product_id', $arr[0])->first();
-        dd($cart);
+        // dd($cart);
         $cart->status = 1;
         $cart->save();
     }

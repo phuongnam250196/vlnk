@@ -86,8 +86,8 @@
                 <br>
                 <p>Nội dung <strong class="text-uppercase">{{$data->message}}</strong></p>
                 <br>
-                <p>Cảm ơn bạn đã sử dụng dịch vụ của https://tiva.vn</p>
-                <p>Mọi thắc mắc xin liên hệ: </p>
+                <p>Cảm ơn bạn đã sử dụng dịch vụ của https://phuctoidental.com</p>
+                <p>Mọi thắc mắc xin liên hệ: 0978987166</p>
             </td>
 
         </tr>

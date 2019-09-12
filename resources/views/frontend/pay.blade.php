@@ -15,6 +15,9 @@
                     <div class="page_content">
                         <h1 class="title-page">Thanh toán</h1>
                         <div class="tinymce">
+                            @if(empty($total))
+                                <p>Không có sản phẩm nào để thanh toán!</p>
+                            @else
                             <div class="woocommerce">
                                 <div class="woocommerce-notices-wrapper"></div>
                                 @if(empty(Cookie::get('email')))
@@ -215,6 +218,7 @@
                                     {{csrf_field()}}
                                 </form>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
