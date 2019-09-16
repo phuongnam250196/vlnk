@@ -11,9 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/list_cate', function () {
+    dd(listCate());
+});
 
 // Auth::routes();
 Route::group(['namespace'=>'Frontend'], function() {

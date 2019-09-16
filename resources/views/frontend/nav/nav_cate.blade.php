@@ -1,40 +1,21 @@
 <div class="devvn_mega_menu_box">
     <ul class="devvn_mega_menu_ul">
         @foreach(listCate() as $key=>$cate)
-        @if($key<7)
-            <li class="@if($key !=0) no-have-mega @endif">
+        {{-- @if($key<7) --}}
+            <li class="@if($key !=-1) no-have-mega @endif">
                 <a class="category_id" data-id="{{$cate->id}}" href="{{url('/category/'.$cate->cate_slug)}}" title="{{$cate->cate_name}}"><i class="devvn_mega_menu_icon" style="background: url({{url('/vlnk')}}/images/android_box.png) no-repeat center center;"></i>{{$cate->cate_name}}</a>
                 <i class="click_open_sub_megamenu">+</i>
-                <div class="devvn_sub_mega_content" style="background: #fff url({{url('vlnk')}}/images/androidbox.png) no-repeat right bottom;">
-                    {{-- <div class="devvn_sub_mega_content_box devvn-megamenu-3-column">
-                        <div class="devvn-mega-sub-column-3 devvn_sub_mega_content_column">
-                            <div class="devvn_mega_menu_title">
-                                <h2>Sub menu 1</h2>
-                                <ul>
-                                    <li><a href="#" title="Sub menu  dm1">Sub menu dm1</a></li>
-                                    <li><a href="#" title="Sub menu 1">Sub menu 1</a></li>
-                                    <li><a href="#" title="Sub menu 1">Sub menu 1</a></li>
-                                    <li><a href="#" title="Sub menu 1">Sub menu 1</a></li>
-                                    <li><a href="" title="sub 121331">sub 121331</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="devvn-mega-sub-column-3 devvn_sub_mega_content_column">
-                            <div class="devvn_mega_menu_title">
-                                <h2>Sub menu 2</h2>
-                                <ul>
-                                    <li><a href="#" title="Sub menu 2">Sub menu 2</a></li>
-                                    <li><a href="#" title="Sub menu 2">Sub menu 2</a></li>
-                                    <li><a href="#" title="Sub menu 2">Sub menu 2</a></li>
-                                    <li><a href="#" title="Sub menu 2">Sub menu 2</a></li>
-                                    <li><a href="#" title="Sub menu 2">Sub menu 2</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> --}}
-                </div>
+                @if(count($cate->manyChild) != 0)
+                <ul class="devvn_sub_menu">
+                    @foreach($cate->manyChild as $a)
+                        <li>
+                            <a class="category_id" data-id="{{$a->id}}" href="{{url('/category/'.$a->cate_slug)}}" title="{{$a->cate_name}}">{{$a->cate_name}}</a>
+                        </li>
+                    @endforeach
+                </ul>
+                @endif
             </li>
-        @endif
+        {{-- @endif --}}
         @endforeach
         {{-- <li class="no-have-mega">
             <a href="#" title="Phụ Kiện Android Box"><i class="devvn_mega_menu_icon" style="background: url({{url('/vlnk')}}/images/phu_kien_android_box.png) no-repeat center center;"></i>Phụ Kiện Android Box</a>

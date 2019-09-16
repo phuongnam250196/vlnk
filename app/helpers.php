@@ -33,7 +33,7 @@ function listProducts() {
 }
 
 function listCate() {
-	$data = Categories::orderBy('created_at', 'desc')->get();
+	$data = Categories::whereNull('cate_parent')->with('manyChild')->orderBy('created_at', 'asc')->get();
 	return $data;
 }
 
